@@ -24,12 +24,12 @@ public struct Tile
         TextureCross = content.Load<Texture2D>("cross");
     }
 
-    public static void PrintBoard(Tile[,] board, int boardSize)
+    public static void PrintTileArray(Tile[,] ta, int size)
     {
-        for (int j = 0; j < boardSize; j++)
+        for (int j = 0; j < size; j++)
         {
-            for (int i = 0; i < boardSize; i++)
-                switch (board[i, j].State)
+            for (int i = 0; i < size; i++)
+                switch (ta[i, j].State)
                 {
                     case TileState.Empty:
                         Console.Write(" ");

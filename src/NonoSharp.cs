@@ -8,30 +8,16 @@ public class NonoSharpGame : Game
 {
     private GraphicsDeviceManager _graphics;
     private SpriteBatch _spriteBatch;
-    private int _boardSize;
-    private Tile[,] _board;
-    private Tile[,] _solution;
+    private Board _board;
     private MouseState _mouse;
     private MouseState _mouseOld;
 
-    private void loadBoard(string fileName)
-    {
-        BoardLoader.LoadBoard(ref _solution, ref _boardSize, fileName);
-        Tile.PrintBoard(_solution, _boardSize);
-
-        _board = new Tile[_boardSize, _boardSize];
-        for (int i = 0; i < _boardSize; i++)
-            for (int j = 0; j < _boardSize; j++)
-                _board[i, j] = new Tile();
-    }
-
     public NonoSharpGame()
     {
+        _board = new Board("Levels/TestLevel.nono");
         _graphics = new GraphicsDeviceManager(this);
         Content.RootDirectory = "Content";
         IsMouseVisible = true;
-        _boardSize = 5;
-        loadBoard("Levels/TestLevel.nono");
     }
 
     protected override void Initialize()
@@ -60,21 +46,7 @@ public class NonoSharpGame : Game
 
         _mouseOld = _mouse;
         _mouse = Mouse.GetState();
-        int mx = _mouse.X;
-        int my = _mouse.Y;
-        for (int i = 0; i < _boardSize; i++)
-            for (int j = 0; j < _boardSize; j++)
-            {
-                ref Tile tile = ref _board[i, j];
-                tile.Hover(i, j, mx, my, _boardSize, GraphicsDevice);
-                if (tile.IsHovered)
-                {
-                    if (_mouseOld.LeftButton == ButtonState.Released && _mouse.LeftButton == ButtonState.Pressed)
-                        tile.LeftClick();
-                    if (_mouseOld.RightButton == ButtonState.Released && _mouse.RightButton == ButtonState.Pressed)
-                        tile.RightClick();
-                }
-            }
+        _board.Update(_mouse, _mouseOld, GraphicsDevice);
 
         base.Update(gameTime);
     }
@@ -84,9 +56,7 @@ public class NonoSharpGame : Game
         GraphicsDevice.Clear(Color.Black);
 
         _spriteBatch.Begin();
-        for (int i = 0; i < _boardSize; i++)
-            for (int j = 0; j < _boardSize; j++)
-                _board[i, j].Draw(i, j, _boardSize, _spriteBatch, GraphicsDevice);
+        _board.Draw(_spriteBatch, GraphicsDevice);
         _spriteBatch.End();
 
         base.Draw(gameTime);
