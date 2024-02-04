@@ -25,3 +25,10 @@
 /processorParam:TextureFormat=Color
 /build:cross.png
 
+#begin notosans.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:notosans.spritefont
+
