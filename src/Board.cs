@@ -1,6 +1,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System;
 using System.IO;
 
 namespace NonoSharp;
@@ -10,6 +11,7 @@ public class Board
     public Tile[,] tiles;
     public Tile[,] solution;
     public int size;
+    public bool IsSolved { get; private set; }
 
     public Board()
     {
@@ -56,6 +58,8 @@ public class Board
 
     public void Update(MouseState mouseState, MouseState mouseStateOld, GraphicsDevice graphDev)
     {
+        if (IsSolved)
+            return;
         for (int i = 0; i < size; i++)
             for (int j = 0; j < size; j++)
             {
@@ -69,6 +73,7 @@ public class Board
                         tile.RightClick();
                 }
             }
+        checkSolved();
     }
 
     private void makeTilesAndSolution()
@@ -76,4 +81,38 @@ public class Board
         tiles = new Tile[size, size];
         solution = new Tile[size, size];
     }
+
+    private bool compareSolutionTile(TileState a, TileState b)
+    {
+        if (a == TileState.Cross)
+            a = TileState.Empty;
+        if (b == TileState.Cross)
+            b = TileState.Empty;
+        return a == b;
+    }
+
+    private void checkSolved()
+    {
+        bool solved = true;
+        for (int i = 0; i < size; i++)
+            for (int j = 0; j < size; j++)
+            {
+                TileState a = tiles[i, j].state;
+                TileState b = solution[i, j].state;
+                if (!compareSolutionTile(a, b))
+                {
+                    solved = false;
+                    goto CheckSolvedEnd;
+                }
+            }
+CheckSolvedEnd:
+        IsSolved = solved;
+
+        if (IsSolved)
+        {
+            for (int i = 0; i < size; i++)
+                for (int j = 0; j < size; j++)
+                    tiles[i, j].isHovered = false;
+        }
+     }
 }
