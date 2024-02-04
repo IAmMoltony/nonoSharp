@@ -40,9 +40,9 @@ public class Board
             {
                 char ch = row[j];
                 if (ch == '#')
-                    solution[j, i - 1].State = TileState.Filled;
+                    solution[j, i - 1].state = TileState.Filled;
                 else
-                    solution[j, i - 1].State = TileState.Empty;
+                    solution[j, i - 1].state = TileState.Empty;
             }
         }
     }
@@ -61,7 +61,7 @@ public class Board
             {
                 ref Tile tile = ref tiles[i, j];
                 tile.Hover(i, j, mouseState.X, mouseState.Y, size, graphDev);
-                if (tile.IsHovered)
+                if (tile.isHovered)
                 {
                     if (mouseStateOld.LeftButton == ButtonState.Released && mouseState.LeftButton == ButtonState.Pressed)
                         tile.LeftClick();

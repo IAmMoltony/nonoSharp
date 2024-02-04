@@ -14,8 +14,8 @@ public enum TileState
 
 public struct Tile
 {
-    public TileState State { get; set; }
-    public bool IsHovered;
+    public TileState state;
+    public bool isHovered;
 
     public static Texture2D TextureCross { get; private set; }
 
@@ -29,7 +29,7 @@ public struct Tile
         for (int j = 0; j < size; j++)
         {
             for (int i = 0; i < size; i++)
-                switch (ta[i, j].State)
+                switch (ta[i, j].state)
                 {
                     case TileState.Empty:
                         Console.Write(" ");
@@ -47,8 +47,8 @@ public struct Tile
 
     public Tile()
     {
-        State = TileState.Empty;
-        IsHovered = false;
+        state = TileState.Empty;
+        isHovered = false;
     }
 
     public void Draw(int x, int y, int boardSize, SpriteBatch batch, GraphicsDevice graphDev)
@@ -57,9 +57,9 @@ public struct Tile
         Rectangle rect = new Rectangle((int)posVec.X, (int)posVec.Y, 32, 32);
 
         Color color = Color.Gray;
-        if (IsHovered)
+        if (isHovered)
         {
-            switch (State)
+            switch (state)
             {
                 default:
                     color = Color.LightGray;
@@ -71,7 +71,7 @@ public struct Tile
         }
         else
         {
-            switch (State)
+            switch (state)
             {
                 default:
                     color = Color.Gray;
@@ -83,7 +83,7 @@ public struct Tile
         }
 
         RectRenderer.DrawRect(rect, color, batch);
-        if (State == TileState.Cross)
+        if (state == TileState.Cross)
             batch.Draw(TextureCross, posVec, Color.White);
     }
 
@@ -92,23 +92,23 @@ public struct Tile
         Vector2 screenPos = getScreenPos(x, y, boardSize, graphDev);
         Rectangle rect = new Rectangle((int)screenPos.X, (int)screenPos.Y, 32, 32);
         Point mousePoint = new Point(mx, my);
-        IsHovered = rect.Contains(mousePoint);
+        isHovered = rect.Contains(mousePoint);
     }
 
     public void LeftClick()
     {
-        if (State == TileState.Empty)
-            State = TileState.Filled;
-        else if (State == TileState.Filled)
-            State = TileState.Empty;
+        if (state == TileState.Empty)
+            state = TileState.Filled;
+        else if (state == TileState.Filled)
+            state = TileState.Empty;
     }
 
     public void RightClick()
     {
-        if (State == TileState.Empty)
-            State = TileState.Cross;
-        else if (State == TileState.Cross)
-            State = TileState.Empty;
+        if (state == TileState.Empty)
+            state = TileState.Cross;
+        else if (state == TileState.Cross)
+            state = TileState.Empty;
     }
 
     private Vector2 getScreenPos(int x, int y, int boardSize, GraphicsDevice graphDev)
