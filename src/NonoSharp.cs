@@ -11,7 +11,6 @@ public class NonoSharpGame : Game
     private Board _board;
     private MouseState _mouse;
     private MouseState _mouseOld;
-    private SpriteFont _font;
 
     public NonoSharpGame()
     {
@@ -38,7 +37,7 @@ public class NonoSharpGame : Game
 
         RectRenderer.Load(GraphicsDevice);
         Tile.LoadTextures(Content);
-        _font = Content.Load<SpriteFont>("notosans");
+        TextRenderer.LoadFont("notosans", "notosans", Content);
     }
 
     protected override void Update(GameTime gameTime)
@@ -59,7 +58,7 @@ public class NonoSharpGame : Game
 
         _spriteBatch.Begin();
         _board.Draw(_spriteBatch, GraphicsDevice);
-        _spriteBatch.DrawString(_font, "This is text lol!", new Vector2(10, 10), Color.White, 0, Vector2.Zero, 1.0f, SpriteEffects.None, 0.5f);
+        TextRenderer.DrawText(_spriteBatch, "notosans", 10, 10, "Text asdf", Color.White);
         _spriteBatch.End();
 
         base.Draw(gameTime);
