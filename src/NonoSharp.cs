@@ -10,11 +10,15 @@ public class NonoSharpGame : Game
     private SpriteBatch _spriteBatch;
     private int _boardSize;
     private Tile[,] _board;
+    private Tile[,] _solution;
     private MouseState _mouse;
     private MouseState _mouseOld;
 
-    private void makeBoard()
+    private void loadBoard(string fileName)
     {
+        BoardLoader.LoadBoard(ref _solution, ref _boardSize, fileName);
+        Tile.PrintBoard(_solution, _boardSize);
+
         _board = new Tile[_boardSize, _boardSize];
         for (int i = 0; i < _boardSize; i++)
             for (int j = 0; j < _boardSize; j++)
@@ -27,7 +31,7 @@ public class NonoSharpGame : Game
         Content.RootDirectory = "Content";
         IsMouseVisible = true;
         _boardSize = 5;
-        makeBoard();
+        loadBoard("Levels/TestLevel.nono");
     }
 
     protected override void Initialize()

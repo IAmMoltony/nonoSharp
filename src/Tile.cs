@@ -1,3 +1,4 @@
+using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
@@ -21,6 +22,27 @@ public struct Tile
     public static void LoadTextures(ContentManager content)
     {
         TextureCross = content.Load<Texture2D>("cross");
+    }
+
+    public static void PrintBoard(Tile[,] board, int boardSize)
+    {
+        for (int j = 0; j < boardSize; j++)
+        {
+            for (int i = 0; i < boardSize; i++)
+                switch (board[i, j].State)
+                {
+                    case TileState.Empty:
+                        Console.Write(" ");
+                        break;
+                    case TileState.Filled:
+                        Console.Write("#");
+                        break;
+                    case TileState.Cross:
+                        Console.Write("X");
+                        break;
+                }
+            Console.Write("\n");
+        }
     }
 
     public Tile()
