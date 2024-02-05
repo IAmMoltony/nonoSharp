@@ -24,4 +24,9 @@ public class TextRenderer
     {
         batch.DrawString(_fonts[font], text, new Vector2((float)x, (float)y), color);
     }
+
+    public static void DrawText(SpriteBatch batch, string font, int x, int y, float scale, string text, Color color)
+    {
+        batch.DrawString(_fonts[font], text, new Vector2((float)x, (float)y), color, 0, Vector2.Zero, scale, SpriteEffects.None, 1.0f);
+    }
 }

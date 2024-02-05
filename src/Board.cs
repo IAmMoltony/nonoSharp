@@ -8,6 +8,8 @@ namespace NonoSharp;
 
 public class Board
 {
+    private Clues _clues;
+
     public Tile[,] tiles;
     public Tile[,] solution;
     public int size;
@@ -47,6 +49,8 @@ public class Board
                     solution[j, i - 1].state = TileState.Empty;
             }
         }
+
+        _clues = new(this);
     }
 
     public void Draw(SpriteBatch batch, GraphicsDevice graphDev)
@@ -54,6 +58,28 @@ public class Board
         for (int i = 0; i < size; i++)
             for (int j = 0; j < size; j++)
                 tiles[i, j].Draw(i, j, size, batch, graphDev);
+
+        int pxSize = size * 32;
+        int rowCluesX = graphDev.Viewport.Bounds.Width / 2 - pxSize / 2 - 24;
+        int rowCluesY = graphDev.Viewport.Bounds.Height / 2 - pxSize / 2;
+
+        for (int i = 0; i < size; i++)
+        {
+            for (int j = 0; j < _clues.RowClues[i].Count; j++)
+            {
+                TextRenderer.DrawText(batch, "notosans", rowCluesX - j * 24, rowCluesY + i * 32, 0.5f, _clues.RowClues[i][j].ToString(), Color.White);
+            }
+        }
+
+        int colCluesX = graphDev.Viewport.Bounds.Width / 2 - pxSize / 2 + 12;
+        int colCluesY = graphDev.Viewport.Bounds.Height / 2 - pxSize / 2 - 32;
+        for (int i = 0; i < size; i++)
+        {
+            for (int j = 0; j < _clues.ColumnClues[i].Count; j++)
+            {
+                TextRenderer.DrawText(batch, "notosans", colCluesX + i * 32, colCluesY - j * 32, 0.5f, _clues.ColumnClues[i][j].ToString(), Color.White);
+            }
+        }
     }
 
     public void Update(MouseState mouseState, MouseState mouseStateOld, GraphicsDevice graphDev)

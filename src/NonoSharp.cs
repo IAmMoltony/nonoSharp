@@ -58,7 +58,6 @@ public class NonoSharpGame : Game
 
         _spriteBatch.Begin();
         _board.Draw(_spriteBatch, GraphicsDevice);
-        TextRenderer.DrawText(_spriteBatch, "notosans", 10, 10, "Text asdf", Color.White);
         _spriteBatch.End();
 
         base.Draw(gameTime);
