@@ -36,6 +36,7 @@ public class NonoSharpGame : Game
         _spriteBatch = new SpriteBatch(GraphicsDevice);
 
         RectRenderer.Load(GraphicsDevice);
+        GridRenderer.Load(GraphicsDevice);
         Tile.LoadTextures(Content);
         TextRenderer.LoadFont("notosans", "notosans", Content);
     }

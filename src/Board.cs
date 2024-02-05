@@ -60,8 +60,10 @@ public class Board
                 tiles[i, j].Draw(i, j, size, batch, graphDev);
 
         int pxSize = size * 32;
-        int rowCluesX = graphDev.Viewport.Bounds.Width / 2 - pxSize / 2 - 24;
-        int rowCluesY = graphDev.Viewport.Bounds.Height / 2 - pxSize / 2;
+        int boardX = graphDev.Viewport.Bounds.Width / 2 - pxSize / 2;
+        int boardY = graphDev.Viewport.Bounds.Height / 2 - pxSize / 2;
+        int rowCluesX = boardX - 24;
+        int rowCluesY = boardY;
 
         for (int i = 0; i < size; i++)
         {
@@ -71,8 +73,8 @@ public class Board
             }
         }
 
-        int colCluesX = graphDev.Viewport.Bounds.Width / 2 - pxSize / 2 + 12;
-        int colCluesY = graphDev.Viewport.Bounds.Height / 2 - pxSize / 2 - 32;
+        int colCluesX = boardX + 12;
+        int colCluesY = boardY - 32;
         for (int i = 0; i < size; i++)
         {
             for (int j = 0; j < _clues.ColumnClues[i].Count; j++)
@@ -80,6 +82,9 @@ public class Board
                 TextRenderer.DrawText(batch, "notosans", colCluesX + i * 32, colCluesY - j * 32, 0.5f, _clues.ColumnClues[i][j].ToString(), Color.White);
             }
         }
+
+        if (!IsSolved)
+            GridRenderer.DrawGrid(batch, boardX, boardY, size, size, 32, Color.Black);
     }
 
     public void Update(MouseState mouseState, MouseState mouseStateOld, GraphicsDevice graphDev)
