@@ -62,26 +62,19 @@ public class Board
         int pxSize = size * 32;
         int boardX = graphDev.Viewport.Bounds.Width / 2 - pxSize / 2;
         int boardY = graphDev.Viewport.Bounds.Height / 2 - pxSize / 2;
+
         int rowCluesX = boardX - 24;
         int rowCluesY = boardY;
 
         for (int i = 0; i < size; i++)
-        {
             for (int j = 0; j < _clues.RowClues[i].Count; j++)
-            {
                 TextRenderer.DrawText(batch, "notosans", rowCluesX - j * 24, rowCluesY + i * 32, 0.5f, _clues.RowClues[i][j].ToString(), Color.White);
-            }
-        }
 
         int colCluesX = boardX + 12;
         int colCluesY = boardY - 32;
         for (int i = 0; i < size; i++)
-        {
             for (int j = 0; j < _clues.ColumnClues[i].Count; j++)
-            {
                 TextRenderer.DrawText(batch, "notosans", colCluesX + i * 32, colCluesY - j * 32, 0.5f, _clues.ColumnClues[i][j].ToString(), Color.White);
-            }
-        }
 
         if (!IsSolved)
             GridRenderer.DrawGrid(batch, boardX, boardY, size, size, 32, Color.Black);

@@ -13,6 +13,7 @@ public class NonoSharpGame : Game
     private Board _board;
     private MouseState _mouse;
     private MouseState _mouseOld;
+    private FPSCounter _fpsCounter;
 
     private static float _solveTime = 0;
     private static Thread _solveTimeThread;
@@ -31,9 +32,10 @@ public class NonoSharpGame : Game
 
     public NonoSharpGame()
     {
+        _fpsCounter = new();
         _solveTime = 0;
-        _board = new Board("Levels/TestLevel.nono");
-        _graphics = new GraphicsDeviceManager(this);
+        _board = new ("Levels/TestLevel.nono");
+        _graphics = new(this);
         Content.RootDirectory = "Content";
         IsMouseVisible = true;
         _solveTimeThread = new(SolveTimeTick);
@@ -81,9 +83,14 @@ public class NonoSharpGame : Game
         GraphicsDevice.Clear(Color.Black);
 
         _spriteBatch.Begin();
+
         _board.Draw(_spriteBatch, GraphicsDevice);
         TextRenderer.DrawText(_spriteBatch, "notosans", 10, 10, 0.6f, $"Time: {Math.Round(_solveTime / 1000, 2)} s", _board.IsSolved ? Color.Lime : Color.White);
+        TextRenderer.DrawText(_spriteBatch, "notosans", 10, GraphicsDevice.Viewport.Bounds.Height - 26, 0.33f, $"{Math.Round(_fpsCounter.CurrentFPS)} fps, {Math.Round(_fpsCounter.AverageFPS)} avg", Color.LightGray);
+
         _spriteBatch.End();
+
+        _fpsCounter.Update((float)gameTime.ElapsedGameTime.TotalSeconds);
 
         base.Draw(gameTime);
     }
