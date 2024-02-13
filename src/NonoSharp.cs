@@ -58,6 +58,8 @@ public class NonoSharpGame : Game
 
     protected override void Initialize()
     {
+        Window.Title = $"nonoSharp {GameVersion.GetGameVersion()}";
+
         _graphics.IsFullScreen = false;
         _graphics.PreferredBackBufferWidth = 800;
         _graphics.PreferredBackBufferHeight = 600;
