@@ -25,6 +25,9 @@
 /processorParam:TextureFormat=Color
 /build:cross.png
 
+#begin Levels/TestLevel.nono
+/copy:Levels/TestLevel.nono
+
 #begin notosans.spritefont
 /importer:FontDescriptionImporter
 /processor:FontDescriptionProcessor

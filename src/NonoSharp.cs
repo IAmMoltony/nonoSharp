@@ -49,7 +49,7 @@ public class NonoSharpGame : Game
         _mainMenuSelect = -1;
         _fpsCounter = new();
         _solveTime = 0;
-        _board = new ("Levels/TestLevel.nono");
+        _board = new ("Content/Levels/TestLevel.nono");
         _graphics = new(this);
         Content.RootDirectory = "Content";
         IsMouseVisible = true;
