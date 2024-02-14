@@ -21,4 +21,12 @@ public class RectRenderer
     {
         batch.Draw(_texture, rect, color);
     }
+
+    public static void DrawRectOutline(Rectangle rect, Color color, int thickness, SpriteBatch batch)
+    {
+        DrawRect(new Rectangle(rect.X, rect.Y, thickness, rect.Height + thickness), color, batch);
+        DrawRect(new Rectangle(rect.X, rect.Y, rect.Width + thickness, thickness), color, batch);
+        DrawRect(new Rectangle(rect.X + rect.Width, rect.Y, thickness, rect.Height + thickness), color, batch);
+        DrawRect(new Rectangle(rect.X, rect.Y + rect.Height, rect.Width + thickness, thickness), color, batch);
+    }
 }

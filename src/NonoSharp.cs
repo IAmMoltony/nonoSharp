@@ -3,6 +3,7 @@ using System.Threading;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using NonoSharp.UI;
 
 namespace NonoSharp;
 
@@ -19,14 +20,11 @@ public class NonoSharpGame : Game
     private Board _board;
     private MouseState _mouse;
     private MouseState _mouseOld;
+    private KeyboardState _kb;
+    private KeyboardState _kbOld;
     private FPSCounter _fpsCounter;
     private GameState _state;
-    private int _mainMenuSelect;
-
-    private static string[] _mainMenuButtons = {
-        "Play",
-        "Quit"
-    };
+    private MainMenu _mainMenu;
 
     private static float _solveTime = 0;
     private static Thread _solveTimeThread;
@@ -46,7 +44,6 @@ public class NonoSharpGame : Game
     public NonoSharpGame()
     {
         _state = GameState.MainMenu;
-        _mainMenuSelect = -1;
         _fpsCounter = new();
         _solveTime = 0;
         _board = new ("Content/Levels/TestLevel.nono");
@@ -54,6 +51,7 @@ public class NonoSharpGame : Game
         Content.RootDirectory = "Content";
         IsMouseVisible = true;
         _solveTimeThread = new(SolveTimeTick);
+        _mainMenu = new();
     }
 
     protected override void Initialize()
@@ -74,7 +72,7 @@ public class NonoSharpGame : Game
 
     protected override void LoadContent()
     {
-        _spriteBatch = new SpriteBatch(GraphicsDevice);
+        _spriteBatch = new(GraphicsDevice);
 
         RectRenderer.Load(GraphicsDevice);
         GridRenderer.Load(GraphicsDevice);
@@ -86,6 +84,8 @@ public class NonoSharpGame : Game
     {
         _mouseOld = _mouse;
         _mouse = Mouse.GetState();
+        _kb = Keyboard.GetState();
+        _kbOld = _kb;
 
         switch (_state)
         {
@@ -95,26 +95,14 @@ public class NonoSharpGame : Game
                 _solveTimeTick = false;
             break;
         case GameState.MainMenu:
-            if (_mouse.X >= 10 && _mouse.Y >= 100 && _mouse.X <= 70 && _mouse.Y <= 129)
-                _mainMenuSelect = 0;
-            else if (_mouse.X >= 10 && _mouse.Y >= 124 && _mouse.X <= 70 && _mouse.Y <= 158)
-                _mainMenuSelect = 1;
-            else
-                _mainMenuSelect = -1;
-
-            if (_mouseOld.LeftButton == ButtonState.Released && _mouse.LeftButton == ButtonState.Pressed)
+            _mainMenu.Update(_mouse, _mouseOld, _kb, _kbOld, GraphicsDevice);
+            if (_mainMenu.PlayButton.IsClicked)
             {
-                switch (_mainMenuSelect)
-                {
-                case 0:
-                    _solveTimeTick = true;
-                    _state = GameState.Game;
-                    break;
-                case 1:
-                    Exit();
-                    break;
-                }
+                _solveTimeTick = true;
+                _state = GameState.Game;
             }
+            else if (_mainMenu.QuitButton.IsClicked)
+                Exit();
             break;
         }
 
@@ -134,8 +122,7 @@ public class NonoSharpGame : Game
             TextRenderer.DrawText(_spriteBatch, "notosans", 10, 10, 0.6f, $"Time: {Math.Round(_solveTime / 1000, 2)} s", _board.IsSolved ? Color.Lime : Color.White);
             break;
         case GameState.MainMenu:
-            TextRenderer.DrawText(_spriteBatch, "notosans", 10, 10, "nonoSharp", Color.White);
-            drawMainMenuButtons();
+            _mainMenu.Draw(_spriteBatch, GraphicsDevice);
             break;
         }
 
@@ -148,21 +135,12 @@ public class NonoSharpGame : Game
         base.Draw(gameTime);
     }
 
-    private void drawMainMenuButtons()
-    {
-        for (int i = 0; i < _mainMenuButtons.Length; i++)
-        {
-            bool selected = _mainMenuSelect == i;
-            string buttonText = selected ? $"> {_mainMenuButtons[i]} <" : _mainMenuButtons[i];
-            Color color = selected ? Color.Lime : Color.White;
-            TextRenderer.DrawText(_spriteBatch, "notosans", 10, 100 + 29 * i, 0.5f, buttonText, color);
-        }
-    }
-
     protected override void OnExiting(object sender, EventArgs e)
     {
+        // stop solve time thread
         _solveTimeThreadRunning = false;
         _solveTimeThread.Join();
+
         base.OnExiting(sender, e);
     }
 }
