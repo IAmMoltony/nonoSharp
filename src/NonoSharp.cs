@@ -45,6 +45,7 @@ public class NonoSharpGame : Game
 
     public NonoSharpGame()
     {
+        CrashHandler.Initialize();
         _state = GameState.MainMenu;
         _fpsCounter = new();
         _solveTime = 0;
