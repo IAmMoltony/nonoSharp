@@ -1,5 +1,6 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Serilog;
 
 namespace NonoSharp;
 
@@ -13,6 +14,7 @@ public class GridRenderer
 
     public static void Load(GraphicsDevice graphDev)
     {
+        Log.Logger.Information("Loading grid renderer");
         _texture = new(graphDev, 1, 1);
         _texture.SetData(new Color[] { Color.White });
     }

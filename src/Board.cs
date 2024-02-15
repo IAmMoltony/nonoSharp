@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
 using System.IO;
+using Serilog;
 
 namespace NonoSharp;
 
@@ -33,8 +34,10 @@ public class Board
 
     public void Load(string fileName)
     {
+        Log.Logger.Information($"Loading board from file {fileName}");
         string[] boardData = File.ReadAllLines(fileName);        
         size = int.Parse(boardData[0]);
+        Log.Logger.Information($"Board size: {size}");
         makeTilesAndSolution();
 
         for (int i = 1; i < boardData.Length; i++)
@@ -134,6 +137,7 @@ CheckSolvedEnd:
 
         if (IsSolved)
         {
+            Log.Logger.Information("Board is solved");
             for (int i = 0; i < size; i++)
                 for (int j = 0; j < size; j++)
                     tiles[i, j].isHovered = false;

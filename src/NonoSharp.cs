@@ -3,7 +3,7 @@ using System.Threading;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using NonoSharp.UI;
+using Serilog;
 
 namespace NonoSharp;
 
@@ -46,6 +46,11 @@ public class NonoSharpGame : Game
     public NonoSharpGame()
     {
         CrashHandler.Initialize();
+
+        // initialize serilog
+        using var log = new LoggerConfiguration().WriteTo.Console().WriteTo.File($"{AppDomain.CurrentDomain.BaseDirectory}/logs/nonoSharp.log", rollingInterval: RollingInterval.Day).CreateLogger();
+        Log.Logger = log;
+
         _state = GameState.MainMenu;
         _fpsCounter = new();
         _solveTime = 0;
@@ -73,6 +78,8 @@ public class NonoSharpGame : Game
         _solveTimeTick = false;
         _solveTimeThread.Start();
 
+        Log.Logger.Information("nonoSharp initialized");
+
         base.Initialize();
     }
 
@@ -84,6 +91,8 @@ public class NonoSharpGame : Game
         GridRenderer.Load(GraphicsDevice);
         Tile.LoadTextures(Content);
         TextRenderer.LoadFont("notosans", "notosans", Content);
+
+        Log.Logger.Information("Loaded content");
     }
 
     protected override void Update(GameTime gameTime)
@@ -154,7 +163,7 @@ public class NonoSharpGame : Game
 
     protected override void OnExiting(object sender, EventArgs e)
     {
-        // stop solve time thread
+        Log.Logger.Information("Stopping solve time thread");
         _solveTimeThreadRunning = false;
         _solveTimeThread.Join();
 

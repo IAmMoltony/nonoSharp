@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Serilog;
 
 namespace NonoSharp;
 
@@ -10,6 +11,8 @@ public class Clues
 
     public Clues(Board board)
     {
+        Log.Logger.Information("Creating clues");
+
         RowClues = new List<int>[board.size];
         ColumnClues = new List<int>[board.size];
 
@@ -19,6 +22,8 @@ public class Clues
             RowClues[i] = new();
             ColumnClues[i] = new();
         }
+
+        Log.Logger.Information("Finding row clues...");
 
         // find row clues
         for (int row = 0; row < board.size; row++)
@@ -45,6 +50,8 @@ public class Clues
             RowClues[row].Reverse();
         }
 
+        Log.Logger.Information("Finding column clues...");
+
         // find column clues
         for (int col = 0; col < board.size; col++)
         {
@@ -69,5 +76,7 @@ public class Clues
                 ColumnClues[col].Add(counter);
             ColumnClues[col].Reverse();
         }
+
+        Log.Logger.Information("Clues found successfully");
     }
 }

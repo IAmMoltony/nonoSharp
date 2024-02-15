@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using NonoSharp.UI;
+using Serilog;
 
 namespace NonoSharp;
 
@@ -17,13 +18,17 @@ public class LevelSelect
 
     public void FindLevels()
     {
+        Log.Logger.Information("Finding levels");
         string levelsDir = AppDomain.CurrentDomain.BaseDirectory + "/Content/Levels";
         DirectoryInfo dirInfo = new DirectoryInfo(levelsDir);
         FileInfo[] files = dirInfo.GetFiles("*.nono");
 
         _levels = new Tuple<string, Button>[files.Length];
         for (int i = 0; i < _levels.Length; i++)
+        {
             _levels[i] = new(Path.GetFileNameWithoutExtension(files[i].Name), new(10, 110 + 120 * i + 40, 67, 40, "Play", Color.DarkGreen, Color.Green));
+            Log.Logger.Information($"Found level: {_levels[i].Item1}");
+        }
     }
 
     public void Draw(SpriteBatch sprBatch, GraphicsDevice graphDev)
@@ -46,6 +51,7 @@ public class LevelSelect
             level.Item2.Update(mouse, mouseOld, kb, kbOld);
             if (level.Item2.IsClicked)
             {
+                Log.Logger.Information($"Clicked on button for level {level.Item1}");
                 shouldStart = true;
                 levelName = level.Item1;
             }

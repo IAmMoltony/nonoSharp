@@ -2,6 +2,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
+using Serilog;
 
 namespace NonoSharp;
 
@@ -17,6 +18,7 @@ public class TextRenderer
     {
         if (_fonts == null)
             _fonts = new();
+        Log.Logger.Information($"Loading font \"{fontAsset}\" as \"{fontName}\"");
         _fonts[fontName] = content.Load<SpriteFont>(fontAsset);
     }
 
