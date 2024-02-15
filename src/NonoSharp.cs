@@ -10,7 +10,8 @@ namespace NonoSharp;
 public enum GameState
 {
     Game,
-    MainMenu
+    MainMenu,
+    LevelSelect
 }
 
 public class NonoSharpGame : Game
@@ -25,6 +26,7 @@ public class NonoSharpGame : Game
     private FPSCounter _fpsCounter;
     private GameState _state;
     private MainMenu _mainMenu;
+    private LevelSelect _levelSelect;
 
     private static float _solveTime = 0;
     private static Thread _solveTimeThread;
@@ -46,12 +48,13 @@ public class NonoSharpGame : Game
         _state = GameState.MainMenu;
         _fpsCounter = new();
         _solveTime = 0;
-        _board = new ("Content/Levels/TestLevel.nono");
+        _board = new();
         _graphics = new(this);
         Content.RootDirectory = "Content";
         IsMouseVisible = true;
         _solveTimeThread = new(SolveTimeTick);
         _mainMenu = new();
+        _levelSelect = new();
     }
 
     protected override void Initialize()
@@ -63,6 +66,8 @@ public class NonoSharpGame : Game
         _graphics.PreferredBackBufferHeight = 600;
         _graphics.ApplyChanges();
         Window.AllowUserResizing = true;
+
+        _levelSelect.FindLevels();
 
         _solveTimeTick = false;
         _solveTimeThread.Start();
@@ -97,12 +102,20 @@ public class NonoSharpGame : Game
         case GameState.MainMenu:
             _mainMenu.Update(_mouse, _mouseOld, _kb, _kbOld, GraphicsDevice);
             if (_mainMenu.PlayButton.IsClicked)
-            {
-                _solveTimeTick = true;
-                _state = GameState.Game;
-            }
+                _state = GameState.LevelSelect;
             else if (_mainMenu.QuitButton.IsClicked)
                 Exit();
+            break;
+        case GameState.LevelSelect:
+            bool shouldStart = false;
+            string levelName = "";
+            _levelSelect.Update(_mouse, _mouseOld, _kb, _kbOld, ref shouldStart, ref levelName);
+            if (shouldStart)
+            {
+                _solveTimeTick = true;
+                _board.Load($"{AppDomain.CurrentDomain.BaseDirectory}/Content/Levels/{levelName}.nono");
+                _state = GameState.Game;
+            }
             break;
         }
 
@@ -123,6 +136,9 @@ public class NonoSharpGame : Game
             break;
         case GameState.MainMenu:
             _mainMenu.Draw(_spriteBatch, GraphicsDevice);
+            break;
+        case GameState.LevelSelect:
+            _levelSelect.Draw(_spriteBatch, GraphicsDevice);
             break;
         }
 

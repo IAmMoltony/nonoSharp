@@ -25,6 +25,9 @@
 /processorParam:TextureFormat=Color
 /build:cross.png
 
+#begin Levels/test2.nono
+/copy:Levels/test2.nono
+
 #begin Levels/TestLevel.nono
 /copy:Levels/TestLevel.nono
 
