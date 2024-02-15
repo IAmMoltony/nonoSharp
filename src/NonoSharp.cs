@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading;
+using System.Diagnostics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -87,12 +88,17 @@ public class NonoSharpGame : Game
     {
         _spriteBatch = new(GraphicsDevice);
 
+        Stopwatch stopwatch = new();
+        stopwatch.Start();
+
         RectRenderer.Load(GraphicsDevice);
         GridRenderer.Load(GraphicsDevice);
         Tile.LoadTextures(Content);
         TextRenderer.LoadFont("notosans", "notosans", Content);
 
-        Log.Logger.Information("Loaded content");
+        stopwatch.Stop();
+
+        Log.Logger.Information($"Loaded content in {stopwatch.ElapsedMilliseconds} ms");
     }
 
     protected override void Update(GameTime gameTime)

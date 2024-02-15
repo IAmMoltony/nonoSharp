@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Diagnostics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -18,6 +19,9 @@ public class LevelSelect
 
     public void FindLevels()
     {
+        Stopwatch stopwatch = new();
+        stopwatch.Start();
+
         Log.Logger.Information("Finding levels");
         string levelsDir = AppDomain.CurrentDomain.BaseDirectory + "/Content/Levels";
         DirectoryInfo dirInfo = new DirectoryInfo(levelsDir);
@@ -29,6 +33,9 @@ public class LevelSelect
             _levels[i] = new(Path.GetFileNameWithoutExtension(files[i].Name), new(10, 110 + 120 * i + 40, 67, 40, "Play", Color.DarkGreen, Color.Green));
             Log.Logger.Information($"Found level: {_levels[i].Item1}");
         }
+
+        stopwatch.Stop();
+        Log.Logger.Information($"Found levels in {stopwatch.ElapsedMilliseconds} ms");
     }
 
     public void Draw(SpriteBatch sprBatch, GraphicsDevice graphDev)

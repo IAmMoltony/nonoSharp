@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using Serilog;
 
 namespace NonoSharp;
@@ -22,6 +23,9 @@ public class Clues
             RowClues[i] = new();
             ColumnClues[i] = new();
         }
+
+        Stopwatch stopwatch = new();
+        stopwatch.Start();
 
         Log.Logger.Information("Finding row clues...");
 
@@ -77,6 +81,8 @@ public class Clues
             ColumnClues[col].Reverse();
         }
 
-        Log.Logger.Information("Clues found successfully");
+        stopwatch.Stop();
+
+        Log.Logger.Information($"Clues found in {stopwatch.ElapsedMilliseconds} ms");
     }
 }
