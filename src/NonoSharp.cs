@@ -110,29 +110,29 @@ public class NonoSharpGame : Game
 
         switch (_state)
         {
-        case GameState.Game:
-            _board.Update(_mouse, _mouseOld, GraphicsDevice);
-            if (_board.IsSolved)
-                _solveTimeTick = false;
-            break;
-        case GameState.MainMenu:
-            _mainMenu.Update(_mouse, _mouseOld, _kb, _kbOld, GraphicsDevice);
-            if (_mainMenu.PlayButton.IsClicked)
-                _state = GameState.LevelSelect;
-            else if (_mainMenu.QuitButton.IsClicked)
-                Exit();
-            break;
-        case GameState.LevelSelect:
-            bool shouldStart = false;
-            string levelName = "";
-            _levelSelect.Update(_mouse, _mouseOld, _kb, _kbOld, ref shouldStart, ref levelName);
-            if (shouldStart)
-            {
-                _solveTimeTick = true;
-                _board.Load($"{AppDomain.CurrentDomain.BaseDirectory}/Content/Levels/{levelName}.nono");
-                _state = GameState.Game;
-            }
-            break;
+            case GameState.Game:
+                _board.Update(_mouse, _mouseOld, GraphicsDevice);
+                if (_board.IsSolved)
+                    _solveTimeTick = false;
+                break;
+            case GameState.MainMenu:
+                _mainMenu.Update(_mouse, _mouseOld, _kb, _kbOld, GraphicsDevice);
+                if (_mainMenu.PlayButton.IsClicked)
+                    _state = GameState.LevelSelect;
+                else if (_mainMenu.QuitButton.IsClicked)
+                    Exit();
+                break;
+            case GameState.LevelSelect:
+                bool shouldStart = false;
+                string levelName = "";
+                _levelSelect.Update(_mouse, _mouseOld, _kb, _kbOld, ref shouldStart, ref levelName);
+                if (shouldStart)
+                {
+                    _solveTimeTick = true;
+                    _board.Load($"{AppDomain.CurrentDomain.BaseDirectory}/Content/Levels/{levelName}.nono");
+                    _state = GameState.Game;
+                }
+                break;
         }
 
         base.Update(gameTime);
@@ -146,16 +146,16 @@ public class NonoSharpGame : Game
 
         switch (_state)
         {
-        case GameState.Game:
-            _board.Draw(_spriteBatch, GraphicsDevice);
-            TextRenderer.DrawText(_spriteBatch, "notosans", 10, 10, 0.6f, $"Time: {Math.Round(_solveTime / 1000, 2)} s", _board.IsSolved ? Color.Lime : Color.White);
-            break;
-        case GameState.MainMenu:
-            _mainMenu.Draw(_spriteBatch, GraphicsDevice);
-            break;
-        case GameState.LevelSelect:
-            _levelSelect.Draw(_spriteBatch, GraphicsDevice);
-            break;
+            case GameState.Game:
+                _board.Draw(_spriteBatch, GraphicsDevice);
+                TextRenderer.DrawText(_spriteBatch, "notosans", 10, 10, 0.6f, $"Time: {Math.Round(_solveTime / 1000, 2)} s", _board.IsSolved ? Color.Lime : Color.White);
+                break;
+            case GameState.MainMenu:
+                _mainMenu.Draw(_spriteBatch, GraphicsDevice);
+                break;
+            case GameState.LevelSelect:
+                _levelSelect.Draw(_spriteBatch, GraphicsDevice);
+                break;
         }
 
         TextRenderer.DrawText(_spriteBatch, "notosans", 10, GraphicsDevice.Viewport.Bounds.Height - 26, 0.33f, $"{Math.Round(_fpsCounter.CurrentFPS)} fps, {Math.Round(_fpsCounter.AverageFPS)} avg", Color.LightGray);

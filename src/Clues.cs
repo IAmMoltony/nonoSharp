@@ -48,7 +48,7 @@ public class Clues
                     counter = 0;
                 }
             }
- 
+
             if (RowClues[row].Count == 0 || counter != 0)
                 RowClues[row].Add(counter);
             RowClues[row].Reverse();

@@ -4,7 +4,7 @@ using Microsoft.Xna.Framework.Input;
 public abstract class UIElement
 {
     public int x, y;
-    
+
     public UIElement(int x, int y)
     {
         this.x = x;

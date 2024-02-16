@@ -35,7 +35,7 @@ public class Board
     public void Load(string fileName)
     {
         Log.Logger.Information($"Loading board from file {fileName}");
-        string[] boardData = File.ReadAllLines(fileName);        
+        string[] boardData = File.ReadAllLines(fileName);
         size = int.Parse(boardData[0]);
         Log.Logger.Information($"Board size: {size}");
         makeTilesAndSolution();
@@ -132,7 +132,7 @@ public class Board
                     goto CheckSolvedEnd;
                 }
             }
-CheckSolvedEnd:
+        CheckSolvedEnd:
         IsSolved = solved;
 
         if (IsSolved)
@@ -142,5 +142,5 @@ CheckSolvedEnd:
                 for (int j = 0; j < size; j++)
                     tiles[i, j].isHovered = false;
         }
-     }
+    }
 }
