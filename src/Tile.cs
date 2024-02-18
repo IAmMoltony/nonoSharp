@@ -19,6 +19,8 @@ public struct Tile
 
     public static Texture2D TextureCross { get; private set; }
 
+    private FadeRect _fr;
+
     public static void LoadTextures(ContentManager content)
     {
         TextureCross = content.Load<Texture2D>("cross");
@@ -49,40 +51,31 @@ public struct Tile
     {
         state = TileState.Empty;
         isHovered = false;
+        _fr = new(new(0, 0, 0, 0), Color.Black, Color.Black);
     }
 
     public void Draw(int x, int y, int boardSize, SpriteBatch batch, GraphicsDevice graphDev)
     {
         Vector2 posVec = getScreenPos(x, y, boardSize, graphDev);
-        Rectangle rect = new Rectangle((int)posVec.X, (int)posVec.Y, 32, 32);
+        Rectangle rect = new((int)posVec.X, (int)posVec.Y, 32, 32);
+        _fr.rect = rect;
 
-        Color color = Color.Gray;
-        if (isHovered)
+        switch (state)
         {
-            switch (state)
-            {
-                default:
-                    color = Color.LightGray;
-                    break;
-                case TileState.Filled:
-                    color = Color.Lime;
-                    break;
-            }
-        }
-        else
-        {
-            switch (state)
-            {
-                default:
-                    color = Color.Gray;
-                    break;
-                case TileState.Filled:
-                    color = Color.Green;
-                    break;
-            }
+            default:
+                _fr.color1 = Color.Gray;
+                _fr.color2 = Color.LightGray;
+                break;
+            case TileState.Filled:
+                _fr.color1 = Color.Green;
+                _fr.color2 = Color.Lime;
+                break;
         }
 
-        RectRenderer.DrawRect(rect, color, batch);
+        _fr.mode = isHovered ? FadeRectMode.FadeIn : FadeRectMode.FadeOut;
+        _fr.Update();
+
+        _fr.Draw(batch);
         if (state == TileState.Cross)
             batch.Draw(TextureCross, posVec, Color.White);
     }
