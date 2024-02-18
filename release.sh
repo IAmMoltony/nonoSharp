@@ -3,6 +3,7 @@
 set -e
 
 rm -rf linux-build windows-build
+dotnet clean
 
 echo "* Building for Linux x64 *"
 dotnet publish -v m --configuration Release --runtime linux-x64 --self-contained
