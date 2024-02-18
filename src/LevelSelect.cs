@@ -12,9 +12,11 @@ namespace NonoSharp;
 public class LevelSelect
 {
     private Tuple<string, Button>[] _levels;
+    private int _scrollOffset;
 
     public LevelSelect()
     {
+        _scrollOffset = 0;
     }
 
     public void FindLevels()
@@ -40,21 +42,33 @@ public class LevelSelect
 
     public void Draw(SpriteBatch sprBatch, GraphicsDevice graphDev)
     {
-        Rectangle nameRect = new(0, 15, graphDev.Viewport.Bounds.Width, 100);
-        TextRenderer.DrawTextCenter(sprBatch, "notosans", 0, 0, 0.9f, "Select level", Color.White, nameRect);
-
         for (int i = 0; i < _levels.Length; i++)
         {
             string name = _levels[i].Item1;
-            TextRenderer.DrawText(sprBatch, "notosans", 10, 110 + 120 * i, 0.56f, name, Color.White);
+            TextRenderer.DrawText(sprBatch, "notosans", 10, 110 + 120 * i + _scrollOffset, 0.56f, name, Color.White);
             _levels[i].Item2.Draw(sprBatch);
         }
+
+        Rectangle nameRect = new(0, 15, graphDev.Viewport.Bounds.Width, 100);
+        Rectangle nameBackgroundRect = new(0, 0, graphDev.Viewport.Bounds.Width, 100);
+        RectRenderer.DrawRect(nameBackgroundRect, Color.Black, sprBatch);
+        TextRenderer.DrawTextCenter(sprBatch, "notosans", 0, 0, 0.9f, "Select level", Color.White, nameRect);
     }
 
     public void Update(MouseState mouse, MouseState mouseOld, KeyboardState kb, KeyboardState kbOld, ref bool shouldStart, ref string levelName)
     {
-        foreach (var level in _levels)
+        if (mouse.ScrollWheelValue > mouseOld.ScrollWheelValue)
+            _scrollOffset += 25;
+        else if (mouse.ScrollWheelValue < mouseOld.ScrollWheelValue)
+            _scrollOffset -= 25;
+        if (_scrollOffset > 0)
+            _scrollOffset = 0;
+        if (_scrollOffset < -(120 * _levels.Length - 230))
+            _scrollOffset = -(120 * _levels.Length - 230);
+
+        for (int i = 0; i < _levels.Length; i++)
         {
+            var level = _levels[i];
             level.Item2.Update(mouse, mouseOld, kb, kbOld);
             if (level.Item2.IsClicked)
             {
@@ -62,6 +76,7 @@ public class LevelSelect
                 shouldStart = true;
                 levelName = level.Item1;
             }
+            level.Item2.y = 110 + 120 * i + 40 + _scrollOffset;
         }
     }
 }
