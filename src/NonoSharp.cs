@@ -158,6 +158,7 @@ public class NonoSharpGame : Game
                 break;
         }
 
+
         TextRenderer.DrawText(_spriteBatch, "notosans", 10, GraphicsDevice.Viewport.Bounds.Height - 26, 0.33f, $"{Math.Round(_fpsCounter.CurrentFPS)} fps, {Math.Round(_fpsCounter.AverageFPS)} avg", Color.LightGray);
 
         _spriteBatch.End();
