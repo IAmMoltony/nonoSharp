@@ -51,7 +51,7 @@ public struct Tile
     {
         state = TileState.Empty;
         isHovered = false;
-        _fr = new(new(0, 0, 0, 0), Color.Black, Color.Black);
+        _fr = new(new(0, 0, 0, 0), Color.Black, Color.Black, 0.13f);
     }
 
     public void Draw(int x, int y, int boardSize, SpriteBatch batch, GraphicsDevice graphDev)

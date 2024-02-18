@@ -15,12 +15,15 @@ public class FadeRect
     public Rectangle rect;
     public Color color1, color2;
     public FadeRectMode mode;
-    private Color _color;
 
-    public FadeRect(Rectangle rect, Color color1, Color color2)
+    private Color _color;
+    private float _lerpTime;
+
+    public FadeRect(Rectangle rect, Color color1, Color color2, float lerpTime = 0.07f)
     {
         mode = FadeRectMode.FadeOut;
         _color = color1;
+        _lerpTime = lerpTime;
         this.color1 = color1;
         this.color2 = color2;
         this.rect = rect;
@@ -46,8 +49,8 @@ public class FadeRect
 
     private void doFade(Color color)
     {
-        _color.R = (byte)MathHelper.Lerp(_color.R, color.R, 0.07f);
-        _color.G = (byte)MathHelper.Lerp(_color.G, color.G, 0.07f);
-        _color.B = (byte)MathHelper.Lerp(_color.B, color.B, 0.07f);
+        _color.R = (byte)MathHelper.Lerp(_color.R, color.R, _lerpTime);
+        _color.G = (byte)MathHelper.Lerp(_color.G, color.G, _lerpTime);
+        _color.B = (byte)MathHelper.Lerp(_color.B, color.B, _lerpTime);
     }
 }
