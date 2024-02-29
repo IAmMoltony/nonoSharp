@@ -9,11 +9,13 @@ public class MainMenu
 {
     public Button PlayButton { get; private set; }
     public Button QuitButton { get; private set; }
+    public Button EditorButton { get; private set; }
 
     public MainMenu()
     {
         PlayButton = new(0, 0, 100, 60, "Play", Color.DarkGreen, Color.Green);
         QuitButton = new(0, 0, 100, 60, "Quit", Color.DarkGreen, Color.Green);
+        EditorButton = new(0, 0, 100, 60, "Editor", Color.DarkGreen, Color.Green);
     }
 
     public void Update(MouseState mouse, MouseState mouseOld, KeyboardState kb, KeyboardState kbOld, GraphicsDevice graphDev)
@@ -22,8 +24,12 @@ public class MainMenu
         PlayButton.y = graphDev.Viewport.Bounds.Height / 2 - PlayButton.height / 2;
         PlayButton.Update(mouse, mouseOld, kb, kbOld);
 
+        EditorButton.x = PlayButton.x;
+        EditorButton.y = PlayButton.y + 70;
+        EditorButton.Update(mouse, mouseOld, kb, kbOld);
+
         QuitButton.x = PlayButton.x;
-        QuitButton.y = PlayButton.y + 70;
+        QuitButton.y = PlayButton.y + 70 * 2;
         QuitButton.Update(mouse, mouseOld, kb, kbOld);
     }
 
@@ -33,6 +39,7 @@ public class MainMenu
         TextRenderer.DrawTextCenter(sprBatch, "notosans", 0, 0, 1.0f, "nonoSharp", Color.White, nameRect);
 
         PlayButton.Draw(sprBatch);
+        EditorButton.Draw(sprBatch);
         QuitButton.Draw(sprBatch);
     }
 }
