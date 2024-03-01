@@ -19,17 +19,21 @@ public class CrashHandler
             Exception exception = (Exception)ueea.ExceptionObject;
             using (StreamWriter writer = new(crashFile))
             {
-                DateTime dateTime = new();
-                writer.WriteLine($"--- nonoSharp Crash Log: {dateTime.ToString()}");
+                DateTime dateTime = DateTime.Now;
+                writer.WriteLine($"--- nonoSharp Crash Log: {dateTime}");
                 writer.WriteLine("nonoSharp has crashed. Here's some information about the crash:\n");
                 writer.WriteLine(exception.ToString());
             }
 
-            Process proc = new();
-            proc.StartInfo = new()
+            // This might be unsafe...
+            // At least on linux
+            Process proc = new()
             {
-                UseShellExecute = true,
-                FileName = crashFile
+                StartInfo = new()
+                {
+                    UseShellExecute = true,
+                    FileName = crashFile
+                }
             };
 
             proc.Start();
