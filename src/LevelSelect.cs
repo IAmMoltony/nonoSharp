@@ -38,10 +38,12 @@ public class LevelSelect
 {
     private List<Tuple<LevelMetadata, Button>> _levels;
     private int _scrollOffset;
+    private Button _backButton;
 
     public LevelSelect()
     {
         _scrollOffset = 0;
+        _backButton = new(10, 10, 30, 30, "<", Color.DarkGreen, Color.Green);
     }
 
     public void FindLevels()
@@ -85,9 +87,10 @@ public class LevelSelect
         Rectangle nameBackgroundRect = new(0, 0, graphDev.Viewport.Bounds.Width, 100);
         RectRenderer.DrawRect(nameBackgroundRect, Color.Black, sprBatch);
         TextRenderer.DrawTextCenter(sprBatch, "notosans", 0, 0, 0.9f, "Select level", Color.White, nameRect);
+        _backButton.Draw(sprBatch);
     }
 
-    public void Update(MouseState mouse, MouseState mouseOld, KeyboardState kb, KeyboardState kbOld, ref bool shouldStart, ref string levelName)
+    public void Update(MouseState mouse, MouseState mouseOld, KeyboardState kb, KeyboardState kbOld, ref bool shouldStart, ref bool shouldGoBack, ref string levelName)
     {
         if (mouse.ScrollWheelValue > mouseOld.ScrollWheelValue)
             _scrollOffset += 25;
@@ -110,5 +113,8 @@ public class LevelSelect
             }
             level.Item2.y = 110 + 120 * i + 40 + _scrollOffset;
         }
+
+        _backButton.Update(mouse, mouseOld, kb, kbOld);
+        shouldGoBack = _backButton.IsClicked;
     }
 }

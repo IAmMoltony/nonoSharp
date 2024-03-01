@@ -128,13 +128,18 @@ public class NonoSharpGame : Game
                 break;
             case GameState.LevelSelect:
                 bool shouldStart = false;
+                bool shouldGoBack = false;
                 string levelName = "";
-                _levelSelect.Update(_mouse, _mouseOld, _kb, _kbOld, ref shouldStart, ref levelName);
+                _levelSelect.Update(_mouse, _mouseOld, _kb, _kbOld, ref shouldStart, ref shouldGoBack, ref levelName);
                 if (shouldStart)
                 {
                     _solveTimeTick = true;
                     _board.Load($"{AppDomain.CurrentDomain.BaseDirectory}/Content/Levels/{levelName}.nono");
                     _state = GameState.Game;
+                }
+                if (shouldGoBack)
+                {
+                    _state = GameState.MainMenu;
                 }
                 break;
         }
