@@ -1,6 +1,8 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
+namespace NonoSharp.UI;
+
 public abstract class UIElement
 {
     public int x, y;
