@@ -16,13 +16,17 @@ public class FadeRect
     public Color color1, color2;
     public FadeRectMode mode;
 
-    private Color _color;
+    private float _r;
+    private float _g;
+    private float _b;
     private float _lerpTime;
 
     public FadeRect(Rectangle rect, Color color1, Color color2, float lerpTime = 0.07f)
     {
         mode = FadeRectMode.FadeOut;
-        _color = color1;
+        _r = color1.R;
+        _g = color1.G;
+        _b = color1.B;
         _lerpTime = lerpTime;
         this.color1 = color1;
         this.color2 = color2;
@@ -44,13 +48,14 @@ public class FadeRect
 
     public void Draw(SpriteBatch batch)
     {
-        RectRenderer.DrawRect(rect, _color, batch);
+        Color color = new((int)_r, (int)_g, (int)_b);
+        RectRenderer.DrawRect(rect, color, batch);
     }
 
     private void doFade(Color color)
     {
-        _color.R = (byte)MathHelper.Lerp(_color.R, color.R, _lerpTime);
-        _color.G = (byte)MathHelper.Lerp(_color.G, color.G, _lerpTime);
-        _color.B = (byte)MathHelper.Lerp(_color.B, color.B, _lerpTime);
+        _r = MathHelper.Lerp(_r, color.R, _lerpTime);
+        _g = MathHelper.Lerp(_g, color.G, _lerpTime);
+        _b = MathHelper.Lerp(_b, color.B, _lerpTime);
     }
 }
