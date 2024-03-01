@@ -2,6 +2,7 @@ using System;
 using System.IO;
 using System.Diagnostics;
 using System.Linq;
+using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -35,7 +36,7 @@ public struct LevelMetadata
 
 public class LevelSelect
 {
-    private Tuple<LevelMetadata, Button>[] _levels;
+    private List<Tuple<LevelMetadata, Button>> _levels;
     private int _scrollOffset;
 
     public LevelSelect()
@@ -53,8 +54,8 @@ public class LevelSelect
         DirectoryInfo dirInfo = new DirectoryInfo(levelsDir);
         FileInfo[] files = dirInfo.GetFiles("*.nono");
 
-        _levels = new Tuple<LevelMetadata, Button>[files.Length];
-        for (int i = 0; i < _levels.Length; i++)
+        _levels = new();
+        for (int i = 0; i < files.Length; i++)
         {
             string sizeStr = File.ReadAllLines($"{levelsDir}/{files[i].Name}").First();
             int size = 0;
@@ -63,8 +64,8 @@ public class LevelSelect
                 Log.Logger.Warning($"Level {files[i].Name} does not have a valid board size, skip");
                 continue;
             }
-            _levels[i] = new(new(Path.GetFileNameWithoutExtension(files[i].Name), size), new(10, 110 + 120 * i + 40, 67, 40, "Play", Color.DarkGreen, Color.Green));
-            Log.Logger.Information($"Found level: {_levels[i].Item1}");
+            _levels.Add(new(new(Path.GetFileNameWithoutExtension(files[i].Name), size), new(10, 110 + 120 * i + 40, 67, 40, "Play", Color.DarkGreen, Color.Green)));
+            Log.Logger.Information($"Found level: {_levels[_levels.Count - 1].Item1}");
         }
 
         stopwatch.Stop();
@@ -73,7 +74,7 @@ public class LevelSelect
 
     public void Draw(SpriteBatch sprBatch, GraphicsDevice graphDev)
     {
-        for (int i = 0; i < _levels.Length; i++)
+        for (int i = 0; i < _levels.Count; i++)
         {
             string label = _levels[i].Item1.ToString();
             TextRenderer.DrawText(sprBatch, "notosans", 10, 110 + 120 * i + _scrollOffset, 0.56f, label, Color.White);
@@ -94,10 +95,10 @@ public class LevelSelect
             _scrollOffset -= 25;
         if (_scrollOffset > 0)
             _scrollOffset = 0;
-        if (_scrollOffset < -(120 * _levels.Length - 230))
-            _scrollOffset = -(120 * _levels.Length - 230);
+        if (_scrollOffset < -(120 * _levels.Count - 230))
+            _scrollOffset = -(120 * _levels.Count - 230);
 
-        for (int i = 0; i < _levels.Length; i++)
+        for (int i = 0; i < _levels.Count; i++)
         {
             var level = _levels[i];
             level.Item2.Update(mouse, mouseOld, kb, kbOld);

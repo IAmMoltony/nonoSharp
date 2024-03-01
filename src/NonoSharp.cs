@@ -74,8 +74,6 @@ public class NonoSharpGame : Game
         _graphics.ApplyChanges();
         Window.AllowUserResizing = true;
 
-        _levelSelect.FindLevels();
-
         _solveTimeTick = false;
         _solveTimeThread.Start();
 
@@ -118,7 +116,10 @@ public class NonoSharpGame : Game
             case GameState.MainMenu:
                 _mainMenu.Update(_mouse, _mouseOld, _kb, _kbOld, GraphicsDevice);
                 if (_mainMenu.PlayButton.IsClicked)
+                {
+                    _levelSelect.FindLevels();
                     _state = GameState.LevelSelect;
+                }
                 else if (_mainMenu.QuitButton.IsClicked)
                     Exit();
                 break;
