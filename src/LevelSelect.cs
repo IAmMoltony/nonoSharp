@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using System.Diagnostics;
+using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -9,9 +10,32 @@ using Serilog;
 
 namespace NonoSharp;
 
+public struct LevelMetadata
+{
+    public string name;
+    public int size;
+
+    public LevelMetadata(string name, int size)
+    {
+        this.name = name;
+        this.size = size;
+    }
+
+    public LevelMetadata()
+    {
+        name = "";
+        size = 0;
+    }
+
+    public override string ToString()
+    {
+        return $"{name} ({size}x{size})";
+    }
+}
+
 public class LevelSelect
 {
-    private Tuple<string, Button>[] _levels;
+    private Tuple<LevelMetadata, Button>[] _levels;
     private int _scrollOffset;
 
     public LevelSelect()
@@ -29,10 +53,17 @@ public class LevelSelect
         DirectoryInfo dirInfo = new DirectoryInfo(levelsDir);
         FileInfo[] files = dirInfo.GetFiles("*.nono");
 
-        _levels = new Tuple<string, Button>[files.Length];
+        _levels = new Tuple<LevelMetadata, Button>[files.Length];
         for (int i = 0; i < _levels.Length; i++)
         {
-            _levels[i] = new(Path.GetFileNameWithoutExtension(files[i].Name), new(10, 110 + 120 * i + 40, 67, 40, "Play", Color.DarkGreen, Color.Green));
+            string sizeStr = File.ReadAllLines($"{levelsDir}/{files[i].Name}").First();
+            int size = 0;
+            if (!int.TryParse(sizeStr, out size))
+            {
+                Log.Logger.Warning($"Level {files[i].Name} does not have a valid board size, skip");
+                continue;
+            }
+            _levels[i] = new(new(Path.GetFileNameWithoutExtension(files[i].Name), size), new(10, 110 + 120 * i + 40, 67, 40, "Play", Color.DarkGreen, Color.Green));
             Log.Logger.Information($"Found level: {_levels[i].Item1}");
         }
 
@@ -44,8 +75,8 @@ public class LevelSelect
     {
         for (int i = 0; i < _levels.Length; i++)
         {
-            string name = _levels[i].Item1;
-            TextRenderer.DrawText(sprBatch, "notosans", 10, 110 + 120 * i + _scrollOffset, 0.56f, name, Color.White);
+            string label = _levels[i].Item1.ToString();
+            TextRenderer.DrawText(sprBatch, "notosans", 10, 110 + 120 * i + _scrollOffset, 0.56f, label, Color.White);
             _levels[i].Item2.Draw(sprBatch);
         }
 
@@ -74,7 +105,7 @@ public class LevelSelect
             {
                 Log.Logger.Information($"Clicked on button for level {level.Item1}");
                 shouldStart = true;
-                levelName = level.Item1;
+                levelName = level.Item1.name;
             }
             level.Item2.y = 110 + 120 * i + 40 + _scrollOffset;
         }
