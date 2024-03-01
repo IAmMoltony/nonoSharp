@@ -90,7 +90,7 @@ public class LevelSelect
         _backButton.Draw(sprBatch);
     }
 
-    public void Update(MouseState mouse, MouseState mouseOld, KeyboardState kb, KeyboardState kbOld, ref bool shouldStart, ref bool shouldGoBack, ref string levelName)
+    public void Update(MouseState mouse, MouseState mouseOld, KeyboardState kb, KeyboardState kbOld, ref GameState newState, ref string levelName)
     {
         if (mouse.ScrollWheelValue > mouseOld.ScrollWheelValue)
             _scrollOffset += 25;
@@ -108,13 +108,14 @@ public class LevelSelect
             if (level.Item2.IsClicked)
             {
                 Log.Logger.Information($"Clicked on button for level {level.Item1}");
-                shouldStart = true;
+                newState = GameState.Game;
                 levelName = level.Item1.name;
             }
             level.Item2.y = 110 + 120 * i + 40 + _scrollOffset;
         }
 
         _backButton.Update(mouse, mouseOld, kb, kbOld);
-        shouldGoBack = _backButton.IsClicked;
+        if (_backButton.IsClicked)
+            newState = GameState.MainMenu;
     }
 }

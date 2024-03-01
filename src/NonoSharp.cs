@@ -10,6 +10,7 @@ namespace NonoSharp;
 
 public enum GameState
 {
+    None, // Used to indicate the absense of a game state
     Game,
     MainMenu,
     LevelSelect
@@ -127,20 +128,16 @@ public class NonoSharpGame : Game
                     Exit();
                 break;
             case GameState.LevelSelect:
-                bool shouldStart = false;
-                bool shouldGoBack = false;
+                GameState newState = GameState.None;
                 string levelName = "";
-                _levelSelect.Update(_mouse, _mouseOld, _kb, _kbOld, ref shouldStart, ref shouldGoBack, ref levelName);
-                if (shouldStart)
+                _levelSelect.Update(_mouse, _mouseOld, _kb, _kbOld, ref newState, ref levelName);
+                if (newState == GameState.Game)
                 {
                     _solveTimeTick = true;
                     _board.Load($"{AppDomain.CurrentDomain.BaseDirectory}/Content/Levels/{levelName}.nono");
-                    _state = GameState.Game;
                 }
-                if (shouldGoBack)
-                {
-                    _state = GameState.MainMenu;
-                }
+                if (newState != GameState.None)
+                    _state = newState;
                 break;
         }
 
