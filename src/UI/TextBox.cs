@@ -40,15 +40,22 @@ public class TextBox : UIElement
 
         Vector2 textSize = TextRenderer.MeasureString("notosans", Text);
         float textWidth = textSize.X * 0.5f;
-        float maxTextWidth = Width - 17;  // Adjust this as needed
+        float maxTextWidth = Width - 17;
         float offset = 0;
 
         if (textWidth > maxTextWidth)
-        {
             offset = textWidth - maxTextWidth;
-        }
 
+        sprBatch.End();
+
+        RasterizerState rs = new();
+        rs.ScissorTestEnable = true;
+        sprBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, null, null, rs);
+        sprBatch.GraphicsDevice.ScissorRectangle = getRect();
         TextRenderer.DrawText(sprBatch, "notosans", x + 4 - (int)offset, y, 0.5f, Text + ((_blinkCursor && Hovered) ? "_" : ""), tc);
+        sprBatch.End();
+
+        sprBatch.Begin();
     }
 
     public override void Update(MouseState mouse, MouseState mouseOld, KeyboardState keyboard, KeyboardState keyboardOld)
