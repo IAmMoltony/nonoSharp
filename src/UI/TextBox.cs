@@ -68,7 +68,7 @@ public class TextBox : UIElement
             _blinkCursor = !_blinkCursor;
     }
 
-    public void UpdateInput(object sender, TextInputEventArgs tiea)
+    public virtual void UpdateInput(object sender, TextInputEventArgs tiea)
     {
         if (Hovered)
         {

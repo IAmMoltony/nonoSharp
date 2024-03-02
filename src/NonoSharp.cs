@@ -35,7 +35,7 @@ public class NonoSharpGame : Game
     private static bool _solveTimeThreadRunning = true;
     private static bool _solveTimeTick = true;
 
-    private UI.TextBox _tb;
+    private UI.NumberTextBox _tb;
 
     private static void SolveTimeTick()
     {
