@@ -35,6 +35,7 @@ public class Button : UIElement
 
     public override void Draw(SpriteBatch sprBatch)
     {
+        _fr.rect = getRect();
         _fr.Draw(sprBatch);
         RectRenderer.DrawRectOutline(getRect(), IsHovered ? fillColor : outlineColor, 2, sprBatch);
         TextRenderer.DrawTextCenter(sprBatch, "notosans", x, y, 0.5f, text, Color.White, getRect());
@@ -43,7 +44,6 @@ public class Button : UIElement
     public override void Update(MouseState mouse, MouseState mouseOld, KeyboardState keyboard, KeyboardState keyboardOld)
     {
         Rectangle rect = getRect();
-        _fr.rect = rect;
         IsHovered = (mouse.X >= rect.X && mouse.Y >= rect.Y && mouse.X <= rect.X + rect.Width && mouse.Y <= rect.Y + rect.Height);
         IsClicked = IsHovered && (mouse.LeftButton == ButtonState.Pressed && mouseOld.LeftButton == ButtonState.Released);
         if (IsHovered)

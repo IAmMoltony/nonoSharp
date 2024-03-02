@@ -37,11 +37,13 @@ public struct LevelMetadata
 public class LevelSelect
 {
     private List<Tuple<LevelMetadata, Button>> _levels;
-    private int _scrollOffset;
+    private int _scrollOffsetGoal;
+    private float _scrollOffset;
     private Button _backButton;
 
     public LevelSelect()
     {
+        _scrollOffsetGoal = 0;
         _scrollOffset = 0;
         _backButton = new(10, 10, 30, 30, "<", Color.DarkGreen, Color.Green);
     }
@@ -79,7 +81,7 @@ public class LevelSelect
         for (int i = 0; i < _levels.Count; i++)
         {
             string label = _levels[i].Item1.ToString();
-            TextRenderer.DrawText(sprBatch, "notosans", 10, 110 + 120 * i + _scrollOffset, 0.56f, label, Color.White);
+            TextRenderer.DrawText(sprBatch, "notosans", 10, 110 + 120 * i + (int)_scrollOffset, 0.56f, label, Color.White);
             _levels[i].Item2.Draw(sprBatch);
         }
 
@@ -93,13 +95,16 @@ public class LevelSelect
     public void Update(MouseState mouse, MouseState mouseOld, KeyboardState kb, KeyboardState kbOld, ref GameState newState, ref string levelName)
     {
         if (mouse.ScrollWheelValue > mouseOld.ScrollWheelValue)
-            _scrollOffset += 25;
+            _scrollOffsetGoal += 25;
         else if (mouse.ScrollWheelValue < mouseOld.ScrollWheelValue)
-            _scrollOffset -= 25;
-        if (_scrollOffset > 0)
-            _scrollOffset = 0;
-        if (_scrollOffset < -(120 * _levels.Count - 230))
-            _scrollOffset = -(120 * _levels.Count - 230);
+            _scrollOffsetGoal -= 25;
+        if (_scrollOffsetGoal > 0)
+            _scrollOffsetGoal = 0;
+        if (_scrollOffsetGoal < -(120 * _levels.Count - 230))
+            _scrollOffsetGoal = -(120 * _levels.Count - 230);
+
+        // lerp scroll offset
+        _scrollOffset = MathHelper.Lerp(_scrollOffset, _scrollOffsetGoal, 0.12f);
 
         for (int i = 0; i < _levels.Count; i++)
         {
@@ -111,7 +116,7 @@ public class LevelSelect
                 newState = GameState.Game;
                 levelName = level.Item1.name;
             }
-            level.Item2.y = 110 + 120 * i + 40 + _scrollOffset;
+            _levels[i].Item2.y = 110 + 120 * i + 40 + (int)_scrollOffset;
         }
 
         _backButton.Update(mouse, mouseOld, kb, kbOld);
