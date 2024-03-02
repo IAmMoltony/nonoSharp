@@ -1,4 +1,3 @@
-using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -38,7 +37,18 @@ public class TextBox : UIElement
         Color tc = Hovered ? _textColorHover : _textColor;
         RectRenderer.DrawRect(getRect(), fc, sprBatch);
         RectRenderer.DrawRectOutline(getRect(), oc, 2, sprBatch);
-        TextRenderer.DrawText(sprBatch, "notosans", x + 4, y, 0.5f, Text + ((_blinkCursor && Hovered) ? "_" : ""), tc);
+
+        Vector2 textSize = TextRenderer.MeasureString("notosans", Text);
+        float textWidth = textSize.X * 0.5f;
+        float maxTextWidth = Width - 17;  // Adjust this as needed
+        float offset = 0;
+
+        if (textWidth > maxTextWidth)
+        {
+            offset = textWidth - maxTextWidth;
+        }
+
+        TextRenderer.DrawText(sprBatch, "notosans", x + 4 - (int)offset, y, 0.5f, Text + ((_blinkCursor && Hovered) ? "_" : ""), tc);
     }
 
     public override void Update(MouseState mouse, MouseState mouseOld, KeyboardState keyboard, KeyboardState keyboardOld)

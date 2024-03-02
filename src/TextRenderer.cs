@@ -39,4 +39,9 @@ public class TextRenderer
         float centerY = rect.Y + (rect.Height - textSize.Y * scale) / 2;
         batch.DrawString(_fonts[font], text, new Vector2(centerX, centerY), color, 0, Vector2.Zero, scale, SpriteEffects.None, 1.0f);
     }
+
+    public static Vector2 MeasureString(string font, string text)
+    {
+        return _fonts[font].MeasureString(text);
+    }
 }
