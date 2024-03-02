@@ -66,6 +66,9 @@ public class TextBox : UIElement
         _blinkCursorTimer++;
         if (_blinkCursorTimer % 40 == 0)
             _blinkCursor = !_blinkCursor;
+
+        if (Hovered)
+            NonoSharpGame.Cursor = MouseCursor.IBeam;
     }
 
     public virtual void UpdateInput(object sender, TextInputEventArgs tiea)

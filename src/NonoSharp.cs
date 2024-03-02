@@ -18,6 +18,8 @@ public enum GameState
 
 public class NonoSharpGame : Game
 {
+    public static MouseCursor Cursor;
+
     private GraphicsDeviceManager _graphics;
     private SpriteBatch _spriteBatch;
     private Board _board;
@@ -112,6 +114,8 @@ public class NonoSharpGame : Game
         _kb = Keyboard.GetState();
         _kbOld = _kb;
 
+        Cursor = MouseCursor.Arrow;
+
         switch (_state)
         {
             case GameState.Game:
@@ -144,6 +148,8 @@ public class NonoSharpGame : Game
         }
 
         _tb.Update(_mouse, _mouseOld, _kb, _kbOld);
+
+        Mouse.SetCursor(Cursor);
 
         base.Update(gameTime);
     }

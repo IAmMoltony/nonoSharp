@@ -47,7 +47,10 @@ public class Button : UIElement
         IsHovered = (mouse.X >= rect.X && mouse.Y >= rect.Y && mouse.X <= rect.X + rect.Width && mouse.Y <= rect.Y + rect.Height);
         IsClicked = IsHovered && (mouse.LeftButton == ButtonState.Pressed && mouseOld.LeftButton == ButtonState.Released);
         if (IsHovered)
+        {
             _fr.mode = FadeRectMode.FadeIn;
+            NonoSharpGame.Cursor = MouseCursor.Hand;
+        }
         else
             _fr.mode = FadeRectMode.FadeOut;
         _fr.Update();
