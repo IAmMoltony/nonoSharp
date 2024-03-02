@@ -11,29 +11,6 @@ using Serilog;
 
 namespace NonoSharp;
 
-public struct LevelMetadata
-{
-    public string name;
-    public int size;
-
-    public LevelMetadata(string name, int size)
-    {
-        this.name = name;
-        this.size = size;
-    }
-
-    public LevelMetadata()
-    {
-        name = "";
-        size = 0;
-    }
-
-    public override string ToString()
-    {
-        return $"{name} ({size}x{size})";
-    }
-}
-
 public class LevelSelect
 {
     private List<Tuple<LevelMetadata, Button>> _levels;
@@ -50,34 +27,29 @@ public class LevelSelect
 
     public void FindLevels()
     {
+        _levels = new();
+
         Stopwatch stopwatch = new();
         stopwatch.Start();
 
         Log.Logger.Information("Finding levels");
-        string levelsDir = AppDomain.CurrentDomain.BaseDirectory + "/Content/Levels";
-        DirectoryInfo dirInfo = new DirectoryInfo(levelsDir);
-        FileInfo[] files = dirInfo.GetFiles("*.nono");
+        LevelList list = new();
+        list.FindLevels();
 
-        _levels = new();
-        for (int i = 0; i < files.Length; i++)
+        // copy over the list into the internal list and slap in buttons
+        for (int i = 0; i < list.Count(); i++)
         {
-            string sizeStr = File.ReadAllLines($"{levelsDir}/{files[i].Name}").First();
-            int size;
-            if (!int.TryParse(sizeStr, out size))
-            {
-                Log.Logger.Warning($"Level {files[i].Name} does not have a valid board size, skip");
-                continue;
-            }
-            _levels.Add(new(new(Path.GetFileNameWithoutExtension(files[i].Name), size), new(10, 110 + 120 * i + 40, 67, 40, "Play", Color.DarkGreen, Color.Green)));
-            Log.Logger.Information($"Found level: {_levels[_levels.Count - 1].Item1}");
+            _levels.Add(new(list[i], new(10, 110 + 120 * i + 40, 67, 40, "Play", Color.DarkGreen, Color.Green)));
         }
 
         stopwatch.Stop();
         Log.Logger.Information($"Found levels in {stopwatch.ElapsedMilliseconds} ms");
     }
 
-    public void Draw(SpriteBatch sprBatch, GraphicsDevice graphDev)
+    public void Draw(SpriteBatch sprBatch)
     {
+        GraphicsDevice graphDev = sprBatch.GraphicsDevice;
+
         for (int i = 0; i < _levels.Count; i++)
         {
             string label = _levels[i].Item1.ToString();

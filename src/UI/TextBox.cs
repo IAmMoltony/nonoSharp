@@ -6,6 +6,8 @@ namespace NonoSharp.UI;
 
 public class TextBox : UIElement
 {
+    public static readonly int Height = 30;
+
     public int Width { get; private set; }
     public string Text { get; private set; }
     public bool Hovered { get; private set; }
@@ -57,8 +59,7 @@ public class TextBox : UIElement
             {
             // Backspace: remove char
             case Keys.Back:
-                if (Text.Length > 0)
-                    Text = Text.Substring(0, Text.Length - 1);
+                BackSpace();
                 break;
             default:
                 Text += tiea.Character;
@@ -67,9 +68,20 @@ public class TextBox : UIElement
         }
     }
 
+    public void BackSpace()
+    {
+        if (Text.Length > 0)
+            Text = Text.Substring(0, Text.Length - 1);
+    }
+
+    public void Clear()
+    {
+        Text = "";
+    }
+
     private Rectangle getRect()
     {
-        return new(x, y, Width, 30);
+        return new(x, y, Width, Height);
     }
 
     private void drawText(SpriteBatch sprBatch)

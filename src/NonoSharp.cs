@@ -13,7 +13,8 @@ public enum GameState
     None, // Used to indicate the absense of a game state
     Game,
     MainMenu,
-    LevelSelect
+    LevelSelect,
+    Editor
 }
 
 public class NonoSharpGame : Game
@@ -31,6 +32,7 @@ public class NonoSharpGame : Game
     private GameState _state;
     private MainMenu _mainMenu;
     private LevelSelect _levelSelect;
+    private Editor.Editor _editor;
 
     private static float _solveTime = 0;
     private static Thread _solveTimeThread;
@@ -65,6 +67,7 @@ public class NonoSharpGame : Game
         _solveTimeThread = new(SolveTimeTick);
         _mainMenu = new();
         _levelSelect = new();
+        _editor = new();
     }
 
     protected override void Initialize()
@@ -76,6 +79,8 @@ public class NonoSharpGame : Game
         _graphics.PreferredBackBufferHeight = 600;
         _graphics.ApplyChanges();
         Window.AllowUserResizing = true;
+
+        Window.TextInput += doTextInput;
 
         _solveTimeTick = false;
         _solveTimeThread.Start();
@@ -127,6 +132,8 @@ public class NonoSharpGame : Game
                 }
                 else if (_mainMenu.QuitButton.IsClicked)
                     Exit();
+                else if (_mainMenu.EditorButton.IsClicked)
+                    _state = GameState.Editor;
                 break;
             case GameState.LevelSelect:
                 GameState newState = GameState.None;
@@ -139,6 +146,9 @@ public class NonoSharpGame : Game
                 }
                 if (newState != GameState.None)
                     _state = newState;
+                break;
+            case GameState.Editor:
+                _editor.Update(_mouse, _mouseOld, _kb, _kbOld);
                 break;
         }
 
@@ -156,14 +166,17 @@ public class NonoSharpGame : Game
         switch (_state)
         {
             case GameState.Game:
-                _board.Draw(_spriteBatch, GraphicsDevice);
+                _board.Draw(_spriteBatch);
                 TextRenderer.DrawText(_spriteBatch, "notosans", 10, 10, 0.6f, $"Time: {Math.Round(_solveTime / 1000, 2)} s", _board.IsSolved ? Color.Lime : Color.White);
                 break;
             case GameState.MainMenu:
-                _mainMenu.Draw(_spriteBatch, GraphicsDevice);
+                _mainMenu.Draw(_spriteBatch);
                 break;
             case GameState.LevelSelect:
-                _levelSelect.Draw(_spriteBatch, GraphicsDevice);
+                _levelSelect.Draw(_spriteBatch);
+                break;
+            case GameState.Editor:
+                _editor.Draw(_spriteBatch);
                 break;
         }
 
@@ -184,5 +197,11 @@ public class NonoSharpGame : Game
         _solveTimeThread.Join();
 
         base.OnExiting(sender, e);
+    }
+
+    private void doTextInput(object sender, TextInputEventArgs tiea)
+    {
+        if (_state == GameState.Editor)
+            _editor.UpdateInput(sender, tiea);
     }
 }

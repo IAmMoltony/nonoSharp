@@ -56,8 +56,10 @@ public class Board
         _clues = new(this);
     }
 
-    public void Draw(SpriteBatch batch, GraphicsDevice graphDev)
+    public void Draw(SpriteBatch batch)
     {
+        GraphicsDevice graphDev = batch.GraphicsDevice;
+
         for (int i = 0; i < size; i++)
             for (int j = 0; j < size; j++)
                 tiles[i, j].Draw(i, j, size, batch, graphDev);

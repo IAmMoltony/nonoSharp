@@ -33,8 +33,10 @@ public class MainMenu
         QuitButton.Update(mouse, mouseOld, kb, kbOld);
     }
 
-    public void Draw(SpriteBatch sprBatch, GraphicsDevice graphDev)
+    public void Draw(SpriteBatch sprBatch)
     {
+        GraphicsDevice graphDev = sprBatch.GraphicsDevice;
+
         Rectangle nameRect = new(0, PlayButton.y - 100, graphDev.Viewport.Bounds.Width, 100);
         TextRenderer.DrawTextCenter(sprBatch, "notosans", 0, 0, 1.0f, "nonoSharp", Color.White, nameRect);
 

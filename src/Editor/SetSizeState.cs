@@ -1,0 +1,51 @@
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
+using NonoSharp.UI;
+
+namespace NonoSharp.Editor;
+
+public class SetSizeState
+{
+    private NumberTextBox _sizeBox;
+    private Button _okButton;
+
+    public SetSizeState()
+    {
+        _sizeBox = new(0, 0, 50, Color.DarkGray, Color.Gray, Color.White, Color.White, 25);
+        _okButton = new(0, 0, 45, 40, "OK", Color.DarkGreen, Color.Green);
+    }
+
+    public void Draw(SpriteBatch sprBatch)
+    {
+        drawSizeBox(sprBatch);
+        TextRenderer.DrawTextCenter(sprBatch, "notosans", 0, 0, 0.6f, "Enter board size:", Color.White, new(0, _sizeBox.y - 26,
+            sprBatch.GraphicsDevice.Viewport.Bounds.Width, 2));
+        drawOKButton(sprBatch);
+    }
+
+    public void Update(MouseState mouse, MouseState mouseOld, KeyboardState kb, KeyboardState kbOld)
+    {
+        _sizeBox.Update(mouse, mouseOld, kb, kbOld);
+        _okButton.Update(mouse, mouseOld, kb, kbOld);
+    }
+
+    public void UpdateInput(object sender, TextInputEventArgs tiea)
+    {
+        _sizeBox.UpdateInput(sender, tiea);
+    }
+
+    private void drawSizeBox(SpriteBatch sprBatch)
+    {
+        _sizeBox.x = sprBatch.GraphicsDevice.Viewport.Bounds.Width / 2 - _sizeBox.Width / 2;
+        _sizeBox.y = sprBatch.GraphicsDevice.Viewport.Bounds.Height / 2 - TextBox.Height / 2;
+        _sizeBox.Draw(sprBatch);
+    }
+
+    private void drawOKButton(SpriteBatch sprBatch)
+    {
+        _okButton.x = sprBatch.GraphicsDevice.Viewport.Bounds.Width / 2 - _okButton.width / 2;
+        _okButton.y = _sizeBox.y + TextBox.Height + 10;
+        _okButton.Draw(sprBatch);
+    }
+}
