@@ -62,7 +62,7 @@ public class LevelSelect
         for (int i = 0; i < files.Length; i++)
         {
             string sizeStr = File.ReadAllLines($"{levelsDir}/{files[i].Name}").First();
-            int size = 0;
+            int size;
             if (!int.TryParse(sizeStr, out size))
             {
                 Log.Logger.Warning($"Level {files[i].Name} does not have a valid board size, skip");
@@ -85,23 +85,13 @@ public class LevelSelect
             _levels[i].Item2.Draw(sprBatch);
         }
 
-        Rectangle nameRect = new(0, 15, graphDev.Viewport.Bounds.Width, 100);
-        Rectangle nameBackgroundRect = new(0, 0, graphDev.Viewport.Bounds.Width, 100);
-        RectRenderer.DrawRect(nameBackgroundRect, Color.Black, sprBatch);
-        TextRenderer.DrawTextCenter(sprBatch, "notosans", 0, 0, 0.9f, "Select level", Color.White, nameRect);
+        drawHeading(graphDev, sprBatch);
         _backButton.Draw(sprBatch);
     }
 
     public void Update(MouseState mouse, MouseState mouseOld, KeyboardState kb, KeyboardState kbOld, ref GameState newState, ref string levelName)
     {
-        if (mouse.ScrollWheelValue > mouseOld.ScrollWheelValue)
-            _scrollOffsetGoal += 25;
-        else if (mouse.ScrollWheelValue < mouseOld.ScrollWheelValue)
-            _scrollOffsetGoal -= 25;
-        if (_scrollOffsetGoal > 0)
-            _scrollOffsetGoal = 0;
-        if (_scrollOffsetGoal < -(120 * _levels.Count - 230))
-            _scrollOffsetGoal = -(120 * _levels.Count - 230);
+        updateScroll(mouse, mouseOld);
 
         // lerp scroll offset
         _scrollOffset = MathHelper.Lerp(_scrollOffset, _scrollOffsetGoal, 0.12f);
@@ -122,5 +112,25 @@ public class LevelSelect
         _backButton.Update(mouse, mouseOld, kb, kbOld);
         if (_backButton.IsClicked)
             newState = GameState.MainMenu;
+    }
+
+    private void updateScroll(MouseState mouse, MouseState mouseOld)
+    {
+        if (mouse.ScrollWheelValue > mouseOld.ScrollWheelValue)
+            _scrollOffsetGoal += 25;
+        else if (mouse.ScrollWheelValue < mouseOld.ScrollWheelValue)
+            _scrollOffsetGoal -= 25;
+        if (_scrollOffsetGoal > 0)
+            _scrollOffsetGoal = 0;
+        if (_scrollOffsetGoal < -(120 * _levels.Count - 230))
+            _scrollOffsetGoal = -(120 * _levels.Count - 230);
+    }
+
+    private void drawHeading(GraphicsDevice graphDev, SpriteBatch sprBatch)
+    {
+        Rectangle nameRect = new(0, 15, graphDev.Viewport.Bounds.Width, 100);
+        Rectangle nameBackgroundRect = new(0, 0, graphDev.Viewport.Bounds.Width, 100);
+        RectRenderer.DrawRect(nameBackgroundRect, Color.Black, sprBatch);
+        TextRenderer.DrawTextCenter(sprBatch, "notosans", 0, 0, 0.9f, "Select level", Color.White, nameRect);
     }
 }

@@ -6,16 +6,14 @@ namespace NonoSharp;
 
 public class CrashHandler
 {
-    public static void Initialize()
-    {
+    public static void Initialize() =>
         AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(handle);
-    }
 
     private static void handle(object sender, UnhandledExceptionEventArgs ueea)
     {
         if (ueea.IsTerminating)
         {
-            string crashFile = AppDomain.CurrentDomain.BaseDirectory + "/CrashLog.txt";
+            string crashFile = $"{AppDomain.CurrentDomain.BaseDirectory}/CrashLog.txt";
             Exception exception = (Exception)ueea.ExceptionObject;
             using (StreamWriter writer = new(crashFile))
             {
