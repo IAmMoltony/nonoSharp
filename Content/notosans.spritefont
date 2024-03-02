@@ -68,5 +68,6 @@ with.
         <Start>&#x0400;</Start>
         <End>&#x04FF;</End>
       </CharacterRegion>
+    </CharacterRegions>
   </Asset>
 </XnaContent>
