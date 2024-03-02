@@ -65,7 +65,7 @@ public class NonoSharpGame : Game
         _solveTimeThread = new(SolveTimeTick);
         _mainMenu = new();
         _levelSelect = new();
-        _tb = new(100, 100, 180, Color.Gray, Color.LightGray);
+        _tb = new(100, 100, 180, Color.Gray, Color.LightGray, Color.White, Color.Black);
     }
 
     protected override void Initialize()
@@ -80,6 +80,8 @@ public class NonoSharpGame : Game
 
         _solveTimeTick = false;
         _solveTimeThread.Start();
+
+        Window.TextInput += _tb.UpdateInput;
 
         Log.Logger.Information("nonoSharp initialized");
 
