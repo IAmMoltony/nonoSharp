@@ -42,12 +42,8 @@ public class TextBox : UIElement
 
     public override void Update(MouseState mouse, MouseState mouseOld, KeyboardState keyboard, KeyboardState keyboardOld)
     {
-        Rectangle rect = getRect();
-        Hovered = mouse.X >= rect.X && mouse.Y >= rect.Y && mouse.X <= (rect.X + rect.Width) && mouse.Y <= (rect.Y + rect.Height);
-
-        _blinkCursorTimer++;
-        if (_blinkCursorTimer % 40 == 0)
-            _blinkCursor = !_blinkCursor;
+        checkHovered(mouse);
+        updateBlinkCursor();
 
         if (Hovered)
             NonoSharpGame.Cursor = MouseCursor.IBeam;
@@ -99,5 +95,18 @@ public class TextBox : UIElement
         sprBatch.End();
 
         sprBatch.Begin();
+    }
+
+    private void updateBlinkCursor()
+    {
+        _blinkCursorTimer++;
+        if (_blinkCursorTimer % 40 == 0)
+            _blinkCursor = !_blinkCursor;
+    }
+
+    private void checkHovered(MouseState mouse)
+    {
+        Rectangle rect = getRect();
+        Hovered = mouse.X >= rect.X && mouse.Y >= rect.Y && mouse.X <= (rect.X + rect.Width) && mouse.Y <= (rect.Y + rect.Height);
     }
 }
