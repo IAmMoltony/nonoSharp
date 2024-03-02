@@ -8,10 +8,10 @@ public class CrashHandler
 {
     public static void Initialize()
     {
-        AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(_handle);
+        AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(handle);
     }
 
-    private static void _handle(object sender, UnhandledExceptionEventArgs ueea)
+    private static void handle(object sender, UnhandledExceptionEventArgs ueea)
     {
         if (ueea.IsTerminating)
         {
