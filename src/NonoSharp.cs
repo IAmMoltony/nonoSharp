@@ -37,8 +37,6 @@ public class NonoSharpGame : Game
     private static bool _solveTimeThreadRunning = true;
     private static bool _solveTimeTick = true;
 
-    private UI.NumberTextBox _tb;
-
     private static void SolveTimeTick()
     {
         while (_solveTimeThreadRunning)
@@ -67,7 +65,6 @@ public class NonoSharpGame : Game
         _solveTimeThread = new(SolveTimeTick);
         _mainMenu = new();
         _levelSelect = new();
-        _tb = new(100, 100, 180, Color.Gray, Color.LightGray, Color.White, Color.Black);
     }
 
     protected override void Initialize()
@@ -82,8 +79,6 @@ public class NonoSharpGame : Game
 
         _solveTimeTick = false;
         _solveTimeThread.Start();
-
-        Window.TextInput += _tb.UpdateInput;
 
         Log.Logger.Information("nonoSharp initialized");
 
@@ -147,8 +142,6 @@ public class NonoSharpGame : Game
                 break;
         }
 
-        _tb.Update(_mouse, _mouseOld, _kb, _kbOld);
-
         Mouse.SetCursor(Cursor);
 
         base.Update(gameTime);
@@ -176,8 +169,6 @@ public class NonoSharpGame : Game
 
 
         TextRenderer.DrawText(_spriteBatch, "notosans", 10, GraphicsDevice.Viewport.Bounds.Height - 26, 0.33f, $"{Math.Round(_fpsCounter.CurrentFPS)} fps, {Math.Round(_fpsCounter.AverageFPS)} avg", Color.LightGray);
-
-        _tb.Draw(_spriteBatch);
 
         _spriteBatch.End();
 
