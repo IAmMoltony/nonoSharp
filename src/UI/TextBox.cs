@@ -34,28 +34,10 @@ public class TextBox : UIElement
     {
         Color fc = Hovered ? _outlineColor : _fillColor;
         Color oc = Hovered ? _fillColor : _outlineColor;
-        Color tc = Hovered ? _textColorHover : _textColor;
         RectRenderer.DrawRect(getRect(), fc, sprBatch);
         RectRenderer.DrawRectOutline(getRect(), oc, 2, sprBatch);
 
-        Vector2 textSize = TextRenderer.MeasureString("notosans", Text);
-        float textWidth = textSize.X * 0.5f;
-        float maxTextWidth = Width - 17;
-        float offset = 0;
-
-        if (textWidth > maxTextWidth)
-            offset = textWidth - maxTextWidth;
-
-        sprBatch.End();
-
-        RasterizerState rs = new();
-        rs.ScissorTestEnable = true;
-        sprBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, null, null, rs);
-        sprBatch.GraphicsDevice.ScissorRectangle = getRect();
-        TextRenderer.DrawText(sprBatch, "notosans", x + 4 - (int)offset, y, 0.5f, Text + ((_blinkCursor && Hovered) ? "_" : ""), tc);
-        sprBatch.End();
-
-        sprBatch.Begin();
+        drawText(sprBatch);
     }
 
     public override void Update(MouseState mouse, MouseState mouseOld, KeyboardState keyboard, KeyboardState keyboardOld)
@@ -92,5 +74,30 @@ public class TextBox : UIElement
     private Rectangle getRect()
     {
         return new(x, y, Width, 30);
+    }
+
+    private void drawText(SpriteBatch sprBatch)
+    {
+        Color textColor = Hovered ? _textColorHover : _textColor;
+        Vector2 textSize = TextRenderer.MeasureString("notosans", Text);
+        float textWidth = textSize.X * 0.5f;
+        float maxTextWidth = Width - 17;
+        float offset = 0;
+
+        if (textWidth > maxTextWidth)
+            offset = textWidth - maxTextWidth;
+
+        sprBatch.End();
+
+        RasterizerState rs = new()
+        {
+            ScissorTestEnable = true
+        };
+        sprBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, null, null, rs);
+        sprBatch.GraphicsDevice.ScissorRectangle = getRect();
+        TextRenderer.DrawText(sprBatch, "notosans", x + 4 - (int)offset, y, 0.5f, Text + ((_blinkCursor && Hovered) ? "_" : ""), textColor);
+        sprBatch.End();
+
+        sprBatch.Begin();
     }
 }
