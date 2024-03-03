@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework.Input;
 using System;
 using System.IO;
 using Serilog;
+using System.Diagnostics;
 
 namespace NonoSharp;
 
@@ -92,6 +93,31 @@ public class Board
                 }
             }
         CheckSolution();
+    }
+
+    public string Serialize()
+    {
+        Stopwatch stopwatch = new();
+        stopwatch.Start();
+
+        string result = $"{size}\n";
+        for (int j = 0; j < size; j++)
+        {
+            for (int i = 0; i < size; i++)
+            {
+                TileState state = tiles[i, j].state;
+                if (state == TileState.Empty || state == TileState.Cross)
+                    result += ".";
+                else
+                    result += "#";
+            }
+            result += "\n";
+        }
+
+        stopwatch.Stop();
+        Log.Logger.Information($"Serialized board {GetHashCode()} in {stopwatch.ElapsedMilliseconds} ms");
+
+        return result;
     }
 
     protected void MakeTilesAndSolution()
