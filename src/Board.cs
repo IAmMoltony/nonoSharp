@@ -41,7 +41,7 @@ public class Board
         Log.Logger.Information($"Board size: {size}");
         MakeTilesAndSolution();
 
-        for (int i = 1; i < boardData.Length; i++)
+        for (int i = 1; i < size + 1; i++)
         {
             string row = boardData[i];
             for (int j = 0; j < size; j++)

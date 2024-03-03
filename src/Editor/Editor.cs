@@ -49,7 +49,7 @@ public class Editor
                     _state = EditorState.SaveLevel;
                 break;
             case EditorState.SaveLevel:
-                _saveLevel.Update(mouse, mouseOld, kb, kbOld);
+                _saveLevel.Update(mouse, mouseOld, kb, kbOld, _board);
                 break;
         }
     }
