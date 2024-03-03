@@ -14,6 +14,7 @@ public class TextBox : UIElement
     public bool Hovered { get; private set; }
 
     public List<char> illegalChars;
+    public int maxLength;
 
     private Color _fillColor;
     private Color _outlineColor;
@@ -24,7 +25,7 @@ public class TextBox : UIElement
 
     public TextBox(
         int x, int y, int width, Color fillColor, Color outlineColor, Color textColor,
-        Color textColorHover) : base(x, y)
+        Color textColorHover, int maxLength = 0) : base(x, y)
     {
         Width = width;
         Text = "";
@@ -34,6 +35,7 @@ public class TextBox : UIElement
         _outlineColor = outlineColor;
         _textColor = textColor;
         _textColorHover = textColorHover;
+        this.maxLength = maxLength;
     }
 
     public override void Draw(SpriteBatch sprBatch)
@@ -66,7 +68,7 @@ public class TextBox : UIElement
                 BackSpace();
                 break;
             default:
-                if (!illegalChars.Contains(tiea.Character))
+                if (checkLength() && !illegalChars.Contains(tiea.Character))
                     Text += tiea.Character;
                 break;
             }
@@ -125,5 +127,10 @@ public class TextBox : UIElement
     {
         Rectangle rect = getRect();
         Hovered = mouse.X >= rect.X && mouse.Y >= rect.Y && mouse.X <= (rect.X + rect.Width) && mouse.Y <= (rect.Y + rect.Height);
+    }
+
+    private bool checkLength()
+    {
+        return maxLength == 0 || (Text.Length + 1) < maxLength;
     }
 }
