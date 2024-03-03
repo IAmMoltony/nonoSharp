@@ -9,7 +9,10 @@ namespace NonoSharp;
 
 public class Board
 {
-    private Clues _clues;
+    protected Clues clues;
+    protected bool drawClues;
+    protected bool checkSolution;
+    protected bool canRightClick;
 
     public Tile[,] tiles;
     public Tile[,] solution;
@@ -18,17 +21,26 @@ public class Board
 
     public Board()
     {
-        this.size = 0;
+        size = 0;
+        drawClues = true;
+        checkSolution = true;
+        canRightClick = true;
     }
 
     public Board(int size)
     {
         this.size = size;
-        makeTilesAndSolution();
+        drawClues = true;
+        checkSolution = true;
+        canRightClick = true;
+        MakeTilesAndSolution();
     }
 
     public Board(string fileName)
     {
+        drawClues = true;
+        checkSolution = true;
+        canRightClick = true;
         Load(fileName);
     }
 
@@ -38,7 +50,7 @@ public class Board
         string[] boardData = File.ReadAllLines(fileName);
         size = int.Parse(boardData[0]);
         Log.Logger.Information($"Board size: {size}");
-        makeTilesAndSolution();
+        MakeTilesAndSolution();
 
         for (int i = 1; i < boardData.Length; i++)
         {
@@ -53,7 +65,7 @@ public class Board
             }
         }
 
-        _clues = new(this);
+        clues = new(this);
     }
 
     public void Draw(SpriteBatch batch)
@@ -68,18 +80,21 @@ public class Board
         int boardX = graphDev.Viewport.Bounds.Width / 2 - pxSize / 2;
         int boardY = graphDev.Viewport.Bounds.Height / 2 - pxSize / 2;
 
-        int rowCluesX = boardX - 24;
-        int rowCluesY = boardY;
+        if (drawClues)
+        {
+            int rowCluesX = boardX - 24;
+            int rowCluesY = boardY;
 
-        for (int i = 0; i < size; i++)
-            for (int j = 0; j < _clues.RowClues[i].Count; j++)
-                TextRenderer.DrawText(batch, "notosans", rowCluesX - j * 24, rowCluesY + i * 32, 0.5f, _clues.RowClues[i][j].ToString(), Color.White);
+            for (int i = 0; i < size; i++)
+                for (int j = 0; j < clues.RowClues[i].Count; j++)
+                    TextRenderer.DrawText(batch, "notosans", rowCluesX - j * 24, rowCluesY + i * 32, 0.5f, clues.RowClues[i][j].ToString(), Color.White);
 
-        int colCluesX = boardX + 12;
-        int colCluesY = boardY - 32;
-        for (int i = 0; i < size; i++)
-            for (int j = 0; j < _clues.ColumnClues[i].Count; j++)
-                TextRenderer.DrawText(batch, "notosans", colCluesX + i * 32, colCluesY - j * 32, 0.5f, _clues.ColumnClues[i][j].ToString(), Color.White);
+            int colCluesX = boardX + 12;
+            int colCluesY = boardY - 32;
+            for (int i = 0; i < size; i++)
+                for (int j = 0; j < clues.ColumnClues[i].Count; j++)
+                    TextRenderer.DrawText(batch, "notosans", colCluesX + i * 32, colCluesY - j * 32, 0.5f, clues.ColumnClues[i][j].ToString(), Color.White);
+        }
 
         if (!IsSolved)
             GridRenderer.DrawGrid(batch, boardX, boardY, size, size, 32, Color.Black);
@@ -98,14 +113,17 @@ public class Board
                 {
                     if (mouseStateOld.LeftButton == ButtonState.Released && mouseState.LeftButton == ButtonState.Pressed)
                         tile.LeftClick();
-                    if (mouseStateOld.RightButton == ButtonState.Released && mouseState.RightButton == ButtonState.Pressed)
+                    if (
+                        canRightClick &&
+                        mouseStateOld.RightButton == ButtonState.Released &&
+                        mouseState.RightButton == ButtonState.Pressed)
                         tile.RightClick();
                 }
             }
         checkSolved();
     }
 
-    private void makeTilesAndSolution()
+    protected void MakeTilesAndSolution()
     {
         tiles = new Tile[size, size];
         solution = new Tile[size, size];
@@ -126,6 +144,9 @@ public class Board
 
     private void checkSolved()
     {
+        if (!checkSolution)
+            return;
+
         bool solved = true;
         for (int i = 0; i < size; i++)
             for (int j = 0; j < size; j++)

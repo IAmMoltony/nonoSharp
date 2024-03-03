@@ -8,12 +8,12 @@ namespace NonoSharp.Editor;
 public class SetSizeState
 {
     private NumberTextBox _sizeBox;
-    private Button _okButton;
+    public Button OKButton { get; private set; }
 
     public SetSizeState()
     {
         _sizeBox = new(0, 0, 50, Color.DarkGray, Color.Gray, Color.White, Color.White, 25);
-        _okButton = new(0, 0, 45, 40, "OK", Color.DarkGreen, Color.Green);
+        OKButton = new(0, 0, 45, 40, "OK", Color.DarkGreen, Color.Green);
     }
 
     public void Draw(SpriteBatch sprBatch)
@@ -27,12 +27,17 @@ public class SetSizeState
     public void Update(MouseState mouse, MouseState mouseOld, KeyboardState kb, KeyboardState kbOld)
     {
         _sizeBox.Update(mouse, mouseOld, kb, kbOld);
-        _okButton.Update(mouse, mouseOld, kb, kbOld);
+        OKButton.Update(mouse, mouseOld, kb, kbOld);
     }
 
     public void UpdateInput(object sender, TextInputEventArgs tiea)
     {
         _sizeBox.UpdateInput(sender, tiea);
+    }
+
+    public int GetSize()
+    {
+        return _sizeBox.GetNumberValue();
     }
 
     private void drawSizeBox(SpriteBatch sprBatch)
@@ -44,8 +49,8 @@ public class SetSizeState
 
     private void drawOKButton(SpriteBatch sprBatch)
     {
-        _okButton.x = sprBatch.GraphicsDevice.Viewport.Bounds.Width / 2 - _okButton.width / 2;
-        _okButton.y = _sizeBox.y + TextBox.Height + 10;
-        _okButton.Draw(sprBatch);
+        OKButton.x = sprBatch.GraphicsDevice.Viewport.Bounds.Width / 2 - OKButton.width / 2;
+        OKButton.y = _sizeBox.y + TextBox.Height + 10;
+        OKButton.Draw(sprBatch);
     }
 }

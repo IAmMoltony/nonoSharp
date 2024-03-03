@@ -34,7 +34,7 @@ public class NumberTextBox : TextBox
 
     public int GetNumberValue()
     {
-        int number = 0;
+        int number;
         if (!int.TryParse(Text, out number))
             return -1;
         return number;

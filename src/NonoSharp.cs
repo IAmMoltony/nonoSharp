@@ -148,7 +148,7 @@ public class NonoSharpGame : Game
                     _state = newState;
                 break;
             case GameState.Editor:
-                _editor.Update(_mouse, _mouseOld, _kb, _kbOld);
+                _editor.Update(_mouse, _mouseOld, _kb, _kbOld, GraphicsDevice);
                 break;
         }
 
