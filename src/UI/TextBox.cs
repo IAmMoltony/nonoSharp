@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -11,6 +12,8 @@ public class TextBox : UIElement
     public int Width { get; private set; }
     public string Text { get; private set; }
     public bool Hovered { get; private set; }
+
+    public List<char> illegalChars;
 
     private Color _fillColor;
     private Color _outlineColor;
@@ -26,6 +29,7 @@ public class TextBox : UIElement
         Width = width;
         Text = "";
         Hovered = false;
+        illegalChars = new();
         _fillColor = fillColor;
         _outlineColor = outlineColor;
         _textColor = textColor;
@@ -62,7 +66,8 @@ public class TextBox : UIElement
                 BackSpace();
                 break;
             default:
-                Text += tiea.Character;
+                if (!illegalChars.Contains(tiea.Character))
+                    Text += tiea.Character;
                 break;
             }
         }
