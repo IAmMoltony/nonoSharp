@@ -10,9 +10,6 @@ namespace NonoSharp;
 public class Board
 {
     protected Clues clues;
-    protected bool drawClues;
-    protected bool checkSolution;
-    protected bool canRightClick;
 
     public Tile[,] tiles;
     public Tile[,] solution;
@@ -22,25 +19,16 @@ public class Board
     public Board()
     {
         size = 0;
-        drawClues = true;
-        checkSolution = true;
-        canRightClick = true;
     }
 
     public Board(int size)
     {
         this.size = size;
-        drawClues = true;
-        checkSolution = true;
-        canRightClick = true;
         MakeTilesAndSolution();
     }
 
     public Board(string fileName)
     {
-        drawClues = true;
-        checkSolution = true;
-        canRightClick = true;
         Load(fileName);
     }
 
@@ -80,21 +68,7 @@ public class Board
         int boardX = graphDev.Viewport.Bounds.Width / 2 - pxSize / 2;
         int boardY = graphDev.Viewport.Bounds.Height / 2 - pxSize / 2;
 
-        if (drawClues)
-        {
-            int rowCluesX = boardX - 24;
-            int rowCluesY = boardY;
-
-            for (int i = 0; i < size; i++)
-                for (int j = 0; j < clues.RowClues[i].Count; j++)
-                    TextRenderer.DrawText(batch, "notosans", rowCluesX - j * 24, rowCluesY + i * 32, 0.5f, clues.RowClues[i][j].ToString(), Color.White);
-
-            int colCluesX = boardX + 12;
-            int colCluesY = boardY - 32;
-            for (int i = 0; i < size; i++)
-                for (int j = 0; j < clues.ColumnClues[i].Count; j++)
-                    TextRenderer.DrawText(batch, "notosans", colCluesX + i * 32, colCluesY - j * 32, 0.5f, clues.ColumnClues[i][j].ToString(), Color.White);
-        }
+        DrawClues(boardX, boardY, batch);
 
         if (!IsSolved)
             GridRenderer.DrawGrid(batch, boardX, boardY, size, size, 32, Color.Black);
@@ -112,15 +86,12 @@ public class Board
                 if (tile.isHovered)
                 {
                     if (mouseStateOld.LeftButton == ButtonState.Released && mouseState.LeftButton == ButtonState.Pressed)
-                        tile.LeftClick();
-                    if (
-                        canRightClick &&
-                        mouseStateOld.RightButton == ButtonState.Released &&
-                        mouseState.RightButton == ButtonState.Pressed)
-                        tile.RightClick();
+                        DoMouseInput(true, ref tile);
+                    if (mouseStateOld.RightButton == ButtonState.Released && mouseState.RightButton == ButtonState.Pressed)
+                        DoMouseInput(false, ref tile);
                 }
             }
-        checkSolved();
+        CheckSolution();
     }
 
     protected void MakeTilesAndSolution()
@@ -133,6 +104,30 @@ public class Board
                 tiles[i, j] = new();
     }
 
+    protected virtual void DrawClues(int boardX, int boardY, SpriteBatch batch)
+    {
+        int rowCluesX = boardX - 24;
+        int rowCluesY = boardY;
+
+        for (int i = 0; i < size; i++)
+            for (int j = 0; j < clues.RowClues[i].Count; j++)
+                TextRenderer.DrawText(batch, "notosans", rowCluesX - j * 24, rowCluesY + i * 32, 0.5f, clues.RowClues[i][j].ToString(), Color.White);
+
+        int colCluesX = boardX + 12;
+        int colCluesY = boardY - 32;
+        for (int i = 0; i < size; i++)
+            for (int j = 0; j < clues.ColumnClues[i].Count; j++)
+                TextRenderer.DrawText(batch, "notosans", colCluesX + i * 32, colCluesY - j * 32, 0.5f, clues.ColumnClues[i][j].ToString(), Color.White);
+    }
+
+    protected virtual void DoMouseInput(bool isLeftButton, ref Tile tile)
+    {
+        if (isLeftButton)
+            tile.LeftClick();
+        else
+            tile.RightClick();
+    }
+
     private bool compareSolutionTile(TileState a, TileState b)
     {
         if (a == TileState.Cross)
@@ -142,11 +137,8 @@ public class Board
         return a == b;
     }
 
-    private void checkSolved()
+    protected virtual void CheckSolution()
     {
-        if (!checkSolution)
-            return;
-
         bool solved = true;
         for (int i = 0; i < size; i++)
             for (int j = 0; j < size; j++)
