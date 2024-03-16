@@ -136,6 +136,7 @@ public class NonoSharpGame : Game
                     _state = GameState.Editor;
                 break;
             case GameState.LevelSelect:
+            {
                 GameState newState = GameState.None;
                 string levelName = "";
                 _levelSelect.Update(_mouse, _mouseOld, _kb, _kbOld, ref newState, ref levelName);
@@ -147,9 +148,15 @@ public class NonoSharpGame : Game
                 if (newState != GameState.None)
                     _state = newState;
                 break;
+            }
             case GameState.Editor:
-                _editor.Update(_mouse, _mouseOld, _kb, _kbOld, GraphicsDevice);
+            {
+                GameState newState;
+                _editor.Update(_mouse, _mouseOld, _kb, _kbOld, GraphicsDevice, out newState);
+                if (newState != GameState.None)
+                    _state = newState;
                 break;
+            }
         }
 
         Mouse.SetCursor(Cursor);

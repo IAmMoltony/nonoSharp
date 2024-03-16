@@ -29,8 +29,10 @@ public class Editor
         _saveButton = new(10, 10, 90, 45, "Save", Color.DarkGreen, Color.Green);
     }
 
-    public void Update(MouseState mouse, MouseState mouseOld, KeyboardState kb, KeyboardState kbOld, GraphicsDevice graphDev)
+    public void Update(MouseState mouse, MouseState mouseOld, KeyboardState kb, KeyboardState kbOld, GraphicsDevice graphDev,
+                       out GameState newState)
     {
+        newState = GameState.None;
         switch (_state)
         {
             case EditorState.SetSize:
@@ -39,6 +41,12 @@ public class Editor
                 {
                     _state = EditorState.Editor;
                     _board.Make(_setSize.GetSize());
+                }
+                if (_setSize.BackButton.IsClicked)
+                {
+                    _state = EditorState.SetSize;
+                    _setSize = new();
+                    newState = GameState.MainMenu;
                 }
                 break;
             case EditorState.Editor:

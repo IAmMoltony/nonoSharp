@@ -8,12 +8,15 @@ namespace NonoSharp.Editor;
 public class SetSizeState
 {
     private NumberTextBox _sizeBox;
+
     public Button OKButton { get; private set; }
+    public Button BackButton { get; private set; }
 
     public SetSizeState()
     {
         _sizeBox = new(0, 0, 50, Color.DarkGray, Color.Gray, Color.White, Color.White, 25);
         OKButton = new(0, 0, 45, 40, "OK", Color.DarkGreen, Color.Green);
+        BackButton = new(10, 10, 70, 40, "Back", Color.DarkGreen, Color.Green);
     }
 
     public void Draw(SpriteBatch sprBatch)
@@ -22,12 +25,14 @@ public class SetSizeState
         TextRenderer.DrawTextCenter(sprBatch, "notosans", 0, 0, 0.6f, "Enter board size:", Color.White, new(0, _sizeBox.y - 26,
             sprBatch.GraphicsDevice.Viewport.Bounds.Width, 2));
         drawOKButton(sprBatch);
+        BackButton.Draw(sprBatch);
     }
 
     public void Update(MouseState mouse, MouseState mouseOld, KeyboardState kb, KeyboardState kbOld)
     {
         _sizeBox.Update(mouse, mouseOld, kb, kbOld);
         OKButton.Update(mouse, mouseOld, kb, kbOld);
+        BackButton.Update(mouse, mouseOld, kb, kbOld);
     }
 
     public void UpdateInput(object sender, TextInputEventArgs tiea)
