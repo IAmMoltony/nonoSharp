@@ -63,9 +63,11 @@ public class NonoSharpGame : Game
 
         _graphics.IsFullScreen = false; // disable fullscreen
         
-        // initial window size 800x600
-        _graphics.PreferredBackBufferWidth = 800;
-        _graphics.PreferredBackBufferHeight = 600;
+        // initial window size: 85% of monitor size
+        int monitorWidth = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
+        int monitorHeight = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height;
+        _graphics.PreferredBackBufferWidth = (int)(monitorWidth * 0.85f);
+        _graphics.PreferredBackBufferHeight = (int)(monitorHeight * 0.85f);
         _graphics.ApplyChanges();
 
         // allow the window to be resized
