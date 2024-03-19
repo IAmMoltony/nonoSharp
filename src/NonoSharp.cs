@@ -103,16 +103,16 @@ public class NonoSharpGame : Game
     {
         // get input
         _mouseOld = _mouse;
+        _kbOld = _kb;
         _mouse = Mouse.GetState();
         _kb = Keyboard.GetState();
-        _kbOld = _kb;
 
         Cursor = MouseCursor.Arrow;
 
         switch (_state)
         {
             case GameState.Game:
-                _play.Update(_mouse, _mouseOld, GraphicsDevice);
+                _play.Update(_mouse, _mouseOld, _kb, _kbOld, GraphicsDevice);
                 break;
             case GameState.MainMenu:
                 _mainMenu.Update(_mouse, _mouseOld, _kb, _kbOld, GraphicsDevice);
