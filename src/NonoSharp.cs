@@ -23,7 +23,6 @@ public class NonoSharpGame : Game
 
     private GraphicsDeviceManager _graphics;
     private SpriteBatch _spriteBatch;
-    private Board _board;
     private MouseState _mouse;
     private MouseState _mouseOld;
     private KeyboardState _kb;
@@ -32,22 +31,8 @@ public class NonoSharpGame : Game
     private GameState _state;
     private MainMenu _mainMenu;
     private LevelSelect _levelSelect;
+    private PlayState _play;
     private Editor.Editor _editor;
-
-    private static float _solveTime = 0;
-    private static Thread _solveTimeThread;
-    private static bool _solveTimeThreadRunning = true;
-    private static bool _solveTimeTick = true;
-
-    private static void SolveTimeTick()
-    {
-        while (_solveTimeThreadRunning)
-        {
-            if (_solveTimeTick)
-                _solveTime++;
-            Thread.Sleep(1);
-        }
-    }
 
     public NonoSharpGame()
     {
@@ -59,15 +44,13 @@ public class NonoSharpGame : Game
 
         _state = GameState.MainMenu;
         _fpsCounter = new();
-        _solveTime = 0;
-        _board = new();
         _graphics = new(this);
         Content.RootDirectory = "Content";
         IsMouseVisible = true;
-        _solveTimeThread = new(SolveTimeTick);
         _mainMenu = new();
         _levelSelect = new();
         _editor = new();
+        _play = new();
     }
 
     protected override void Initialize()
@@ -81,9 +64,6 @@ public class NonoSharpGame : Game
         Window.AllowUserResizing = true;
 
         Window.TextInput += doTextInput;
-
-        _solveTimeTick = false;
-        _solveTimeThread.Start();
 
         Log.Logger.Information("nonoSharp initialized");
 
@@ -119,9 +99,7 @@ public class NonoSharpGame : Game
         switch (_state)
         {
             case GameState.Game:
-                _board.Update(_mouse, _mouseOld, GraphicsDevice);
-                if (_board.IsSolved)
-                    _solveTimeTick = false;
+                _play.Update(_mouse, _mouseOld, GraphicsDevice);
                 break;
             case GameState.MainMenu:
                 _mainMenu.Update(_mouse, _mouseOld, _kb, _kbOld, GraphicsDevice);
@@ -141,10 +119,7 @@ public class NonoSharpGame : Game
                 string levelName = "";
                 _levelSelect.Update(_mouse, _mouseOld, _kb, _kbOld, ref newState, ref levelName);
                 if (newState == GameState.Game)
-                {
-                    _solveTimeTick = true;
-                    _board.Load($"{AppDomain.CurrentDomain.BaseDirectory}/Content/Levels/{levelName}.nono");
-                }
+                    _play.Load($"{AppDomain.CurrentDomain.BaseDirectory}/Content/Levels/{levelName}.nono");
                 if (newState != GameState.None)
                     _state = newState;
                 break;
@@ -173,8 +148,7 @@ public class NonoSharpGame : Game
         switch (_state)
         {
             case GameState.Game:
-                _board.Draw(_spriteBatch);
-                TextRenderer.DrawText(_spriteBatch, "notosans", 10, 10, 0.6f, $"Time: {Math.Round(_solveTime / 1000, 2)} s", _board.IsSolved ? Color.Lime : Color.White);
+                _play.Draw(_spriteBatch);
                 break;
             case GameState.MainMenu:
                 _mainMenu.Draw(_spriteBatch);
@@ -198,9 +172,7 @@ public class NonoSharpGame : Game
 
     protected override void OnExiting(object sender, EventArgs e)
     {
-        Log.Logger.Information("Stopping solve time thread");
-        _solveTimeThreadRunning = false;
-        _solveTimeThread.Join();
+        _play.StopSolveTimeThread();
 
         base.OnExiting(sender, e);
     }
