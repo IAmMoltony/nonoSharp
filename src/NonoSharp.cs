@@ -23,11 +23,15 @@ public class NonoSharpGame : Game
 
     private GraphicsDeviceManager _graphics;
     private SpriteBatch _spriteBatch;
+
     private MouseState _mouse;
     private MouseState _mouseOld;
+
     private KeyboardState _kb;
     private KeyboardState _kbOld;
+
     private FPSCounter _fpsCounter;
+
     private GameState _state;
     private MainMenu _mainMenu;
     private LevelSelect _levelSelect;
@@ -40,7 +44,7 @@ public class NonoSharpGame : Game
 
         // initialize serilog
         using var log = new LoggerConfiguration().WriteTo.Console().WriteTo.File($"{AppDomain.CurrentDomain.BaseDirectory}/logs/nonoSharp.log", rollingInterval: RollingInterval.Day).CreateLogger();
-        Log.Logger = log;
+        Log.Logger = log; // global logger
 
         _state = GameState.MainMenu;
         _fpsCounter = new();
@@ -57,10 +61,14 @@ public class NonoSharpGame : Game
     {
         Window.Title = $"nonoSharp {GameVersion.GetGameVersion()}";
 
-        _graphics.IsFullScreen = false;
+        _graphics.IsFullScreen = false; // disable fullscreen
+        
+        // initial window size 800x600
         _graphics.PreferredBackBufferWidth = 800;
         _graphics.PreferredBackBufferHeight = 600;
         _graphics.ApplyChanges();
+
+        // allow the window to be resized
         Window.AllowUserResizing = true;
 
         Window.TextInput += doTextInput;
@@ -77,10 +85,12 @@ public class NonoSharpGame : Game
         Stopwatch stopwatch = new();
         stopwatch.Start();
 
+        // load stuff renderers
         RectRenderer.Load(GraphicsDevice);
         GridRenderer.Load(GraphicsDevice);
-        Tile.LoadTextures(Content);
-        TextRenderer.LoadFont("notosans", "notosans", Content);
+
+        Tile.LoadTextures(Content); // load tile textures
+        TextRenderer.LoadFont("notosans", "notosans", Content); // load noto sans font (i think it's a nice font)
 
         stopwatch.Stop();
 
@@ -89,6 +99,7 @@ public class NonoSharpGame : Game
 
     protected override void Update(GameTime gameTime)
     {
+        // get input
         _mouseOld = _mouse;
         _mouse = Mouse.GetState();
         _kb = Keyboard.GetState();
@@ -103,13 +114,17 @@ public class NonoSharpGame : Game
                 break;
             case GameState.MainMenu:
                 _mainMenu.Update(_mouse, _mouseOld, _kb, _kbOld, GraphicsDevice);
+
+                // when play button is pressed then go to level select
                 if (_mainMenu.PlayButton.IsClicked)
                 {
                     _levelSelect.FindLevels();
                     _state = GameState.LevelSelect;
                 }
+                // quit button
                 else if (_mainMenu.QuitButton.IsClicked)
                     Exit();
+                // editor button
                 else if (_mainMenu.EditorButton.IsClicked)
                     _state = GameState.Editor;
                 break;
@@ -161,6 +176,7 @@ public class NonoSharpGame : Game
                 break;
         }
 
+        // draw fps
         TextRenderer.DrawText(_spriteBatch, "notosans", 10, GraphicsDevice.Viewport.Bounds.Height - 26, 0.33f, $"{Math.Round(_fpsCounter.CurrentFPS)} fps, {Math.Round(_fpsCounter.AverageFPS)} avg", Color.LightGray);
 
         _spriteBatch.End();
@@ -179,6 +195,7 @@ public class NonoSharpGame : Game
 
     private void doTextInput(object sender, TextInputEventArgs tiea)
     {
+        // update editor input when in editor
         if (_state == GameState.Editor)
             _editor.UpdateInput(sender, tiea);
     }
