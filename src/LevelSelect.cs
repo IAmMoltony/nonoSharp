@@ -22,7 +22,7 @@ public class LevelSelect
     {
         _scrollOffsetGoal = 0;
         _scrollOffset = 0;
-        _backButton = new(10, 10, 30, 30, "<", Color.DarkGreen, Color.Green);
+        _backButton = new(10, 10, 70, 40, "Back", Color.DarkGreen, Color.Green);
     }
 
     public void FindLevels()
