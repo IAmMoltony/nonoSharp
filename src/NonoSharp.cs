@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -39,6 +40,8 @@ public class NonoSharpGame : Game
     private LevelSelect _levelSelect;
     private PlayState _play;
     private Editor.Editor _editor;
+    
+    private List<int> _a;
 
     public NonoSharpGame()
     {
@@ -159,6 +162,9 @@ public class NonoSharpGame : Game
         if (_kb.IsKeyDown(Keys.F12) && !_kbOld.IsKeyDown(Keys.F12))
             _showFPS = !_showFPS;
 
+        if (_fpsCounter.TotalFrames % 120 == 0 && _showFPS)
+            _gameProcess.Refresh();
+
         Mouse.SetCursor(Cursor);
 
         base.Update(gameTime);
@@ -190,7 +196,7 @@ public class NonoSharpGame : Game
         if (_showFPS)
         {
             TextRenderer.DrawText(_spriteBatch, "notosans", 10, GraphicsDevice.Viewport.Bounds.Height - 26, 0.33f, $"{Math.Round(_fpsCounter.CurrentFPS)} fps, {Math.Round(_fpsCounter.AverageFPS)} avg", Color.LightGray); // FPS
-            TextRenderer.DrawText(_spriteBatch, "notosans", 10, GraphicsDevice.Viewport.Bounds.Height - 42, 0.33f, $"mem: {_gameProcess.WorkingSet64 / 1024 / 1024}M (peak {_gameProcess.PeakWorkingSet64 / 1024 / 1024}M)", Color.LightGray); // Memory usage (current and peak)
+            TextRenderer.DrawText(_spriteBatch, "notosans", 10, GraphicsDevice.Viewport.Bounds.Height - 42, 0.33f, $"mem: {Math.Round(((float)_gameProcess.WorkingSet64 / 1024 / 1024), 2)}M (peak {Math.Round(((float)_gameProcess.PeakWorkingSet64 / 1024 / 1024), 2)}M)", Color.LightGray); // Memory usage (current and peak)
         }
 
         _spriteBatch.End();
