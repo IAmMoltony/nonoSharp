@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Threading;
 using System.Diagnostics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -23,6 +22,8 @@ public class NonoSharpGame : Game
 
     private GraphicsDeviceManager _graphics;
     private SpriteBatch _spriteBatch;
+
+    private Process _gameProcess;
 
     private MouseState _mouse;
     private MouseState _mouseOld;
@@ -62,6 +63,8 @@ public class NonoSharpGame : Game
     protected override void Initialize()
     {
         Window.Title = $"nonoSharp {GameVersion.GetGameVersion()}";
+
+        _gameProcess = Process.GetCurrentProcess();
 
         _graphics.IsFullScreen = false; // disable fullscreen
         
@@ -183,9 +186,12 @@ public class NonoSharpGame : Game
                 break;
         }
 
-        // draw fps
+        // draw some performance info
         if (_showFPS)
-            TextRenderer.DrawText(_spriteBatch, "notosans", 10, GraphicsDevice.Viewport.Bounds.Height - 26, 0.33f, $"{Math.Round(_fpsCounter.CurrentFPS)} fps, {Math.Round(_fpsCounter.AverageFPS)} avg", Color.LightGray);
+        {
+            TextRenderer.DrawText(_spriteBatch, "notosans", 10, GraphicsDevice.Viewport.Bounds.Height - 26, 0.33f, $"{Math.Round(_fpsCounter.CurrentFPS)} fps, {Math.Round(_fpsCounter.AverageFPS)} avg", Color.LightGray); // FPS
+            TextRenderer.DrawText(_spriteBatch, "notosans", 10, GraphicsDevice.Viewport.Bounds.Height - 42, 0.33f, $"mem: {_gameProcess.WorkingSet64 / 1024 / 1024}M (peak {_gameProcess.PeakWorkingSet64 / 1024 / 1024}M)", Color.LightGray); // Memory usage (current and peak)
+        }
 
         _spriteBatch.End();
 
