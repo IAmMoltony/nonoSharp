@@ -18,6 +18,7 @@ public class PlayState
     private Board _board;
     private bool _paused;
     private Button _solvedContinueButton;
+    private Button _pauseBackButton;
 
     private static void SolveTimeTick()
     {
@@ -34,6 +35,7 @@ public class PlayState
         _board = new();
         _paused = false;
         _solvedContinueButton = new(0, 0, 130, 50, "Continue", Color.DarkGreen, Color.Green);
+        _pauseBackButton = new(10, 130, 90, 50, "Back", Color.DarkGreen, Color.Green);
 
         _solveTimeThread = new(SolveTimeTick);
         _solveTimeTick = false;
@@ -50,6 +52,12 @@ public class PlayState
             if (_board.IsSolved)
                 _solveTimeTick = false;
         }
+        else
+        {
+            _pauseBackButton.Update(mouse, mouseOld, kb, kbOld);
+            if (_pauseBackButton.IsClicked)
+                leave = true;
+        }
 
         // pause button
         if (!_board.IsSolved && ((kb.IsKeyDown(Keys.Space) && !kbOld.IsKeyDown(Keys.Space)) || (kb.IsKeyDown(Keys.Escape) && !kbOld.IsKeyDown(Keys.Escape))))
@@ -60,16 +68,15 @@ public class PlayState
         {
             _solvedContinueButton.x = graphDev.Viewport.Bounds.Width / 2 - _solvedContinueButton.width / 2;
             _solvedContinueButton.y = graphDev.Viewport.Bounds.Height / 2 + 40;
-        }
+            _solvedContinueButton.Update(mouse, mouseOld, kb, kbOld);
 
-        _solvedContinueButton.Update(mouse, mouseOld, kb, kbOld);
-
-        if (_solvedContinueButton.IsClicked)
-        {
-            _solveTimeTick = false;
-            _solveTime = 0.0f;
-            _board.Reset();
-            leave = true;
+            if (_solvedContinueButton.IsClicked)
+            {
+                _solveTimeTick = false;
+                _solveTime = 0.0f;
+                _board.Reset();
+                leave = true;
+            }
         }
     }
 
@@ -111,6 +118,7 @@ public class PlayState
             RectRenderer.DrawRect(new(0, 0, sprBatch.GraphicsDevice.Viewport.Bounds.Width, sprBatch.GraphicsDevice.Viewport.Bounds.Height), new(0.0f, 0.3f, 0.0f, 0.6f), sprBatch);
             TextRenderer.DrawText(sprBatch, "notosans", 10, 10, "Paused", Color.White);
             TextRenderer.DrawText(sprBatch, "notosans", 10, 80, 0.6f, "Press Space or Esacpe to unpause", Color.White);
+            _pauseBackButton.Draw(sprBatch);
         }
     }
 
