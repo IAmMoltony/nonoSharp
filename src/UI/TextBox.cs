@@ -63,14 +63,14 @@ public class TextBox : UIElement
         {
             switch (tiea.Key)
             {
-            // Backspace: remove char
-            case Keys.Back:
-                BackSpace();
-                break;
-            default:
-                if (checkLength() && !illegalChars.Contains(tiea.Character))
-                    Text += tiea.Character;
-                break;
+                // Backspace: remove char
+                case Keys.Back:
+                    BackSpace();
+                    break;
+                default:
+                    if (checkLength() && !illegalChars.Contains(tiea.Character))
+                        Text += tiea.Character;
+                    break;
             }
         }
     }

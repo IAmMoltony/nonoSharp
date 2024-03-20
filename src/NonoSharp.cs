@@ -40,7 +40,7 @@ public class NonoSharpGame : Game
     private LevelSelect _levelSelect;
     private PlayState _play;
     private Editor.Editor _editor;
-    
+
     public NonoSharpGame()
     {
         CrashHandler.Initialize();
@@ -68,7 +68,7 @@ public class NonoSharpGame : Game
         _gameProcess = Process.GetCurrentProcess();
 
         _graphics.IsFullScreen = false; // disable fullscreen
-        
+
         // initial window size: 85% of monitor size
         int monitorWidth = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
         int monitorHeight = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height;
@@ -135,24 +135,24 @@ public class NonoSharpGame : Game
                     _state = GameState.Editor;
                 break;
             case GameState.LevelSelect:
-            {
-                GameState newState = GameState.None;
-                string levelName = "";
-                _levelSelect.Update(_mouse, _mouseOld, _kb, _kbOld, ref newState, ref levelName);
-                if (newState == GameState.Game)
-                    _play.Load($"{AppDomain.CurrentDomain.BaseDirectory}/Content/Levels/{levelName}.nono");
-                if (newState != GameState.None)
-                    _state = newState;
-                break;
-            }
+                {
+                    GameState newState = GameState.None;
+                    string levelName = "";
+                    _levelSelect.Update(_mouse, _mouseOld, _kb, _kbOld, ref newState, ref levelName);
+                    if (newState == GameState.Game)
+                        _play.Load($"{AppDomain.CurrentDomain.BaseDirectory}/Content/Levels/{levelName}.nono");
+                    if (newState != GameState.None)
+                        _state = newState;
+                    break;
+                }
             case GameState.Editor:
-            {
-                GameState newState;
-                _editor.Update(_mouse, _mouseOld, _kb, _kbOld, GraphicsDevice, out newState);
-                if (newState != GameState.None)
-                    _state = newState;
-                break;
-            }
+                {
+                    GameState newState;
+                    _editor.Update(_mouse, _mouseOld, _kb, _kbOld, GraphicsDevice, out newState);
+                    if (newState != GameState.None)
+                        _state = newState;
+                    break;
+                }
         }
 
         updateShowFPS();

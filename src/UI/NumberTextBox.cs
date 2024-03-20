@@ -15,7 +15,7 @@ public class NumberTextBox : TextBox
         _max = 0;
         _hasMax = false;
     }
-    
+
     public NumberTextBox(
         int x, int y, int width, Color fillColor, Color outlineColor, Color textColor,
         Color textColorHover, int max) : base(x, y, width, fillColor, outlineColor, textColor, textColorHover)

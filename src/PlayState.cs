@@ -26,9 +26,8 @@ public class PlayState
             if (_solveTimeTick)
                 _solveTime++;
             Thread.Sleep(1);
-        } 
+        }
     }
-
 
     public PlayState()
     {
@@ -49,12 +48,12 @@ public class PlayState
         {
             _board.Update(mouse, mouseOld, graphDev);
             if (_board.IsSolved)
-                _solveTimeTick = false; 
+                _solveTimeTick = false;
         }
 
         // pause button
         if (!_board.IsSolved && ((kb.IsKeyDown(Keys.Space) && !kbOld.IsKeyDown(Keys.Space)) || (kb.IsKeyDown(Keys.Escape) && !kbOld.IsKeyDown(Keys.Escape))))
-            pause(); 
+            pause();
 
         // continue button
         if (_board.IsSolved)
@@ -95,7 +94,7 @@ public class PlayState
 
             // solved text: 100 pixels above center of the screen, centered horizontally
             Rectangle solvedTextRect = new(0, sprBatch.GraphicsDevice.Viewport.Bounds.Height / 2 - 100, sprBatch.GraphicsDevice.Viewport.Bounds.Width, 1);
-            
+
             // "how long the user took to solve" text: 50 pixels bellow solved text, everything else is the same
             Rectangle inTimeTextRect = new(0, solvedTextRect.Y + 50, sprBatch.GraphicsDevice.Viewport.Bounds.Width, 1);
 
@@ -128,7 +127,7 @@ public class PlayState
         if (_paused)
         {
             _paused = false;
-            _solveTimeTick = true; 
+            _solveTimeTick = true;
         }
         else
         {
