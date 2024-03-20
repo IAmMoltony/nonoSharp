@@ -9,6 +9,9 @@ The only dependency that has to be installed is the .NET SDK. All libraries are 
 
 ## Building and Running
 
+<!--
+This is for later if we do actually get shaders
+
 ### Non-Windows Platforms
 
 If you use Linux or macOS on your machine, follow the following steps to install DirectX shader compiler.
@@ -48,6 +51,7 @@ Your Wine environment is now ready. Now it's just a matter of telling MonoGame w
 1. At the end of the file append this: `export MGFXC_WINE_PATH=$HOME/.local/share/wineprefixes/prefix-name-here`, don't forget to replace the prefix name with the actual prefix name.
 1. Reload your shell by closing the terminal (or tab) and opening it again
 1. That's it! You're done.
+-->
 
 ### Build nonoSharp
 
