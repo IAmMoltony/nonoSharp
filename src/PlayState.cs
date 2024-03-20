@@ -9,11 +9,12 @@ namespace NonoSharp;
 
 public class PlayState
 {
-    private Board _board;
     private static float _solveTime = 0;
     private static Thread _solveTimeThread;
     private static bool _solveTimeThreadRunning = true;
     private static bool _solveTimeTick = true;
+
+    private Board _board;
     private bool _paused = false;
 
     private static void SolveTimeTick()
@@ -60,6 +61,16 @@ public class PlayState
     {
         _board.Draw(sprBatch);
         TextRenderer.DrawText(sprBatch, "notosans", 10, 10, 0.6f, $"Time: {Math.Round(_solveTime / 1000, 2)} s", _board.IsSolved ? Color.Lime : Color.White);
+
+        if (_board.IsSolved)
+        {
+            RectRenderer.DrawRect(new(0, 0, sprBatch.GraphicsDevice.Viewport.Bounds.Width, sprBatch.GraphicsDevice.Viewport.Bounds.Height), new(0.0f, 0.2f, 0.0f, 0.3f), sprBatch);
+
+            Rectangle solvedTextRect = new(0, sprBatch.GraphicsDevice.Viewport.Bounds.Height / 2 - 100, sprBatch.GraphicsDevice.Viewport.Bounds.Width, 1);
+            Rectangle inTimeTextRect = new(0, solvedTextRect.Y + 50, sprBatch.GraphicsDevice.Viewport.Bounds.Width, 1);
+            TextRenderer.DrawTextCenter(sprBatch, "notosans", 0, 0, 1.0f, "Solved!", Color.White, solvedTextRect);
+            TextRenderer.DrawTextCenter(sprBatch, "notosans", 0, 0, 1.0f, $"in {Math.Round(_solveTime / 1000, 2)} seconds", Color.White, inTimeTextRect);
+        }
 
         if (_paused)
         {

@@ -7,7 +7,7 @@ nonoSharp is a Nonogram game written in C#.
 
 ## Dependencies
 
-The only dependency that has to be installed is the .NET SDK. All libraries are installed during the build phase.
+The only dependency that has to be installed is the .NET SDK. All libraries are installed during the build phase automatically.
 
 ## Building and Running
 
