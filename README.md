@@ -3,6 +3,8 @@
 
 nonoSharp is a Nonogram game written in C#.
 
+[![CodeFactor](https://www.codefactor.io/repository/github/iammoltony/nonosharp/badge)](https://www.codefactor.io/repository/github/iammoltony/nonosharp)
+
 ## Dependencies
 
 The only dependency that has to be installed is the .NET SDK. All libraries are installed during the build phase.
