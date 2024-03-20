@@ -60,14 +60,22 @@ public class PlayState
     public void Draw(SpriteBatch sprBatch)
     {
         _board.Draw(sprBatch);
+
+        // render time in format "Time: x.xx s"
         TextRenderer.DrawText(sprBatch, "notosans", 10, 10, 0.6f, $"Time: {Math.Round(_solveTime / 1000, 2)} s", _board.IsSolved ? Color.Lime : Color.White);
 
         if (_board.IsSolved)
         {
+            // draw green half transparent rectangle across the whole screen
             RectRenderer.DrawRect(new(0, 0, sprBatch.GraphicsDevice.Viewport.Bounds.Width, sprBatch.GraphicsDevice.Viewport.Bounds.Height), new(0.0f, 0.2f, 0.0f, 0.3f), sprBatch);
 
+            // solved text: 100 pixels above center of the screen, centered horizontally
             Rectangle solvedTextRect = new(0, sprBatch.GraphicsDevice.Viewport.Bounds.Height / 2 - 100, sprBatch.GraphicsDevice.Viewport.Bounds.Width, 1);
+            
+            // "how long the user took to solve" text: 50 pixels bellow solved text, everything else is the same
             Rectangle inTimeTextRect = new(0, solvedTextRect.Y + 50, sprBatch.GraphicsDevice.Viewport.Bounds.Width, 1);
+
+            // render the text
             TextRenderer.DrawTextCenter(sprBatch, "notosans", 0, 0, 1.0f, "Solved!", Color.White, solvedTextRect);
             TextRenderer.DrawTextCenter(sprBatch, "notosans", 0, 0, 1.0f, $"in {Math.Round(_solveTime / 1000, 2)} seconds", Color.White, inTimeTextRect);
         }
