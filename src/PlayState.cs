@@ -122,7 +122,7 @@ public class PlayState
         {
             RectRenderer.DrawRect(new(0, 0, sprBatch.GraphicsDevice.Viewport.Bounds.Width, sprBatch.GraphicsDevice.Viewport.Bounds.Height), new(0.0f, 0.3f, 0.0f, 0.6f), sprBatch);
             TextRenderer.DrawText(sprBatch, "notosans", 10, 10, "Paused", Color.White);
-            TextRenderer.DrawText(sprBatch, "notosans", 10, 80, 0.6f, "Press Space or Esacpe to unpause", Color.White);
+            TextRenderer.DrawText(sprBatch, "notosans", 10, 80, 0.6f, "Press Space or Escape to unpause", Color.White);
             _pauseBackButton.Draw(sprBatch);
         }
     }
