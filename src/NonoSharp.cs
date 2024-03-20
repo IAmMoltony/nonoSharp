@@ -31,6 +31,7 @@ public class NonoSharpGame : Game
     private KeyboardState _kbOld;
 
     private FPSCounter _fpsCounter;
+    private bool _showFPS;
 
     private GameState _state;
     private MainMenu _mainMenu;
@@ -48,6 +49,7 @@ public class NonoSharpGame : Game
 
         _state = GameState.MainMenu;
         _fpsCounter = new();
+        _showFPS = false;
         _graphics = new(this);
         Content.RootDirectory = "Content";
         IsMouseVisible = true;
@@ -151,6 +153,9 @@ public class NonoSharpGame : Game
             }
         }
 
+        if (_kb.IsKeyDown(Keys.F12) && !_kbOld.IsKeyDown(Keys.F12))
+            _showFPS = !_showFPS;
+
         Mouse.SetCursor(Cursor);
 
         base.Update(gameTime);
@@ -179,7 +184,8 @@ public class NonoSharpGame : Game
         }
 
         // draw fps
-        TextRenderer.DrawText(_spriteBatch, "notosans", 10, GraphicsDevice.Viewport.Bounds.Height - 26, 0.33f, $"{Math.Round(_fpsCounter.CurrentFPS)} fps, {Math.Round(_fpsCounter.AverageFPS)} avg", Color.LightGray);
+        if (_showFPS)
+            TextRenderer.DrawText(_spriteBatch, "notosans", 10, GraphicsDevice.Viewport.Bounds.Height - 26, 0.33f, $"{Math.Round(_fpsCounter.CurrentFPS)} fps, {Math.Round(_fpsCounter.AverageFPS)} avg", Color.LightGray);
 
         _spriteBatch.End();
 
