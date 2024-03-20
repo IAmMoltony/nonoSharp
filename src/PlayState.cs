@@ -56,7 +56,12 @@ public class PlayState
         {
             _pauseBackButton.Update(mouse, mouseOld, kb, kbOld);
             if (_pauseBackButton.IsClicked)
+            {
+                _solveTimeTick = false;
+                _solveTime = 0f;
+                _paused = false;
                 leave = true;
+            }
         }
 
         // pause button
