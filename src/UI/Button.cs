@@ -56,8 +56,5 @@ public class Button : UIElement
         _fr.Update();
     }
 
-    private Rectangle getRect()
-    {
-        return new Rectangle(x, y, width, height);
-    }
+    private Rectangle getRect() => new(x, y, width, height);
 }

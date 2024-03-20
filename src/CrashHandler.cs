@@ -25,6 +25,8 @@ public class CrashHandler
 
             // This might be unsafe...
             // At least on linux
+            // Because you can set .../crashllog.txt to be executable and make it have whatever code
+            // (which would have to happen at quite a specific time and is extremely unlikely)
             Process proc = new()
             {
                 StartInfo = new()
