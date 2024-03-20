@@ -41,8 +41,6 @@ public class NonoSharpGame : Game
     private PlayState _play;
     private Editor.Editor _editor;
     
-    private List<int> _a;
-
     public NonoSharpGame()
     {
         CrashHandler.Initialize();
