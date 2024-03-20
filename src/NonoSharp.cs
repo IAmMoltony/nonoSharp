@@ -107,11 +107,7 @@ public class NonoSharpGame : Game
 
     protected override void Update(GameTime gameTime)
     {
-        // get input
-        _mouseOld = _mouse;
-        _kbOld = _kb;
-        _mouse = Mouse.GetState();
-        _kb = Keyboard.GetState();
+        getInput();
 
         Cursor = MouseCursor.Arrow;
 
@@ -218,5 +214,13 @@ public class NonoSharpGame : Game
         // update editor input when in editor
         if (_state == GameState.Editor)
             _editor.UpdateInput(sender, tiea);
+    }
+
+    private void getInput()
+    {
+        _mouseOld = _mouse;
+        _kbOld = _kb;
+        _mouse = Mouse.GetState();
+        _kb = Keyboard.GetState();
     }
 }
