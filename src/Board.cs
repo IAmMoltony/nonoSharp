@@ -120,6 +120,13 @@ public class Board
         return result;
     }
 
+    public void Reset()
+    {
+        solution = null;
+        tiles = null;
+        IsSolved = false;
+    }
+
     protected void MakeTilesAndSolution()
     {
         tiles = new Tile[size, size];

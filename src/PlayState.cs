@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Serilog;
+using NonoSharp.UI;
 
 namespace NonoSharp;
 
@@ -15,7 +16,8 @@ public class PlayState
     private static bool _solveTimeTick = true;
 
     private Board _board;
-    private bool _paused = false;
+    private bool _paused;
+    private Button _solvedContinueButton;
 
     private static void SolveTimeTick()
     {
@@ -31,13 +33,18 @@ public class PlayState
     public PlayState()
     {
         _board = new();
+        _paused = false;
+        _solvedContinueButton = new(0, 0, 130, 50, "Continue", Color.DarkGreen, Color.Green);
+
         _solveTimeThread = new(SolveTimeTick);
         _solveTimeTick = false;
         _solveTimeThread.Start();
     }
 
-    public void Update(MouseState mouse, MouseState mouseOld, KeyboardState kb, KeyboardState kbOld, GraphicsDevice graphDev)
+    public void Update(MouseState mouse, MouseState mouseOld, KeyboardState kb, KeyboardState kbOld, GraphicsDevice graphDev, out bool leave)
     {
+        leave = false;
+
         if (!_paused)
         {
             _board.Update(mouse, mouseOld, graphDev);
@@ -48,6 +55,23 @@ public class PlayState
         // pause button
         if (!_board.IsSolved && ((kb.IsKeyDown(Keys.Space) && !kbOld.IsKeyDown(Keys.Space)) || (kb.IsKeyDown(Keys.Escape) && !kbOld.IsKeyDown(Keys.Escape))))
             pause(); 
+
+        // continue button
+        if (_board.IsSolved)
+        {
+            _solvedContinueButton.x = graphDev.Viewport.Bounds.Width / 2 - _solvedContinueButton.width / 2;
+            _solvedContinueButton.y = graphDev.Viewport.Bounds.Height / 2 + 40;
+        }
+
+        _solvedContinueButton.Update(mouse, mouseOld, kb, kbOld);
+
+        if (_solvedContinueButton.IsClicked)
+        {
+            _solveTimeTick = false;
+            _solveTime = 0.0f;
+            _board.Reset();
+            leave = true;
+        }
     }
 
     public void Load(string levelPath)
@@ -78,6 +102,9 @@ public class PlayState
             // render the text
             TextRenderer.DrawTextCenter(sprBatch, "notosans", 0, 0, 1.0f, "Solved!", Color.White, solvedTextRect);
             TextRenderer.DrawTextCenter(sprBatch, "notosans", 0, 0, 1.0f, $"in {Math.Round(_solveTime / 1000, 2)} seconds", Color.White, inTimeTextRect);
+
+            // draw the continue button
+            _solvedContinueButton.Draw(sprBatch);
         }
 
         if (_paused)
