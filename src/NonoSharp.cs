@@ -155,11 +155,8 @@ public class NonoSharpGame : Game
             }
         }
 
-        if (_kb.IsKeyDown(Keys.F12) && !_kbOld.IsKeyDown(Keys.F12))
-            _showFPS = !_showFPS;
-
-        if (_fpsCounter.TotalFrames % 120 == 0 && _showFPS)
-            _gameProcess.Refresh();
+        updateShowFPS();
+        updatePerfInfo();
 
         Mouse.SetCursor(Cursor);
 
@@ -222,5 +219,17 @@ public class NonoSharpGame : Game
         _kbOld = _kb;
         _mouse = Mouse.GetState();
         _kb = Keyboard.GetState();
+    }
+
+    private void updateShowFPS()
+    {
+        if (_kb.IsKeyDown(Keys.F12) && !_kbOld.IsKeyDown(Keys.F12))
+            _showFPS = !_showFPS;
+    }
+
+    private void updatePerfInfo()
+    {
+        if (_fpsCounter.TotalFrames % 120 == 0 && _showFPS)
+            _gameProcess.Refresh();
     }
 }
