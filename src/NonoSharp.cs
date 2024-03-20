@@ -140,7 +140,10 @@ public class NonoSharpGame : Game
                     string levelName = "";
                     _levelSelect.Update(_mouse, _mouseOld, _kb, _kbOld, ref newState, ref levelName);
                     if (newState == GameState.Game)
+                    {
+                        Mouse.SetPosition(GraphicsDevice.Viewport.Bounds.Width / 2, GraphicsDevice.Viewport.Bounds.Height / 2); // put mouse in middle of screen
                         _play.Load($"{AppDomain.CurrentDomain.BaseDirectory}/Content/Levels/{levelName}.nono");
+                    }
                     if (newState != GameState.None)
                         _state = newState;
                     break;
