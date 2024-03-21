@@ -151,6 +151,7 @@ public class Board
         solution = null;
         tiles = null;
         IsSolved = false;
+        undoStack.Clear();
     }
 
     protected void MakeTilesAndSolution()
