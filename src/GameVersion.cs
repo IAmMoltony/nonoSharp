@@ -3,11 +3,8 @@ using System.Diagnostics;
 
 namespace NonoSharp;
 
-public class GameVersion
+public static class GameVersion
 {
-    private GameVersion()
-    {
-    }
 
     public static string GetGameVersion()
     {

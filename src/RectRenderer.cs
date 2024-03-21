@@ -4,13 +4,9 @@ using Serilog;
 
 namespace NonoSharp;
 
-public class RectRenderer
+public static class RectRenderer
 {
     private static Texture2D _texture;
-
-    private RectRenderer()
-    {
-    }
 
     public static void Load(GraphicsDevice graphDev)
     {

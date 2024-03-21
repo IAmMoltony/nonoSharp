@@ -6,13 +6,9 @@ using Serilog;
 
 namespace NonoSharp;
 
-public class TextRenderer
+public static class TextRenderer
 {
     private static Dictionary<string, SpriteFont> _fonts;
-
-    private TextRenderer()
-    {
-    }
 
     public static void LoadFont(string fontName, string fontAsset, ContentManager content)
     {

@@ -4,13 +4,9 @@ using Serilog;
 
 namespace NonoSharp;
 
-public class GridRenderer
+public static class GridRenderer
 {
     private static Texture2D _texture;
-
-    private GridRenderer()
-    {
-    }
 
     public static void Load(GraphicsDevice graphDev)
     {

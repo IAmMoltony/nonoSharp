@@ -4,7 +4,7 @@ using System.Diagnostics;
 
 namespace NonoSharp;
 
-public class CrashHandler
+public static class CrashHandler
 {
     public static void Initialize() =>
         AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(handle);
