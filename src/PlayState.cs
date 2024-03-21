@@ -61,10 +61,8 @@ public class PlayState
             _pauseBackButton.Update(mouse, mouseOld, kb, kbOld);
             if (_pauseBackButton.IsClicked)
             {
-                _solveTimeTick = false;
-                _solveTime = 0f;
-                _paused = false;
                 leave = true;
+                leaveGame();
             }
         }
 
@@ -81,10 +79,8 @@ public class PlayState
 
             if (_solvedContinueButton.IsClicked)
             {
-                _solveTimeTick = false;
-                _solveTime = 0.0f;
-                _board.Reset();
                 leave = true;
+                leaveGame();
             }
         }
     }
@@ -152,5 +148,13 @@ public class PlayState
             _paused = true;
             _solveTimeTick = false;
         }
+    }
+
+    private void leaveGame()
+    {
+        _solveTimeTick = false;
+        _solveTime = 0f;
+        _paused = false;
+        _board.Reset();
     }
 }
