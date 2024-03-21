@@ -4,6 +4,7 @@ set -e
 
 echo " ** Cleaning up **"
 rm -rf linux-build windows-build
+rm -rf Content/bin Content/obj
 dotnet clean -v m
 
 echo " ** Building for Linux x64 **"
