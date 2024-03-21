@@ -486,9 +486,8 @@ $RECYCLE.BIN/
 # MonoGame stats file thing
 .mgstats
 
-# Build zips
-nonoSharpLinux.zip
-nonoSharpWindows.zip
+# All zip files
+*.zip
 
 # Release build folders
 linux-build/
