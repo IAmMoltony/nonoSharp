@@ -17,7 +17,7 @@ rm bin/Release/net6.0/win7-x64/publish -r
 mv bin/Release/net6.0/win7-x64 windows-build
 
 echo " ** Zipping Linux build **"
-zip -r nonoSharpLinux.zip -xi linux-build/*
+zip -r nonoSharpLinux$1.zip -xi linux-build/*
 
 echo " ** Zipping Windows build **"
-zip -r nonoSharpWindows.zip -xi windows-build/*
+zip -r nonoSharpWindows$1.zip -xi windows-build/*
