@@ -9,9 +9,7 @@ public static class BoardSaver
     {
         string saveData = board.Serialize();
         string filePath = $"{AppDomain.CurrentDomain.BaseDirectory}/Content/Levels/{fileName}.nono";
-        using (StreamWriter writer = new(filePath))
-        {
-            writer.WriteLine(saveData);
-        }
+        using StreamWriter writer = new(filePath);
+        writer.WriteLine(saveData);
     }
 }
