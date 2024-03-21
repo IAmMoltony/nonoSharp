@@ -51,6 +51,10 @@ public class PlayState
             _board.Update(mouse, mouseOld, graphDev);
             if (_board.IsSolved)
                 _solveTimeTick = false;
+            
+            // undo button
+            if (kb.IsKeyDown(Keys.Z) && !kbOld.IsKeyDown(Keys.Z))
+                _board.RestoreState();
         }
         else
         {

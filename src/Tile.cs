@@ -54,6 +54,13 @@ public struct Tile
         _fr = new(new(0, 0, 0, 0), Color.Black, Color.Black, 0.13f);
     }
 
+    public void CopyFrom(Tile other)
+    {
+        // Do a copy without constructing the tile again
+        state = other.state;
+        isHovered = other.isHovered;
+    }
+
     public void Draw(int x, int y, int boardSize, SpriteBatch batch, GraphicsDevice graphDev)
     {
         Vector2 posVec = getScreenPos(x, y, boardSize, graphDev);

@@ -1,8 +1,8 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using System;
 using System.IO;
+using System.Collections.Generic;
 using Serilog;
 using System.Diagnostics;
 
@@ -11,6 +11,8 @@ namespace NonoSharp;
 public class Board
 {
     protected Clues clues;
+    protected Stack<Tile[,]> undoStack;
+    protected Tile[,] previousState;
 
     public Tile[,] tiles;
     public Tile[,] solution;
@@ -20,6 +22,8 @@ public class Board
     public Board()
     {
         size = 0;
+        undoStack = new Stack<Tile[,]>();
+        previousState = null;
     }
 
     public Board(int size)
@@ -79,20 +83,42 @@ public class Board
     {
         if (IsSolved)
             return;
+
         for (int i = 0; i < size; i++)
+        {
             for (int j = 0; j < size; j++)
             {
                 ref Tile tile = ref tiles[i, j];
                 tile.Hover(i, j, mouseState.X, mouseState.Y, size, graphDev);
                 if (tile.isHovered)
                 {
-                    if (mouseStateOld.LeftButton == ButtonState.Released && mouseState.LeftButton == ButtonState.Pressed)
+                    bool left = mouseStateOld.LeftButton == ButtonState.Released && mouseState.LeftButton == ButtonState.Pressed;
+                    bool right = mouseStateOld.RightButton == ButtonState.Released && mouseState.RightButton == ButtonState.Pressed;
+
+                    // Save state only if mouse is pressed
+                    if (left || right)
+                        SaveState();
+
+                    if (left)
                         DoMouseInput(true, ref tile);
-                    if (mouseStateOld.RightButton == ButtonState.Released && mouseState.RightButton == ButtonState.Pressed)
+                    if (right)
                         DoMouseInput(false, ref tile);
                 }
             }
+        }
         CheckSolution();
+    }
+
+    public virtual void RestoreState()
+    {
+        if (undoStack.Count > 0)
+        {
+            previousState = undoStack.Pop();
+
+            for (int i = 0; i < size; i++)
+                for (int j = 0; j < size; j++)
+                    tiles[i, j].CopyFrom(previousState[i, j]);
+        }
     }
 
     public string Serialize()
@@ -153,23 +179,6 @@ public class Board
                 TextRenderer.DrawText(batch, "notosans", colCluesX + i * 32, colCluesY - j * 32, 0.5f, clues.ColumnClues[i][j].ToString(), Color.White);
     }
 
-    protected virtual void DoMouseInput(bool isLeftButton, ref Tile tile)
-    {
-        if (isLeftButton)
-            tile.LeftClick();
-        else
-            tile.RightClick();
-    }
-
-    private bool compareSolutionTile(TileState a, TileState b)
-    {
-        if (a == TileState.Cross)
-            a = TileState.Empty;
-        if (b == TileState.Cross)
-            b = TileState.Empty;
-        return a == b;
-    }
-
     protected virtual void CheckSolution()
     {
         bool solved = true;
@@ -194,5 +203,33 @@ public class Board
                 for (int j = 0; j < size; j++)
                     tiles[i, j].isHovered = false;
         }
+    }
+
+    protected virtual void SaveState()
+    {
+        // Create a deep copy of the current board state
+        Tile[,] currentState = new Tile[size, size];
+        for (int i = 0; i < size; i++)
+            for (int j = 0; j < size; j++)
+                currentState[i, j].CopyFrom(tiles[i, j]);
+
+        undoStack.Push(currentState);
+    }
+
+    protected virtual void DoMouseInput(bool isLeftButton, ref Tile tile)
+    {
+        if (isLeftButton)
+            tile.LeftClick();
+        else
+            tile.RightClick();
+    }
+
+    private bool compareSolutionTile(TileState a, TileState b)
+    {
+        if (a == TileState.Cross)
+            a = TileState.Empty;
+        if (b == TileState.Cross)
+            b = TileState.Empty;
+        return a == b;
     }
 }
