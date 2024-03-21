@@ -232,7 +232,7 @@ public class NonoSharpGame : Game
 
     private void updatePerfInfo()
     {
-        if (_fpsCounter.TotalFrames % 120 == 0 && _showFPS)
+        if (_fpsCounter.TotalFrames % 50 == 0 && _showFPS)
             _gameProcess.Refresh();
     }
 }
