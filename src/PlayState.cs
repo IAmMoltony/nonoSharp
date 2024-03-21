@@ -66,7 +66,7 @@ public class PlayState
 
         // pause button
         if (!_board.IsSolved && ((kb.IsKeyDown(Keys.Space) && !kbOld.IsKeyDown(Keys.Space)) || (kb.IsKeyDown(Keys.Escape) && !kbOld.IsKeyDown(Keys.Escape))))
-            pause();
+            pause(graphDev);
 
         // continue button
         if (_board.IsSolved)
@@ -134,13 +134,14 @@ public class PlayState
         _solveTimeThread.Join();
     }
 
-    private void pause()
+    private void pause(GraphicsDevice graphDev)
     {
         Log.Logger.Information("Pausing the game rn");
         if (_paused)
         {
             _paused = false;
             _solveTimeTick = true;
+            Mouse.SetPosition(graphDev.Viewport.Bounds.Width / 2, graphDev.Viewport.Bounds.Height / 2);
         }
         else
         {
