@@ -5,7 +5,6 @@ namespace NonoSharp;
 
 public static class GameVersion
 {
-
     public static string GetGameVersion()
     {
         Assembly asm = Assembly.GetExecutingAssembly();
