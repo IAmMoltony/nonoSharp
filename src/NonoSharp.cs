@@ -5,6 +5,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Serilog;
+using System.Threading;
 
 namespace NonoSharp;
 
@@ -66,6 +67,8 @@ public class NonoSharpGame : Game
         Window.Title = $"nonoSharp {GameVersion.GetGameVersion()}";
 
         _gameProcess = Process.GetCurrentProcess();
+
+        StringManager.Initialize();
 
         _graphics.IsFullScreen = false; // disable fullscreen
 

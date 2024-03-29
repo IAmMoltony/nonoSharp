@@ -25,6 +25,12 @@
 /processorParam:TextureFormat=Color
 /build:cross.png
 
+#begin lang/en.json
+/copy:lang/en.json
+
+#begin lang/ru.json
+/copy:lang/ru.json
+
 #begin Levels/test2.nono
 /copy:Levels/test2.nono
 
