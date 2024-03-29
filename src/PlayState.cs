@@ -97,8 +97,9 @@ public class PlayState
     {
         _board.Draw(sprBatch);
 
-        // render time in format "Time: x.xx s"
-        TextRenderer.DrawText(sprBatch, "notosans", 10, 10, 0.6f, string.Format(StringManager.GetString("solveTime"), Math.Round(_solveTime / 1000, 2)), _board.IsSolved ? Color.Lime : Color.White);
+        // render time in format "Time: x.xx s" if the board isn't solved
+        if (!_board.IsSolved)
+            TextRenderer.DrawText(sprBatch, "notosans", 10, 10, 0.6f, string.Format(StringManager.GetString("solveTime"), Math.Round(_solveTime / 1000, 2)), Color.White);
 
         if (_board.IsSolved)
         {
