@@ -14,12 +14,12 @@ public class SaveLevelState
     public SaveLevelState()
     {
         _levelNameBox = new(0, 0, 200, Color.DarkGray, Color.Gray, Color.White, Color.White, 230);
-        _saveButton = new(0, 0, 100, 40, "Save", Color.DarkGreen, Color.Green);
+        _saveButton = new(0, 0, 130, 40, StringManager.GetString("save"), Color.DarkGreen, Color.Green);
         _isWindows = RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
 
         if (_isWindows)
         {
-            // We're on windows
+            // We're on Windows
             // Windows doesn't allow certain characters in file names
             _levelNameBox.illegalChars = new() { '<', '>', ':', '"', '/', '\\', '|', '?', '*' };
         }
@@ -34,7 +34,7 @@ public class SaveLevelState
     public void Draw(SpriteBatch sprBatch)
     {
         drawNameBox(sprBatch);
-        TextRenderer.DrawTextCenter(sprBatch, "notosans", 0, 0, 0.6f, "Enter level name:", Color.White, new(0,
+        TextRenderer.DrawTextCenter(sprBatch, "notosans", 0, 0, 0.6f, StringManager.GetString("enterLevelName"), Color.White, new(0,
             _levelNameBox.y - 26, sprBatch.GraphicsDevice.Viewport.Bounds.Width, 2));
         drawSaveButton(sprBatch);
     }

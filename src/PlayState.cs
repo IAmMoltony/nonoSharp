@@ -34,8 +34,8 @@ public class PlayState
     {
         _board = new();
         _paused = false;
-        _solvedContinueButton = new(0, 0, 130, 50, "Continue", Color.DarkGreen, Color.Green);
-        _pauseBackButton = new(10, 130, 90, 50, "Back", Color.DarkGreen, Color.Green);
+        _solvedContinueButton = new(0, 0, 160, 50, StringManager.GetString("continue"), Color.DarkGreen, Color.Green);
+        _pauseBackButton = new(10, 130, 90, 50, StringManager.GetString("back"), Color.DarkGreen, Color.Green);
 
         _solveTimeThread = new(SolveTimeTick);
         _solveTimeTick = false;
@@ -45,6 +45,21 @@ public class PlayState
     public void Update(MouseState mouse, MouseState mouseOld, KeyboardState kb, KeyboardState kbOld, GraphicsDevice graphDev, out bool leave)
     {
         leave = false;
+
+        // continue button
+        if (_board.IsSolved)
+        {
+            _solvedContinueButton.x = graphDev.Viewport.Bounds.Width / 2 - _solvedContinueButton.width / 2;
+            _solvedContinueButton.y = graphDev.Viewport.Bounds.Height / 2 + 40;
+            _solvedContinueButton.Update(mouse, mouseOld, kb, kbOld);
+
+            if (_solvedContinueButton.IsClicked)
+            {
+                leave = true;
+                leaveGame();
+                return;
+            }
+        }
 
         if (!_paused)
         {
@@ -69,20 +84,6 @@ public class PlayState
         // pause button
         if (!_board.IsSolved && ((kb.IsKeyDown(Keys.Space) && !kbOld.IsKeyDown(Keys.Space)) || (kb.IsKeyDown(Keys.Escape) && !kbOld.IsKeyDown(Keys.Escape))))
             pause(graphDev);
-
-        // continue button
-        if (_board.IsSolved)
-        {
-            _solvedContinueButton.x = graphDev.Viewport.Bounds.Width / 2 - _solvedContinueButton.width / 2;
-            _solvedContinueButton.y = graphDev.Viewport.Bounds.Height / 2 + 40;
-            _solvedContinueButton.Update(mouse, mouseOld, kb, kbOld);
-
-            if (_solvedContinueButton.IsClicked)
-            {
-                leave = true;
-                leaveGame();
-            }
-        }
     }
 
     public void Load(string levelPath)
@@ -97,7 +98,7 @@ public class PlayState
         _board.Draw(sprBatch);
 
         // render time in format "Time: x.xx s"
-        TextRenderer.DrawText(sprBatch, "notosans", 10, 10, 0.6f, $"Time: {Math.Round(_solveTime / 1000, 2)} s", _board.IsSolved ? Color.Lime : Color.White);
+        TextRenderer.DrawText(sprBatch, "notosans", 10, 10, 0.6f, string.Format(StringManager.GetString("solveTime"), Math.Round(_solveTime / 1000, 2)), _board.IsSolved ? Color.Lime : Color.White);
 
         if (_board.IsSolved)
         {
@@ -111,8 +112,8 @@ public class PlayState
             Rectangle inTimeTextRect = new(0, solvedTextRect.Y + 50, sprBatch.GraphicsDevice.Viewport.Bounds.Width, 1);
 
             // render the text
-            TextRenderer.DrawTextCenter(sprBatch, "notosans", 0, 0, 1.0f, "Solved!", Color.White, solvedTextRect);
-            TextRenderer.DrawTextCenter(sprBatch, "notosans", 0, 0, 1.0f, $"in {Math.Round(_solveTime / 1000, 2)} seconds", Color.White, inTimeTextRect);
+            TextRenderer.DrawTextCenter(sprBatch, "notosans", 0, 0, 1.0f, StringManager.GetString("solved"), Color.White, solvedTextRect);
+            TextRenderer.DrawTextCenter(sprBatch, "notosans", 0, 0, 1.0f, string.Format(StringManager.GetString("inSolveTime"), Math.Round(_solveTime / 1000, 2)), Color.White, inTimeTextRect);
 
             // draw the continue button
             _solvedContinueButton.Draw(sprBatch);
@@ -121,8 +122,8 @@ public class PlayState
         if (_paused)
         {
             RectRenderer.DrawRect(new(0, 0, sprBatch.GraphicsDevice.Viewport.Bounds.Width, sprBatch.GraphicsDevice.Viewport.Bounds.Height), new(0.0f, 0.3f, 0.0f, 0.6f), sprBatch);
-            TextRenderer.DrawText(sprBatch, "notosans", 10, 10, "Paused", Color.White);
-            TextRenderer.DrawText(sprBatch, "notosans", 10, 80, 0.6f, "Press Space or Escape to unpause", Color.White);
+            TextRenderer.DrawText(sprBatch, "notosans", 10, 10, StringManager.GetString("paused"), Color.White);
+            TextRenderer.DrawText(sprBatch, "notosans", 10, 80, 0.6f, StringManager.GetString("pauseTip"), Color.White);
             _pauseBackButton.Draw(sprBatch);
         }
     }

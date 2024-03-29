@@ -1,3 +1,18 @@
 ﻿{
-    "testString": "Тестовое сообщение"
+  "testString": "Тестовое сообщение",
+  "playButton": "Играть",
+  "editorButton": "Редактор",
+  "quitButton": "Выйти",
+  "selectLevel": "Выберите уровень",
+  "back": "Назад",
+  "solveTime": "Время: {0} с",
+  "continue": "Продолжить",
+  "solved": "Решено!",
+  "inSolveTime": "за {0} секунд",
+  "paused": "Пауза",
+  "pauseTip": "Нажмите пробел или Escape для продолжения",
+  "save": "Сохранить",
+  "enterLevelName": "Введите название уровня",
+  "ok": "ОК",
+  "enterBoardSize": "Введите размер доски"
 }

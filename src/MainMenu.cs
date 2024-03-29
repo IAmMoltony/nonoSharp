@@ -13,9 +13,9 @@ public class MainMenu
 
     public MainMenu()
     {
-        PlayButton = new(0, 0, 100, 60, "Play", Color.DarkGreen, Color.Green);
-        QuitButton = new(0, 0, 100, 60, "Quit", Color.DarkGreen, Color.Green);
-        EditorButton = new(0, 0, 100, 60, "Editor", Color.DarkGreen, Color.Green);
+        PlayButton = new(0, 0, 120, 60, StringManager.GetString("playButton"), Color.DarkGreen, Color.Green);
+        EditorButton = new(0, 0, 120, 60, StringManager.GetString("editorButton"), Color.DarkGreen, Color.Green);
+        QuitButton = new(0, 0, 120, 60, StringManager.GetString("quitButton"), Color.DarkGreen, Color.Green);
     }
 
     public void Update(MouseState mouse, MouseState mouseOld, KeyboardState kb, KeyboardState kbOld, GraphicsDevice graphDev)

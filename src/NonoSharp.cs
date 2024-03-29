@@ -47,19 +47,11 @@ public class NonoSharpGame : Game
         CrashHandler.Initialize();
 
         // initialize serilog
-        using var log = new LoggerConfiguration().WriteTo.Console().WriteTo.File($"{AppDomain.CurrentDomain.BaseDirectory}/logs/nonoSharp.log", rollingInterval: RollingInterval.Minute).CreateLogger();
+        using var log = new LoggerConfiguration().WriteTo.Console().WriteTo.File($"{AppDomain.CurrentDomain.BaseDirectory}/logs/nonoSharp.log", rollingInterval: RollingInterval.Minute, retainedFileCountLimit: 15).CreateLogger();
         Log.Logger = log; // global logger
 
-        _state = GameState.MainMenu;
-        _fpsCounter = new();
-        _showFPS = false;
         _graphics = new(this);
         Content.RootDirectory = "Content";
-        IsMouseVisible = true;
-        _mainMenu = new();
-        _levelSelect = new();
-        _editor = new();
-        _play = new();
     }
 
     protected override void Initialize()
@@ -69,6 +61,15 @@ public class NonoSharpGame : Game
         _gameProcess = Process.GetCurrentProcess();
 
         StringManager.Initialize();
+
+        _state = GameState.MainMenu;
+        _fpsCounter = new();
+        _showFPS = false;
+        IsMouseVisible = true;
+        _mainMenu = new();
+        _levelSelect = new();
+        _editor = new();
+        _play = new();
 
         _graphics.IsFullScreen = false; // disable fullscreen
 

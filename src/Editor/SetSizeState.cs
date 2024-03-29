@@ -15,14 +15,14 @@ public class SetSizeState
     public SetSizeState()
     {
         _sizeBox = new(0, 0, 50, Color.DarkGray, Color.Gray, Color.White, Color.White, 25);
-        OKButton = new(0, 0, 45, 40, "OK", Color.DarkGreen, Color.Green);
-        BackButton = new(10, 10, 70, 40, "Back", Color.DarkGreen, Color.Green);
+        OKButton = new(0, 0, 45, 40, StringManager.GetString("ok"), Color.DarkGreen, Color.Green);
+        BackButton = new(10, 10, 70, 40, StringManager.GetString("back"), Color.DarkGreen, Color.Green);
     }
 
     public void Draw(SpriteBatch sprBatch)
     {
         drawSizeBox(sprBatch);
-        TextRenderer.DrawTextCenter(sprBatch, "notosans", 0, 0, 0.6f, "Enter board size:", Color.White, new(0, _sizeBox.y - 26,
+        TextRenderer.DrawTextCenter(sprBatch, "notosans", 0, 0, 0.6f, StringManager.GetString("enterBoardSize"), Color.White, new(0, _sizeBox.y - 26,
             sprBatch.GraphicsDevice.Viewport.Bounds.Width, 2));
         drawOKButton(sprBatch);
         BackButton.Draw(sprBatch);

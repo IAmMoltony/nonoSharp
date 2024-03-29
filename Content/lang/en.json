@@ -1,3 +1,18 @@
 {
-    "testString": "Test message"
+  "testString": "Test message",
+  "playButton": "Play",
+  "editorButton": "Editor",
+  "quitButton": "Quit",
+  "selectLevel": "Select level",
+  "back": "Back",
+  "solveTime": "Time: {0} s",
+  "continue": "Continue",
+  "solved": "Solved!",
+  "inSolveTime": "in {0} seconds",
+  "paused": "Paused",
+  "pauseTip": "Press Space or Escape to unpause",
+  "save": "Save",
+  "enterLevelName": "Enter level name:",
+  "ok": "OK",
+  "enterBoardSize": "Enter board size:"
 }

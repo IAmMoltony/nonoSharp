@@ -20,13 +20,15 @@ public class Editor
     private EditorBoard _board;
     private UI.Button _saveButton;
 
+    // TODO create an EditorMain state
+
     public Editor()
     {
         _state = EditorState.SetSize;
         _setSize = new();
         _board = new();
         _saveLevel = new();
-        _saveButton = new(10, 10, 90, 45, "Save", Color.DarkGreen, Color.Green);
+        _saveButton = new(10, 10, 135, 45, StringManager.GetString("save"), Color.DarkGreen, Color.Green);
     }
 
     public void Update(MouseState mouse, MouseState mouseOld, KeyboardState kb, KeyboardState kbOld, GraphicsDevice graphDev,

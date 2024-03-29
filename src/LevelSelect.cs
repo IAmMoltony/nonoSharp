@@ -22,7 +22,7 @@ public class LevelSelect
     {
         _scrollOffsetGoal = 0;
         _scrollOffset = 0;
-        _backButton = new(10, 10, 70, 40, "Back", Color.DarkGreen, Color.Green);
+        _backButton = new(10, 10, 90, 40, StringManager.GetString("back"), Color.DarkGreen, Color.Green);
     }
 
     public void FindLevels()
@@ -39,7 +39,7 @@ public class LevelSelect
         // copy over the list into the internal list and slap in buttons
         for (int i = 0; i < list.Count(); i++)
         {
-            _levels.Add(new(list[i], new(10, 110 + 120 * i + 40, 67, 40, "Play", Color.DarkGreen, Color.Green)));
+            _levels.Add(new(list[i], new(10, 110 + 120 * i + 40, 87, 40, StringManager.GetString("playButton"), Color.DarkGreen, Color.Green)));
         }
 
         stopwatch.Stop();
@@ -103,6 +103,6 @@ public class LevelSelect
         Rectangle nameRect = new(0, 15, graphDev.Viewport.Bounds.Width, 100);
         Rectangle nameBackgroundRect = new(0, 0, graphDev.Viewport.Bounds.Width, 100);
         RectRenderer.DrawRect(nameBackgroundRect, Color.Black, sprBatch);
-        TextRenderer.DrawTextCenter(sprBatch, "notosans", 0, 0, 0.9f, "Select level", Color.White, nameRect);
+        TextRenderer.DrawTextCenter(sprBatch, "notosans", 0, 0, 0.9f, StringManager.GetString("selectLevel"), Color.White, nameRect);
     }
 }
