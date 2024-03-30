@@ -22,5 +22,5 @@ cd linux-build
 zip -r ../nonoSharpLinux$1.zip -xi ./*
 
 echo " ** Zipping Windows build **"
-cd windows-build
+cd ../windows-build
 zip -r ../nonoSharpWindows$1.zip -xi ./*
