@@ -15,20 +15,15 @@ public class Editor
 {
     private EditorState _state;
     private SetSizeState _setSize;
+    private EditorMain _main;
     private SaveLevelState _saveLevel;
-
-    private EditorBoard _board;
-    private UI.Button _saveButton;
-
-    // TODO create an EditorMain state
 
     public Editor()
     {
         _state = EditorState.SetSize;
         _setSize = new();
-        _board = new();
+        _main = new();
         _saveLevel = new();
-        _saveButton = new(10, 10, 135, 45, StringManager.GetString("save"), Color.DarkGreen, Color.Green);
     }
 
     public void Update(MouseState mouse, MouseState mouseOld, KeyboardState kb, KeyboardState kbOld, GraphicsDevice graphDev,
@@ -42,7 +37,7 @@ public class Editor
                 if (_setSize.OKButton.IsClicked && _setSize.GetSize() > 0)
                 {
                     _state = EditorState.Editor;
-                    _board.Make(_setSize.GetSize());
+                    _main.Board.Make(_setSize.GetSize());
                 }
                 if (_setSize.BackButton.IsClicked)
                 {
@@ -52,14 +47,12 @@ public class Editor
                 }
                 break;
             case EditorState.Editor:
-                _board.Update(mouse, mouseOld, graphDev);
-                _saveButton.Update(mouse, mouseOld, kb, kbOld);
-
-                if (_saveButton.IsClicked)
+                _main.Update(mouse, mouseOld, kb, kbOld, graphDev);
+                if (_main.SaveButton.IsClicked)
                     _state = EditorState.SaveLevel;
                 break;
             case EditorState.SaveLevel:
-                _saveLevel.Update(mouse, mouseOld, kb, kbOld, _board);
+                _saveLevel.Update(mouse, mouseOld, kb, kbOld, _main.Board);
                 break;
         }
     }
@@ -72,8 +65,7 @@ public class Editor
                 _setSize.Draw(sprBatch);
                 break;
             case EditorState.Editor:
-                _board.Draw(sprBatch);
-                _saveButton.Draw(sprBatch);
+                _main.Draw(sprBatch);
                 break;
             case EditorState.SaveLevel:
                 _saveLevel.Draw(sprBatch);
