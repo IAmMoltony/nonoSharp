@@ -2,6 +2,11 @@
 
 set -e
 
+if [ "$1" == "" ]; then
+	echo "Error: please specify the game version"
+	exit 1
+fi
+
 echo " ** Cleaning up **"
 rm -rf linux-build windows-build
 rm -rf Content/bin Content/obj
