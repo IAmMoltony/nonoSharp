@@ -13,7 +13,7 @@ public class MainMenu
 
     public MainMenu()
     {
-        PlayButton = new(0, 0, 0, 60, StringManager.GetString("playButton"), Color.DarkGreen, Color.Green, true);
+        PlayButton = new(0, 0, 0, 60, StringManager.GetString("playButton"), Color.DarkGreen, Color.Green);
         EditorButton = new(0, 0, 120, 60, StringManager.GetString("editorButton"), Color.DarkGreen, Color.Green);
         QuitButton = new(0, 0, 120, 60, StringManager.GetString("quitButton"), Color.DarkGreen, Color.Green);
     }
