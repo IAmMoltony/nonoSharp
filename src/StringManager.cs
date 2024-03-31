@@ -27,6 +27,9 @@ public static class StringManager
         // step 1 get the language
         CultureInfo cultureInfo = CultureInfo.CurrentCulture;
         _lang = cultureInfo.TwoLetterISOLanguageName;
+        string forceLang = Environment.GetEnvironmentVariable("NONOSHARP_FORCE_LANG");
+        if (!string.IsNullOrEmpty(forceLang))
+            _lang = forceLang;
         Log.Logger.Information($"Language is {_lang}");
 
         // step 2 check if it's supported
