@@ -42,7 +42,7 @@ public class Button : UIElement
         _fr.rect = getRect();
         _fr.Draw(sprBatch);
         RectRenderer.DrawRectOutline(getRect(), IsHovered ? fillColor : outlineColor, 2, sprBatch);
-        TextRenderer.DrawTextCenter(sprBatch, "notosans", x, y, 0.5f, text, Color.White, getRect());
+        TextRenderer.DrawTextCenter(sprBatch, "DefaultFont", x, y, 0.5f, text, Color.White, getRect());
     }
 
     public override void Update(MouseState mouse, MouseState mouseOld, KeyboardState keyboard, KeyboardState keyboardOld)
@@ -70,7 +70,7 @@ public class Button : UIElement
 
     private void updateDynamicWidth()
     {
-        width = _dynamicWidthPad + (int)(TextRenderer.MeasureString("notosans", text).X * 0.5f); // TODO extract font name + scale into members
+        width = _dynamicWidthPad + (int)(TextRenderer.MeasureString("DefaultFont", text).X * 0.5f); // TODO extract font name + scale into members
     }
 
     private Rectangle getRect() => new(x, y, width, height);

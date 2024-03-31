@@ -94,7 +94,7 @@ public class TextBox : UIElement
     private void drawText(SpriteBatch sprBatch)
     {
         Color textColor = Hovered ? _textColorHover : _textColor;
-        Vector2 textSize = TextRenderer.MeasureString("notosans", Text);
+        Vector2 textSize = TextRenderer.MeasureString("DefaultFont", Text);
         float textWidth = textSize.X * 0.5f;
         float maxTextWidth = Width - 17;
         float offset = 0;
@@ -110,7 +110,7 @@ public class TextBox : UIElement
         };
         sprBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, null, null, rs);
         sprBatch.GraphicsDevice.ScissorRectangle = getRect();
-        TextRenderer.DrawText(sprBatch, "notosans", x + 4 - (int)offset, y, 0.5f, Text + ((_blinkCursor && Hovered) ? "_" : ""), textColor);
+        TextRenderer.DrawText(sprBatch, "DefaultFont", x + 4 - (int)offset, y, 0.5f, Text + ((_blinkCursor && Hovered) ? "_" : ""), textColor);
         sprBatch.End();
 
         sprBatch.Begin();

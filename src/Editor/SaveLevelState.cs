@@ -34,7 +34,7 @@ public class SaveLevelState
     public void Draw(SpriteBatch sprBatch)
     {
         drawNameBox(sprBatch);
-        TextRenderer.DrawTextCenter(sprBatch, "notosans", 0, 0, 0.6f, StringManager.GetString("enterLevelName"), Color.White, new(0,
+        TextRenderer.DrawTextCenter(sprBatch, "DefaultFont", 0, 0, 0.6f, StringManager.GetString("enterLevelName"), Color.White, new(0,
             _levelNameBox.y - 26, sprBatch.GraphicsDevice.Viewport.Bounds.Width, 2));
         drawSaveButton(sprBatch);
     }

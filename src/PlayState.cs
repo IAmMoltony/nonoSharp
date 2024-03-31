@@ -99,7 +99,7 @@ public class PlayState
 
         // render time in format "Time: x.xx s" if the board isn't solved
         if (!_board.IsSolved)
-            TextRenderer.DrawText(sprBatch, "notosans", 10, 10, 0.6f, string.Format(StringManager.GetString("solveTime"), Math.Round(_solveTime / 1000, 2)), Color.White);
+            TextRenderer.DrawText(sprBatch, "DefaultFont", 10, 10, 0.6f, string.Format(StringManager.GetString("solveTime"), Math.Round(_solveTime / 1000, 2)), Color.White);
 
         if (_board.IsSolved)
         {
@@ -113,8 +113,8 @@ public class PlayState
             Rectangle inTimeTextRect = new(0, solvedTextRect.Y + 50, sprBatch.GraphicsDevice.Viewport.Bounds.Width, 1);
 
             // render the text
-            TextRenderer.DrawTextCenter(sprBatch, "notosans", 0, 0, 1.0f, StringManager.GetString("solved"), Color.White, solvedTextRect);
-            TextRenderer.DrawTextCenter(sprBatch, "notosans", 0, 0, 1.0f, string.Format(StringManager.GetString("inSolveTime"), Math.Round(_solveTime / 1000, 2)), Color.White, inTimeTextRect);
+            TextRenderer.DrawTextCenter(sprBatch, "DefaultFont", 0, 0, 1.0f, StringManager.GetString("solved"), Color.White, solvedTextRect);
+            TextRenderer.DrawTextCenter(sprBatch, "DefaultFont", 0, 0, 1.0f, string.Format(StringManager.GetString("inSolveTime"), Math.Round(_solveTime / 1000, 2)), Color.White, inTimeTextRect);
 
             // draw the continue button
             _solvedContinueButton.Draw(sprBatch);
@@ -123,8 +123,8 @@ public class PlayState
         if (_paused)
         {
             RectRenderer.DrawRect(new(0, 0, sprBatch.GraphicsDevice.Viewport.Bounds.Width, sprBatch.GraphicsDevice.Viewport.Bounds.Height), new(0.0f, 0.3f, 0.0f, 0.6f), sprBatch);
-            TextRenderer.DrawText(sprBatch, "notosans", 10, 10, StringManager.GetString("paused"), Color.White);
-            TextRenderer.DrawText(sprBatch, "notosans", 10, 80, 0.6f, StringManager.GetString("pauseTip"), Color.White);
+            TextRenderer.DrawText(sprBatch, "DefaultFont", 10, 10, StringManager.GetString("paused"), Color.White);
+            TextRenderer.DrawText(sprBatch, "DefaultFont", 10, 80, 0.6f, StringManager.GetString("pauseTip"), Color.White);
             _pauseBackButton.Draw(sprBatch);
         }
     }

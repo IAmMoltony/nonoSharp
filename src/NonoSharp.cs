@@ -102,7 +102,7 @@ public class NonoSharpGame : Game
         GridRenderer.Load(GraphicsDevice);
 
         Tile.LoadTextures(Content); // load tile textures
-        TextRenderer.LoadFont("notosans", "notosans", Content); // load noto sans font (i think it's a nice font)
+        TextRenderer.LoadFont("DefaultFont", "DefaultFont", Content); // load noto sans font (i think it's a nice font)
 
         stopwatch.Stop();
 
@@ -195,8 +195,8 @@ public class NonoSharpGame : Game
         // draw some performance info
         if (_showFPS)
         {
-            TextRenderer.DrawText(_spriteBatch, "notosans", 10, GraphicsDevice.Viewport.Bounds.Height - 26, 0.33f, $"{Math.Round(_fpsCounter.CurrentFPS)} fps, {Math.Round(_fpsCounter.AverageFPS)} avg", Color.LightGray); // FPS
-            TextRenderer.DrawText(_spriteBatch, "notosans", 10, GraphicsDevice.Viewport.Bounds.Height - 42, 0.33f, $"mem: {Math.Round(((float)_gameProcess.WorkingSet64 / 1024 / 1024), 2)}M (peak {Math.Round(((float)_gameProcess.PeakWorkingSet64 / 1024 / 1024), 2)}M)", Color.LightGray); // Memory usage (current and peak)
+            TextRenderer.DrawText(_spriteBatch, "DefaultFont", 10, GraphicsDevice.Viewport.Bounds.Height - 26, 0.33f, $"{Math.Round(_fpsCounter.CurrentFPS)} fps, {Math.Round(_fpsCounter.AverageFPS)} avg", Color.LightGray); // FPS
+            TextRenderer.DrawText(_spriteBatch, "DefaultFont", 10, GraphicsDevice.Viewport.Bounds.Height - 42, 0.33f, $"mem: {Math.Round(((float)_gameProcess.WorkingSet64 / 1024 / 1024), 2)}M (peak {Math.Round(((float)_gameProcess.PeakWorkingSet64 / 1024 / 1024), 2)}M)", Color.LightGray); // Memory usage (current and peak)
         }
 
         _spriteBatch.End();

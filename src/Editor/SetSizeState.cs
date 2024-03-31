@@ -22,7 +22,7 @@ public class SetSizeState
     public void Draw(SpriteBatch sprBatch)
     {
         drawSizeBox(sprBatch);
-        TextRenderer.DrawTextCenter(sprBatch, "notosans", 0, 0, 0.6f, StringManager.GetString("enterBoardSize"), Color.White, new(0, _sizeBox.y - 26,
+        TextRenderer.DrawTextCenter(sprBatch, "DefaultFont", 0, 0, 0.6f, StringManager.GetString("enterBoardSize"), Color.White, new(0, _sizeBox.y - 26,
             sprBatch.GraphicsDevice.Viewport.Bounds.Width, 2));
         drawOKButton(sprBatch);
         BackButton.Draw(sprBatch);

@@ -25,6 +25,13 @@
 /processorParam:TextureFormat=Color
 /build:cross.png
 
+#begin DefaultFont.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:DefaultFont.spritefont
+
 #begin lang/en.json
 /copy:lang/en.json
 
@@ -36,11 +43,4 @@
 
 #begin Levels/TestLevel.nono
 /copy:Levels/TestLevel.nono
-
-#begin notosans.spritefont
-/importer:FontDescriptionImporter
-/processor:FontDescriptionProcessor
-/processorParam:PremultiplyAlpha=True
-/processorParam:TextureFormat=Compressed
-/build:notosans.spritefont
 

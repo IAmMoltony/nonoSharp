@@ -38,7 +38,7 @@ public class MainMenu
         GraphicsDevice graphDev = sprBatch.GraphicsDevice;
 
         Rectangle nameRect = new(0, PlayButton.y - 100, graphDev.Viewport.Bounds.Width, 100);
-        TextRenderer.DrawTextCenter(sprBatch, "notosans", 0, 0, 1.0f, "nonoSharp", Color.White, nameRect);
+        TextRenderer.DrawTextCenter(sprBatch, "DefaultFont", 0, 0, 1.0f, "nonoSharp", Color.White, nameRect);
 
         PlayButton.Draw(sprBatch);
         EditorButton.Draw(sprBatch);

@@ -53,7 +53,7 @@ public class LevelSelect
         for (int i = 0; i < _levels.Count; i++)
         {
             string label = _levels[i].Item1.ToString();
-            TextRenderer.DrawText(sprBatch, "notosans", 10, 110 + 120 * i + (int)_scrollOffset, 0.56f, label, Color.White);
+            TextRenderer.DrawText(sprBatch, "DefaultFont", 10, 110 + 120 * i + (int)_scrollOffset, 0.56f, label, Color.White);
             _levels[i].Item2.Draw(sprBatch);
         }
 
@@ -103,6 +103,6 @@ public class LevelSelect
         Rectangle nameRect = new(0, 15, graphDev.Viewport.Bounds.Width, 100);
         Rectangle nameBackgroundRect = new(0, 0, graphDev.Viewport.Bounds.Width, 100);
         RectRenderer.DrawRect(nameBackgroundRect, Color.Black, sprBatch);
-        TextRenderer.DrawTextCenter(sprBatch, "notosans", 0, 0, 0.9f, StringManager.GetString("selectLevel"), Color.White, nameRect);
+        TextRenderer.DrawTextCenter(sprBatch, "DefaultFont", 0, 0, 0.9f, StringManager.GetString("selectLevel"), Color.White, nameRect);
     }
 }
