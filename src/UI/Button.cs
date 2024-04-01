@@ -10,8 +10,8 @@ public class Button : UIElement
     public int width, height;
     public string text;
     public Color fillColor, outlineColor;
-    private bool isDynamicWidth;
-    private int dynamicWidthPad;
+    public bool isDynamicWidth;
+    public int dynamicWidthPad;
 
     public bool IsHovered { get; private set; }
     public bool IsClicked { get; private set; }
