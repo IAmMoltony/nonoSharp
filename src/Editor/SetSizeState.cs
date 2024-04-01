@@ -15,8 +15,8 @@ public class SetSizeState
     public SetSizeState()
     {
         _sizeBox = new(0, 0, 50, Color.DarkGray, Color.Gray, Color.White, Color.White, 25);
-        OKButton = new(0, 0, 45, 40, StringManager.GetString("ok"), Color.DarkGreen, Color.Green);
-        BackButton = new(10, 10, 70, 40, StringManager.GetString("back"), Color.DarkGreen, Color.Green);
+        OKButton = new(0, 0, 0, 40, StringManager.GetString("ok"), Color.DarkGreen, Color.Green, true);
+        BackButton = new(10, 10, 0, 40, StringManager.GetString("back"), Color.DarkGreen, Color.Green, true);
     }
 
     public void Draw(SpriteBatch sprBatch)

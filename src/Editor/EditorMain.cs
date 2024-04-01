@@ -13,7 +13,7 @@ public class EditorMain
     public EditorMain()
     {
         Board = new();
-        SaveButton = new(10, 10, 135, 45, StringManager.GetString("save"), Color.DarkGreen, Color.Green);
+        SaveButton = new(10, 10, 0, 45, StringManager.GetString("save"), Color.DarkGreen, Color.Green, true);
     }
 
     public void Update(MouseState mouse, MouseState mouseOld, KeyboardState kb, KeyboardState kbOld, GraphicsDevice graphDev)

@@ -22,7 +22,7 @@ public class LevelSelect
     {
         _scrollOffsetGoal = 0;
         _scrollOffset = 0;
-        _backButton = new(10, 10, 90, 40, StringManager.GetString("back"), Color.DarkGreen, Color.Green);
+        _backButton = new(10, 10, 0, 40, StringManager.GetString("back"), Color.DarkGreen, Color.Green, true);
     }
 
     public void FindLevels()
@@ -39,7 +39,7 @@ public class LevelSelect
         // copy over the list into the internal list and slap in buttons
         for (int i = 0; i < list.Count(); i++)
         {
-            _levels.Add(new(list[i], new(10, 110 + 120 * i + 40, 87, 40, StringManager.GetString("playButton"), Color.DarkGreen, Color.Green)));
+            _levels.Add(new(list[i], new(10, 110 + 120 * i + 40, 0, 40, StringManager.GetString("playButton"), Color.DarkGreen, Color.Green, true)));
         }
 
         stopwatch.Stop();
