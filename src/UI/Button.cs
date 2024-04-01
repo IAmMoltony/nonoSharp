@@ -10,13 +10,13 @@ public class Button : UIElement
     public int width, height;
     public string text;
     public Color fillColor, outlineColor;
+    private bool isDynamicWidth;
+    private int dynamicWidthPad;
 
     public bool IsHovered { get; private set; }
     public bool IsClicked { get; private set; }
 
     private FadeRect _fr;
-    private bool _isDynamicWidth;
-    private int _dynamicWidthPad;
 
     public Button(int x, int y, int width, int height, string text, Color fillColor, Color outlineColor, bool dynamicWidth = false, int dynamicWidthPad = 10) : base(x, y)
     {
@@ -25,11 +25,11 @@ public class Button : UIElement
         this.text = text;
         this.fillColor = fillColor;
         this.outlineColor = outlineColor;
+        this.dynamicWidthPad = dynamicWidthPad;
+        isDynamicWidth = dynamicWidth;
 
         IsHovered = false;
         IsClicked = false;
-        _isDynamicWidth = dynamicWidth;
-        _dynamicWidthPad = dynamicWidthPad;
 
         createFadeRect();
 
@@ -47,7 +47,7 @@ public class Button : UIElement
 
     public override void Update(MouseState mouse, MouseState mouseOld, KeyboardState keyboard, KeyboardState keyboardOld)
     {
-        if (_isDynamicWidth)
+        if (isDynamicWidth)
             updateDynamicWidth();
 
         Rectangle rect = getRect();
@@ -70,7 +70,7 @@ public class Button : UIElement
 
     private void updateDynamicWidth()
     {
-        width = _dynamicWidthPad + (int)(TextRenderer.MeasureString("DefaultFont", text).X * 0.5f); // TODO extract font name + scale into members
+        width = dynamicWidthPad + (int)(TextRenderer.MeasureString("DefaultFont", text).X * 0.5f); // TODO extract font name + scale into members
     }
 
     private Rectangle getRect() => new(x, y, width, height);
