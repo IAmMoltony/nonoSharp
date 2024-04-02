@@ -47,7 +47,16 @@ public class NonoSharpGame : Game
         CrashHandler.Initialize();
 
         // initialize serilog
-        using var log = new LoggerConfiguration().WriteTo.Console().WriteTo.File($"{AppDomain.CurrentDomain.BaseDirectory}/logs/nonoSharp.log", rollingInterval: RollingInterval.Minute, retainedFileCountLimit: 15).CreateLogger();
+        using var log = new LoggerConfiguration()
+            .WriteTo.Console(
+                    outputTemplate: "{Timestamp:HH:mm:ss} {Level:u4} {Message:lj}{NewLine}"
+                )
+            .WriteTo.File(
+                    $"{AppDomain.CurrentDomain.BaseDirectory}/logs/nonoSharp.log",
+                    rollingInterval: RollingInterval.Minute,
+                    retainedFileCountLimit: 15
+                )
+            .CreateLogger();
         Log.Logger = log; // global logger
 
         _graphics = new(this);
