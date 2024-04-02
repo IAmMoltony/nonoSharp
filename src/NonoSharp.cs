@@ -56,6 +56,9 @@ public class NonoSharpGame : Game
 
     protected override void Initialize()
     {
+        Stopwatch stopwatch = new();
+        stopwatch.Start();
+
         Window.Title = $"nonoSharp {GameVersion.GetGameVersion()}";
 
         _gameProcess = Process.GetCurrentProcess();
@@ -85,7 +88,8 @@ public class NonoSharpGame : Game
 
         Window.TextInput += doTextInput;
 
-        Log.Logger.Information("nonoSharp initialized");
+        stopwatch.Stop();
+        Log.Logger.Information($"nonoSharp initialized in {stopwatch.ElapsedMilliseconds} ms");
 
         base.Initialize();
     }
