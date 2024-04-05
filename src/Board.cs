@@ -172,6 +172,11 @@ public class Board
         }
     }
 
+    public void Hint()
+    {
+        SolveLine(RNG.GenerateInt(size), RNG.GenerateInt(size));
+    }
+
     protected void MakeTilesAndSolution()
     {
         tiles = new Tile[size, size];

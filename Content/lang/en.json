@@ -14,5 +14,6 @@
   "save": "Save",
   "enterLevelName": "Enter level name:",
   "ok": "OK",
-  "enterBoardSize": "Enter board size:"
+  "enterBoardSize": "Enter board size:",
+  "hints": "Hints: {0}"
 }

@@ -19,6 +19,7 @@ public class PlayState
     private bool _paused;
     private Button _solvedContinueButton;
     private Button _pauseBackButton;
+    private int _usedHints;
 
     private static void SolveTimeTick()
     {
@@ -36,6 +37,7 @@ public class PlayState
         _paused = false;
         _solvedContinueButton = new(0, 0, 0, 50, StringManager.GetString("continue"), Color.DarkGreen, Color.Green, true);
         _pauseBackButton = new(10, 130, 0, 50, StringManager.GetString("back"), Color.DarkGreen, Color.Green, true);
+        _usedHints = 0;
 
         _solveTimeThread = new(SolveTimeTick);
         _solveTimeTick = false;
@@ -86,7 +88,11 @@ public class PlayState
             pause(graphDev);
 
         if (kb.IsKeyDown(Keys.H) && !kbOld.IsKeyDown(Keys.H))
-            _board.SolveLine(3, 4);
+        {
+            _usedHints++;
+            Log.Logger.Information($"Doing a hint, used hints: {_usedHints}");
+            _board.Hint();
+        }
     }
 
     public void Load(string levelPath)
@@ -100,9 +106,12 @@ public class PlayState
     {
         _board.Draw(sprBatch);
 
-        // render time in format "Time: x.xx s" if the board isn't solved
+        // render time and hints if the board isn't solved
         if (!_board.IsSolved)
-            TextRenderer.DrawText(sprBatch, "DefaultFont", 10, 10, 0.6f, string.Format(StringManager.GetString("solveTime"), Math.Round(_solveTime / 1000, 2)), Color.White);
+        {
+            TextRenderer.DrawText(sprBatch, "DefaultFont", 10, 10, 0.5f, string.Format(StringManager.GetString("solveTime"), Math.Round(_solveTime / 1000, 2)), Color.White);
+            TextRenderer.DrawText(sprBatch, "DefaultFont", 10, 40, 0.5f, string.Format(StringManager.GetString("hints"), _usedHints), Color.White);
+        }
 
         if (_board.IsSolved)
         {
@@ -161,5 +170,6 @@ public class PlayState
         _solveTime = 0f;
         _paused = false;
         _board.Reset();
+        _usedHints = 0;
     }
 }
