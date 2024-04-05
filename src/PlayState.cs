@@ -84,6 +84,9 @@ public class PlayState
         // pause button
         if (!_board.IsSolved && ((kb.IsKeyDown(Keys.Space) && !kbOld.IsKeyDown(Keys.Space)) || (kb.IsKeyDown(Keys.Escape) && !kbOld.IsKeyDown(Keys.Escape))))
             pause(graphDev);
+
+        if (kb.IsKeyDown(Keys.H) && !kbOld.IsKeyDown(Keys.H))
+            _board.SolveLine(3, 4);
     }
 
     public void Load(string levelPath)

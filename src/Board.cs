@@ -1,10 +1,11 @@
+using System;
+using System.IO;
+using System.Collections.Generic;
+using System.Diagnostics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using System.IO;
-using System.Collections.Generic;
 using Serilog;
-using System.Diagnostics;
 
 namespace NonoSharp;
 
@@ -152,6 +153,23 @@ public class Board
         tiles = null;
         IsSolved = false;
         undoStack.Clear();
+    }
+
+    public void SolveLine(int column, int row)
+    {
+        Log.Logger.Information($"Solving {column},{row}");
+        for (int i = 0; i < size; i++)
+        {
+            for (int j = 0; j < size; j++)
+            {
+                if (i == row || j == column)
+                {
+                    tiles[j, i].CopyFrom(solution[j, i]);
+                    if (tiles[j, i].state == TileState.Empty)
+                        tiles[j, i].state = TileState.Cross;
+                }
+            }
+        }
     }
 
     protected void MakeTilesAndSolution()
