@@ -124,9 +124,20 @@ public class PlayState
             // "how long the user took to solve" text: 50 pixels bellow solved text, everything else is the same
             Rectangle inTimeTextRect = new(0, solvedTextRect.Y + 50, sprBatch.GraphicsDevice.Viewport.Bounds.Width, 1);
 
+            // how many hints the user used: 50 pixels below in time text
+            Rectangle withHintsTextRect = new(0, inTimeTextRect.Y + 50, sprBatch.GraphicsDevice.Viewport.Bounds.Width, 1);
+
             // render the text
             TextRenderer.DrawTextCenter(sprBatch, "DefaultFont", 0, 0, 1.0f, StringManager.GetString("solved"), Color.White, solvedTextRect);
             TextRenderer.DrawTextCenter(sprBatch, "DefaultFont", 0, 0, 1.0f, string.Format(StringManager.GetString("inSolveTime"), Math.Round(_solveTime / 1000, 2)), Color.White, inTimeTextRect);
+            if (_usedHints > 0)
+            {
+                // draw how many hints used
+                if (_usedHints > 1)
+                    TextRenderer.DrawTextCenter(sprBatch, "DefaultFont", 0, 0, 0.7f, string.Format(StringManager.GetString("withHints"), _usedHints), Color.Yellow, withHintsTextRect);
+                else
+                    TextRenderer.DrawTextCenter(sprBatch, "DefaultFont", 0, 0, 0.7f, StringManager.GetString("withHints1"), Color.Yellow, withHintsTextRect);
+            }
 
             // draw the continue button
             _solvedContinueButton.Draw(sprBatch);
