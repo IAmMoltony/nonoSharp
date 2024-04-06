@@ -68,17 +68,19 @@ public class PlayState
             _board.Update(mouse, mouseOld, graphDev);
             if (_board.IsSolved)
                 _solveTimeTick = false;
-
-            // undo button
-            if (kb.IsKeyDown(Keys.Z) && !kbOld.IsKeyDown(Keys.Z))
-                _board.RestoreState();
-
-            // hint button
-            if (kb.IsKeyDown(Keys.H) && !kbOld.IsKeyDown(Keys.H))
+            else
             {
-                _usedHints++;
-                Log.Logger.Information($"Doing a hint, used hints: {_usedHints}");
-                _board.Hint();
+                // undo button
+                if (kb.IsKeyDown(Keys.Z) && !kbOld.IsKeyDown(Keys.Z))
+                    _board.RestoreState();
+
+                // hint button
+                if (kb.IsKeyDown(Keys.H) && !kbOld.IsKeyDown(Keys.H))
+                {
+                    _usedHints++;
+                    Log.Logger.Information($"Doing a hint, used hints: {_usedHints}");
+                    _board.Hint();
+                }
             }
         }
         else

@@ -111,6 +111,13 @@ public struct Tile
             state = TileState.Empty;
     }
 
+    public void HintFlash()
+    {
+        _fr.r = 255;
+        _fr.g = 255;
+        _fr.b = 0;
+    }
+
     private Vector2 getScreenPos(int x, int y, int boardSize, GraphicsDevice graphDev)
     {
         int boardPx = boardSize * 32;

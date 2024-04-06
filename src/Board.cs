@@ -14,6 +14,7 @@ public class Board
     protected Clues clues;
     protected Stack<Tile[,]> undoStack;
     protected Tile[,] previousState;
+    protected HashSet<(int, int)> hintedLines;
 
     public Tile[,] tiles;
     public Tile[,] solution;
@@ -25,16 +26,23 @@ public class Board
         size = 0;
         undoStack = new Stack<Tile[,]>();
         previousState = null;
+        hintedLines = new();
     }
 
     public Board(int size)
     {
         this.size = size;
+        undoStack = new();
+        previousState = null;
+        hintedLines = new();
         MakeTilesAndSolution();
     }
 
     public Board(string fileName)
     {
+        undoStack = new();
+        previousState = null;
+        hintedLines = new();
         Load(fileName);
     }
 
@@ -153,6 +161,7 @@ public class Board
         tiles = null;
         IsSolved = false;
         undoStack.Clear();
+        hintedLines = new();
     }
 
     public void SolveLine(int column, int row)
@@ -167,6 +176,7 @@ public class Board
                     tiles[j, i].CopyFrom(solution[j, i]);
                     if (tiles[j, i].state == TileState.Empty)
                         tiles[j, i].state = TileState.Cross;
+                    tiles[j, i].HintFlash();
                 }
             }
         }
@@ -175,7 +185,21 @@ public class Board
     public void Hint()
     {
         SaveState();
-        SolveLine(Random.Shared.Next(size), Random.Shared.Next(size));
+
+        while (true)
+        {
+            int column = Random.Shared.Next(size);
+            int row = Random.Shared.Next(size);
+
+            if (!hintedLines.Contains((column, row)))
+            {
+                hintedLines.Add((column, row));
+                SolveLine(column, row);
+                break;
+            }
+            else
+                Log.Logger.Information($"{column},{row} already hinted");
+        }
     }
 
     protected void MakeTilesAndSolution()
