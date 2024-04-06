@@ -174,6 +174,7 @@ public class Board
 
     public void Hint()
     {
+        SaveState();
         SolveLine(Random.Shared.Next(size), Random.Shared.Next(size));
     }
 

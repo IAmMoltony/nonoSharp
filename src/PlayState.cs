@@ -72,6 +72,14 @@ public class PlayState
             // undo button
             if (kb.IsKeyDown(Keys.Z) && !kbOld.IsKeyDown(Keys.Z))
                 _board.RestoreState();
+
+            // hint button
+            if (kb.IsKeyDown(Keys.H) && !kbOld.IsKeyDown(Keys.H))
+            {
+                _usedHints++;
+                Log.Logger.Information($"Doing a hint, used hints: {_usedHints}");
+                _board.Hint();
+            }
         }
         else
         {
@@ -86,13 +94,6 @@ public class PlayState
         // pause button
         if (!_board.IsSolved && ((kb.IsKeyDown(Keys.Space) && !kbOld.IsKeyDown(Keys.Space)) || (kb.IsKeyDown(Keys.Escape) && !kbOld.IsKeyDown(Keys.Escape))))
             pause(graphDev);
-
-        if (kb.IsKeyDown(Keys.H) && !kbOld.IsKeyDown(Keys.H))
-        {
-            _usedHints++;
-            Log.Logger.Information($"Doing a hint, used hints: {_usedHints}");
-            _board.Hint();
-        }
     }
 
     public void Load(string levelPath)
