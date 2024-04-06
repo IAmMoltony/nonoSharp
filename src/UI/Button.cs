@@ -12,6 +12,7 @@ public class Button : UIElement
     public Color fillColor, outlineColor;
     public bool isDynamicWidth;
     public int dynamicWidthPad;
+    public bool disabled;
 
     public bool IsHovered { get; private set; }
     public bool IsClicked { get; private set; }
@@ -27,6 +28,7 @@ public class Button : UIElement
         this.outlineColor = outlineColor;
         this.dynamicWidthPad = dynamicWidthPad;
         isDynamicWidth = dynamicWidth;
+        disabled = false;
 
         IsHovered = false;
         IsClicked = false;
@@ -42,7 +44,7 @@ public class Button : UIElement
         _fr.rect = getRect();
         _fr.Draw(sprBatch);
         RectRenderer.DrawRectOutline(getRect(), IsHovered ? fillColor : outlineColor, 2, sprBatch);
-        TextRenderer.DrawTextCenter(sprBatch, "DefaultFont", x, y, 0.5f, text, Color.White, getRect());
+        TextRenderer.DrawTextCenter(sprBatch, "DefaultFont", x, y, 0.5f, text, disabled ? Color.Gray : Color.White, getRect());
     }
 
     public override void Update(MouseState mouse, MouseState mouseOld, KeyboardState keyboard, KeyboardState keyboardOld)
@@ -51,8 +53,13 @@ public class Button : UIElement
             updateDynamicWidth();
 
         Rectangle rect = getRect();
-        IsHovered = mouse.X >= rect.X && mouse.Y >= rect.Y && mouse.X <= rect.X + rect.Width && mouse.Y <= rect.Y + rect.Height;
-        IsClicked = IsHovered && mouse.LeftButton == ButtonState.Pressed && mouseOld.LeftButton == ButtonState.Released;
+        if (disabled)
+            IsHovered = IsClicked = false;
+        else
+        {
+            IsHovered = mouse.X >= rect.X && mouse.Y >= rect.Y && mouse.X <= rect.X + rect.Width && mouse.Y <= rect.Y + rect.Height;
+            IsClicked = IsHovered && mouse.LeftButton == ButtonState.Pressed && mouseOld.LeftButton == ButtonState.Released;
+        }
         if (IsHovered)
         {
             _fr.mode = FadeRectMode.FadeIn;
