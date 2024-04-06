@@ -33,6 +33,8 @@ public class SetSizeState
         _sizeBox.Update(mouse, mouseOld, kb, kbOld);
         OKButton.Update(mouse, mouseOld, kb, kbOld);
         BackButton.Update(mouse, mouseOld, kb, kbOld);
+
+        OKButton.disabled = _sizeBox.GetNumberValue() <= 0;
     }
 
     public void UpdateInput(object sender, TextInputEventArgs tiea)
