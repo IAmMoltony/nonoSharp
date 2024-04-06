@@ -14,9 +14,9 @@ public class MainMenu
 
     public MainMenu()
     {
-        PlayButton = new(0, 0, 0, 60, StringManager.GetString("playButton"), Color.DarkGreen, Color.Green, true);
-        EditorButton = new(0, 0, 120, 60, StringManager.GetString("editorButton"), Color.DarkGreen, Color.Green, true);
-        QuitButton = new(0, 0, 120, 60, StringManager.GetString("quitButton"), Color.DarkGreen, Color.Green, true);
+        PlayButton = new(0, 0, 0, 60, StringManager.GetString("playButton"), Color.DarkGreen, Color.Green, Keys.P, true);
+        EditorButton = new(0, 0, 120, 60, StringManager.GetString("editorButton"), Color.DarkGreen, Color.Green, Keys.E, true);
+        QuitButton = new(0, 0, 120, 60, StringManager.GetString("quitButton"), Color.DarkGreen, Color.Green, Keys.Q, true);
 
         int maxWidth = new[] { PlayButton.width, EditorButton.width, QuitButton.width }.Max();
         PlayButton.isDynamicWidth = false;

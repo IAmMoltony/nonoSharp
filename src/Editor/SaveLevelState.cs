@@ -14,7 +14,7 @@ public class SaveLevelState
     public SaveLevelState()
     {
         _levelNameBox = new(0, 0, 200, Color.DarkGray, Color.Gray, Color.White, Color.White, 230);
-        _saveButton = new(0, 0, 0, 40, StringManager.GetString("save"), Color.DarkGreen, Color.Green, true);
+        _saveButton = new(0, 0, 0, 40, StringManager.GetString("save"), Color.DarkGreen, Color.Green, Keys.Enter, true);
         _isWindows = RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
 
         if (_isWindows)
