@@ -11,16 +11,14 @@ public class EditorBoard : Board
     public void Make(int size)
     {
         this.size = size;
+        clues = new(size);
         MakeTilesAndSolution();
-    }
-
-    protected override void DrawClues(int boardX, int boardY, SpriteBatch batch)
-    {
     }
 
     protected override void DoMouseInput(bool isLeftButton, ref Tile tile)
     {
         tile.LeftClick();
+        clues = new(this, false);
     }
 
     protected override void CheckSolution()
