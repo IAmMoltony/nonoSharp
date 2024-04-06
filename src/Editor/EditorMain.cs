@@ -30,6 +30,10 @@ public class EditorMain
             Board.Reset();
             Board.Make(size);
         }
+
+        // undo button
+        if (kb.IsKeyDown(Keys.Z) && !kbOld.IsKeyDown(Keys.Z))
+            Board.Undo();
     }
 
     public void Draw(SpriteBatch sprBatch)

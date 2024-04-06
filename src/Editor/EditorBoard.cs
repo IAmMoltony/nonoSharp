@@ -15,13 +15,24 @@ public class EditorBoard : Board
         MakeTilesAndSolution();
     }
 
+    public void Undo()
+    {
+        RestoreState();
+        makeClues();
+    }
+
     protected override void DoMouseInput(bool isLeftButton, ref Tile tile)
     {
         tile.LeftClick();
-        clues = new(this, false);
+        makeClues();
     }
 
     protected override void CheckSolution()
     {
+    }
+
+    private void makeClues()
+    {
+        clues = new(this, false);
     }
 }
