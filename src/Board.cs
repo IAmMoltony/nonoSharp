@@ -174,7 +174,7 @@ public class Board
 
     public void Hint()
     {
-        SolveLine(RNG.GenerateInt(size), RNG.GenerateInt(size));
+        SolveLine(Random.Shared.Next(size), Random.Shared.Next(size));
     }
 
     protected void MakeTilesAndSolution()
