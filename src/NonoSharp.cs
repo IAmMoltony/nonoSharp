@@ -58,6 +58,9 @@ public class NonoSharpGame : Game
                 )
             .CreateLogger();
         Log.Logger = log; // global logger
+#if DEBUG
+        Log.Logger.Information("Debug configuration!");
+#endif
 
         _graphics = new(this);
         Content.RootDirectory = "Content";
