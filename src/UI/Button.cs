@@ -13,6 +13,7 @@ public class Button : UIElement
     public bool isDynamicWidth;
     public int dynamicWidthPad;
     public bool disabled;
+    public Keys shortcutKey;
 
     public bool IsHovered { get; private set; }
     public bool IsClicked { get; private set; }
@@ -29,6 +30,7 @@ public class Button : UIElement
         this.dynamicWidthPad = dynamicWidthPad;
         isDynamicWidth = dynamicWidth;
         disabled = false;
+        shortcutKey = Keys.None;
 
         IsHovered = false;
         IsClicked = false;
@@ -37,6 +39,11 @@ public class Button : UIElement
 
         if (this.width < 0 || this.height < 0)
             throw new ArgumentException("Button width and height must not be negative");
+    }
+
+    public Button(int x, int y, int width, int height, string text, Color fillColor, Color outlineColor, Keys shortcutKey, bool dynamicWidth = false, int dynamicWidthPad = 10) : this(x, y, width, height, text, fillColor, outlineColor, dynamicWidth, dynamicWidthPad)
+    {
+        this.shortcutKey = shortcutKey;
     }
 
     public override void Draw(SpriteBatch sprBatch)
@@ -58,7 +65,7 @@ public class Button : UIElement
         else
         {
             IsHovered = mouse.X >= rect.X && mouse.Y >= rect.Y && mouse.X <= rect.X + rect.Width && mouse.Y <= rect.Y + rect.Height;
-            IsClicked = IsHovered && mouse.LeftButton == ButtonState.Pressed && mouseOld.LeftButton == ButtonState.Released;
+            IsClicked = IsHovered && mouse.LeftButton == ButtonState.Pressed && mouseOld.LeftButton == ButtonState.Released || shortcutKeyPressed(keyboard, keyboardOld);
         }
         if (IsHovered)
         {
@@ -78,6 +85,11 @@ public class Button : UIElement
     private void updateDynamicWidth()
     {
         width = dynamicWidthPad + (int)(TextRenderer.MeasureString("DefaultFont", text).X * 0.5f); // TODO extract font name + scale into members
+    }
+
+    private bool shortcutKeyPressed(KeyboardState kb, KeyboardState kbOld)
+    {
+        return kb.IsKeyDown(shortcutKey) && !kbOld.IsKeyDown(shortcutKey);
     }
 
     private Rectangle getRect() => new(x, y, width, height);

@@ -15,7 +15,7 @@ public class EditorMain
     {
         Board = new();
         SaveButton = new(10, 10, 0, 45, StringManager.GetString("save"), Color.DarkGreen, Color.Green, true);
-        ResetButton = new(10, 60, 0, 45, StringManager.GetString("reset"), Color.DarkGreen, Color.Green, true);
+        ResetButton = new(10, 65, 0, 45, StringManager.GetString("reset"), Color.DarkGreen, Color.Green, true);
     }
 
     public void Update(MouseState mouse, MouseState mouseOld, KeyboardState kb, KeyboardState kbOld, GraphicsDevice graphDev)
