@@ -12,29 +12,14 @@ public class Clues
 
     public Clues(int size)
     {
-        RowClues = new List<int>[size];
-        ColumnClues = new List<int>[size];
-
-        for (int i = 0; i < size; i++)
-        {
-            RowClues[i] = new();
-            ColumnClues[i] = new();
-        }
+        initLists(size);
     }
 
     public Clues(Board board, bool useSolution = true)
     {
         Log.Logger.Information("Creating clues");
 
-        RowClues = new List<int>[board.size];
-        ColumnClues = new List<int>[board.size];
-
-        // initialize lists
-        for (int i = 0; i < board.size; i++)
-        {
-            RowClues[i] = new();
-            ColumnClues[i] = new();
-        }
+        initLists(board.size);
 
         Stopwatch stopwatch = new();
         stopwatch.Start();
@@ -100,5 +85,17 @@ public class Clues
         stopwatch.Stop();
 
         Log.Logger.Information($"Clues found in {stopwatch.ElapsedMilliseconds} ms");
+    }
+
+    private void initLists(int size)
+    {
+        RowClues = new List<int>[size];
+        ColumnClues = new List<int>[size];
+
+        for (int i = 0; i < size; i++)
+        {
+            RowClues[i] = new();
+            ColumnClues[i] = new();
+        }
     }
 }
