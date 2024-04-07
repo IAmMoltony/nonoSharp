@@ -14,6 +14,8 @@ public class Button : UIElement
     public int dynamicWidthPad;
     public bool disabled;
     public Keys shortcutKey;
+    public string font;
+    public float fontScale;
 
     public bool IsHovered { get; private set; }
     public bool IsClicked { get; private set; }
@@ -31,6 +33,8 @@ public class Button : UIElement
         isDynamicWidth = dynamicWidth;
         disabled = false;
         shortcutKey = Keys.None;
+        font = "DefaultFont";
+        fontScale = 0.5f;
 
         IsHovered = false;
         IsClicked = false;
@@ -46,12 +50,34 @@ public class Button : UIElement
         this.shortcutKey = shortcutKey;
     }
 
+    public Button(int x, int y, int width, int height, string text, Color fillColor, Color outlineColor, float fontScale, bool dynamicWidth = false, int dynamicWidthPad = 10) : this(x, y, width, height, text, fillColor, outlineColor, dynamicWidth, dynamicWidthPad)
+    {
+        this.fontScale = fontScale;
+    }
+
+    public Button(int x, int y, int width, int height, string text, Color fillColor, Color outlineColor, float fontScale, string font, bool dynamicWidth = false, int dynamicWidthPad = 10) : this(x, y, width, height, text, fillColor, outlineColor, fontScale, dynamicWidth, dynamicWidthPad)
+    {
+        this.font = font;
+    }
+
+    public Button(int x, int y, int width, int height, string text, Color fillColor, Color outlineColor, float fontScale, Keys shortcutKey, bool dynamicWidth = false, int dynamicWidthPad = 10) : this(x, y, width, height, text, fillColor, outlineColor, dynamicWidth, dynamicWidthPad)
+    {
+        this.fontScale = fontScale;
+        this.shortcutKey = shortcutKey;
+    }
+
+    public Button(int x, int y, int width, int height, string text, Color fillColor, Color outlineColor, float fontScale, string font, Keys shortcutKey, bool dynamicWidth = false, int dynamicWidthPad = 10) : this(x, y, width, height, text, fillColor, outlineColor, fontScale, dynamicWidth, dynamicWidthPad)
+    {
+        this.font = font;
+        this.shortcutKey = shortcutKey;
+    }
+
     public override void Draw(SpriteBatch sprBatch)
     {
         _fr.rect = getRect();
         _fr.Draw(sprBatch);
         RectRenderer.DrawRectOutline(getRect(), IsHovered ? fillColor : outlineColor, 2, sprBatch);
-        TextRenderer.DrawTextCenter(sprBatch, "DefaultFont", x, y, 0.5f, text, disabled ? Color.Gray : Color.White, getRect());
+        TextRenderer.DrawTextCenter(sprBatch, font, x, y, fontScale, text, disabled ? Color.Gray : Color.White, getRect());
     }
 
     public override void Update(MouseState mouse, MouseState mouseOld, KeyboardState keyboard, KeyboardState keyboardOld)
@@ -84,7 +110,7 @@ public class Button : UIElement
 
     private void updateDynamicWidth()
     {
-        width = dynamicWidthPad + (int)(TextRenderer.MeasureString("DefaultFont", text).X * 0.5f); // TODO extract font name + scale into members
+        width = dynamicWidthPad + (int)(TextRenderer.MeasureString(font, text).X * fontScale);
     }
 
     private bool shortcutKeyPressed(KeyboardState kb, KeyboardState kbOld)
