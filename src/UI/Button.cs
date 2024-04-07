@@ -76,7 +76,7 @@ public class Button : UIElement
     {
         _fr.rect = getRect();
         _fr.Draw(sprBatch);
-        RectRenderer.DrawRectOutline(getRect(), IsHovered ? fillColor : outlineColor, 2, sprBatch);
+        RectRenderer.DrawRectOutline(getRect(), (IsHovered && !disabled) ? fillColor : outlineColor, 2, sprBatch);
         TextRenderer.DrawTextCenter(sprBatch, font, x, y, fontScale, text, disabled ? Color.Gray : Color.White, getRect());
     }
 
@@ -87,13 +87,18 @@ public class Button : UIElement
 
         Rectangle rect = getRect();
         if (disabled)
-            IsHovered = IsClicked = false;
-        else
         {
-            IsHovered = mouse.X >= rect.X && mouse.Y >= rect.Y && mouse.X <= rect.X + rect.Width && mouse.Y <= rect.Y + rect.Height;
-            IsClicked = IsHovered && mouse.LeftButton == ButtonState.Pressed && mouseOld.LeftButton == ButtonState.Released || shortcutKeyPressed(keyboard, keyboardOld);
+            IsClicked = false;
+            if (IsHovered)
+                // Set the cursor to the "no" shape
+                // On my system it shows up as skull and bones
+                NonoSharpGame.Cursor = MouseCursor.No;
         }
-        if (IsHovered)
+        else
+            IsClicked = IsHovered && mouse.LeftButton == ButtonState.Pressed && mouseOld.LeftButton == ButtonState.Released || shortcutKeyPressed(keyboard, keyboardOld);
+
+        IsHovered = mouse.X >= rect.X && mouse.Y >= rect.Y && mouse.X <= rect.X + rect.Width && mouse.Y <= rect.Y + rect.Height;
+        if (IsHovered && !disabled)
         {
             _fr.mode = FadeRectMode.FadeIn;
             NonoSharpGame.Cursor = MouseCursor.Hand;

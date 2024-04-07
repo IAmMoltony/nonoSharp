@@ -58,7 +58,9 @@ public class NonoSharpGame : Game
                 )
             .CreateLogger();
         Log.Logger = log; // global logger
+
 #if DEBUG
+        // print if we're in debug config
         Log.Logger.Information("Debug configuration!");
 #endif
 
