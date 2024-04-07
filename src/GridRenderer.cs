@@ -18,8 +18,8 @@ public static class GridRenderer
     public static void DrawGrid(SpriteBatch batch, int x, int y, int rows, int cols, int gridSize, Color color)
     {
         for (int i = 0; i < cols; i++)
-            batch.Draw(_texture, new Rectangle(x + i * gridSize, y, 1, rows * gridSize), color);
+            batch.Draw(_texture, new Rectangle(x + (i * gridSize), y, 1, rows * gridSize), color);
         for (int i = 0; i < rows; i++)
-            batch.Draw(_texture, new Rectangle(x, y + i * gridSize, cols * gridSize, 1), color);
+            batch.Draw(_texture, new Rectangle(x, y + (i * gridSize), cols * gridSize, 1), color);
     }
 }
