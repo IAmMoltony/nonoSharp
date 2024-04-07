@@ -79,8 +79,8 @@ public class Board
                 tiles[i, j].Draw(i, j, size, batch, graphDev);
 
         int pxSize = size * 32;
-        int boardX = graphDev.Viewport.Bounds.Width / 2 - pxSize / 2;
-        int boardY = graphDev.Viewport.Bounds.Height / 2 - pxSize / 2;
+        int boardX = (graphDev.Viewport.Bounds.Width / 2) - (pxSize / 2);
+        int boardY = (graphDev.Viewport.Bounds.Height / 2) - (pxSize / 2);
 
         DrawClues(boardX, boardY, batch);
 
@@ -219,13 +219,13 @@ public class Board
 
         for (int i = 0; i < size; i++)
             for (int j = 0; j < clues.RowClues[i].Count; j++)
-                TextRenderer.DrawText(batch, "DefaultFont", rowCluesX - j * 24, rowCluesY + i * 32, 0.5f, clues.RowClues[i][j].ToString(), Color.White);
+                TextRenderer.DrawText(batch, "DefaultFont", rowCluesX - (j * 24), rowCluesY + (i * 32), 0.5f, clues.RowClues[i][j].ToString(), Color.White);
 
         int colCluesX = boardX + 12;
         int colCluesY = boardY - 32;
         for (int i = 0; i < size; i++)
             for (int j = 0; j < clues.ColumnClues[i].Count; j++)
-                TextRenderer.DrawText(batch, "DefaultFont", colCluesX + i * 32, colCluesY - j * 32, 0.5f, clues.ColumnClues[i][j].ToString(), Color.White);
+                TextRenderer.DrawText(batch, "DefaultFont", colCluesX + (i * 32), colCluesY - (j * 32), 0.5f, clues.ColumnClues[i][j].ToString(), Color.White);
     }
 
     protected virtual void CheckSolution()
