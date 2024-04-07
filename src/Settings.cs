@@ -13,7 +13,7 @@ public static class Settings
 
     private static Dictionary<string, string> _defaultSettings = new()
     {
-        {"testsetting1", "Test"}
+        {"language", "System"}
     };
 
     public static void Initialize()

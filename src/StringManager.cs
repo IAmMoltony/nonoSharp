@@ -25,11 +25,7 @@ public static class StringManager
         stopwatch.Start();
 
         // step 1 get the language
-        CultureInfo cultureInfo = CultureInfo.CurrentCulture;
-        _lang = cultureInfo.TwoLetterISOLanguageName;
-        string forceLang = Environment.GetEnvironmentVariable("NONOSHARP_FORCE_LANG");
-        if (!string.IsNullOrEmpty(forceLang))
-            _lang = forceLang;
+        getLanguage();
         Log.Logger.Information($"Language is {_lang}");
 
         // step 2 check if it's supported
@@ -56,5 +52,18 @@ public static class StringManager
         string fileName = $"{AppDomain.CurrentDomain.BaseDirectory}/Content/lang/{_lang}.json";
         string langString = File.ReadAllText(fileName);
         _strings = JsonSerializer.Deserialize<Dictionary<string, string>>(langString);
+    }
+
+    private static void getLanguage()
+    {
+        string langSetting = Settings.Get("language");
+        
+        if (langSetting == "System")
+        {
+            CultureInfo cultureInfo = CultureInfo.CurrentCulture;
+            _lang = cultureInfo.TwoLetterISOLanguageName;
+        }
+        else
+            _lang = langSetting;
     }
 }
