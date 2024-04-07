@@ -77,6 +77,7 @@ public class NonoSharpGame : Game
 
         _gameProcess = Process.GetCurrentProcess();
 
+        Settings.Initialize();
         StringManager.Initialize();
 
         _state = GameState.MainMenu;
