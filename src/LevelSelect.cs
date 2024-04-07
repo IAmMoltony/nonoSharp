@@ -39,7 +39,7 @@ public class LevelSelect
         // copy over the list into the internal list and slap in buttons
         for (int i = 0; i < list.Count(); i++)
         {
-            _levels.Add(new(list[i], new(10, 110 + 120 * i + 40, 0, 40, StringManager.GetString("playButton"), Color.DarkGreen, Color.Green, true)));
+            _levels.Add(new(list[i], new(10, 110 + (120 * i) + 40, 0, 40, StringManager.GetString("playButton"), Color.DarkGreen, Color.Green, true)));
         }
 
         stopwatch.Stop();
@@ -53,7 +53,7 @@ public class LevelSelect
         for (int i = 0; i < _levels.Count; i++)
         {
             string label = _levels[i].Item1.ToString();
-            TextRenderer.DrawText(sprBatch, "DefaultFont", 10, 110 + 120 * i + (int)_scrollOffset, 0.56f, label, Color.White);
+            TextRenderer.DrawText(sprBatch, "DefaultFont", 10, 110 + (120 * i) + (int)_scrollOffset, 0.56f, label, Color.White);
             _levels[i].Item2.Draw(sprBatch);
         }
 
@@ -78,7 +78,7 @@ public class LevelSelect
                 newState = GameState.Game;
                 levelName = level.Item1.name;
             }
-            _levels[i].Item2.y = 110 + 120 * i + 40 + (int)_scrollOffset;
+            _levels[i].Item2.y = 110 + (120 * i) + 40 + (int)_scrollOffset;
         }
 
         _backButton.Update(mouse, mouseOld, kb, kbOld);
@@ -94,8 +94,8 @@ public class LevelSelect
             _scrollOffsetGoal -= 25;
         if (_scrollOffsetGoal > 0)
             _scrollOffsetGoal = 0;
-        if (_scrollOffsetGoal < -(120 * _levels.Count - 230))
-            _scrollOffsetGoal = -(120 * _levels.Count - 230);
+        if (_scrollOffsetGoal < -((120 * _levels.Count) - 230))
+            _scrollOffsetGoal = -((120 * _levels.Count) - 230);
     }
 
     private void drawHeading(GraphicsDevice graphDev, SpriteBatch sprBatch)

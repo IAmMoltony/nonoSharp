@@ -29,8 +29,8 @@ public class MainMenu
 
     public void Update(MouseState mouse, MouseState mouseOld, KeyboardState kb, KeyboardState kbOld, GraphicsDevice graphDev)
     {
-        PlayButton.x = graphDev.Viewport.Bounds.Width / 2 - PlayButton.width / 2;
-        PlayButton.y = graphDev.Viewport.Bounds.Height / 2 - PlayButton.height / 2;
+        PlayButton.x = (graphDev.Viewport.Bounds.Width / 2) - (PlayButton.width / 2);
+        PlayButton.y = (graphDev.Viewport.Bounds.Height / 2) - (PlayButton.height / 2);
         PlayButton.Update(mouse, mouseOld, kb, kbOld);
 
         EditorButton.x = PlayButton.x;
@@ -38,7 +38,7 @@ public class MainMenu
         EditorButton.Update(mouse, mouseOld, kb, kbOld);
 
         QuitButton.x = PlayButton.x;
-        QuitButton.y = PlayButton.y + 70 * 2;
+        QuitButton.y = PlayButton.y + 140;
         QuitButton.Update(mouse, mouseOld, kb, kbOld);
     }
 

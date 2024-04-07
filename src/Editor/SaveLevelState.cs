@@ -64,7 +64,7 @@ public class SaveLevelState
 
     private void drawSaveButton(SpriteBatch sprBatch)
     {
-        _saveButton.x = sprBatch.GraphicsDevice.Viewport.Bounds.Width / 2 - _saveButton.width / 2;
+        _saveButton.x = (sprBatch.GraphicsDevice.Viewport.Bounds.Width / 2) - (_saveButton.width / 2);
         _saveButton.y = _levelNameBox.y + UI.TextBox.Height + 10;
         _saveButton.Draw(sprBatch);
     }

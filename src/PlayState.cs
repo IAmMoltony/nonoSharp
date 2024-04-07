@@ -51,8 +51,8 @@ public class PlayState
         // continue button
         if (_board.IsSolved)
         {
-            _solvedContinueButton.x = graphDev.Viewport.Bounds.Width / 2 - _solvedContinueButton.width / 2;
-            _solvedContinueButton.y = graphDev.Viewport.Bounds.Height / 2 + 40;
+            _solvedContinueButton.x = (graphDev.Viewport.Bounds.Width / 2) - (_solvedContinueButton.width / 2);
+            _solvedContinueButton.y = (graphDev.Viewport.Bounds.Height / 2) + 40;
             _solvedContinueButton.Update(mouse, mouseOld, kb, kbOld);
 
             if (_solvedContinueButton.IsClicked)
@@ -122,7 +122,7 @@ public class PlayState
             RectRenderer.DrawRect(new(0, 0, sprBatch.GraphicsDevice.Viewport.Bounds.Width, sprBatch.GraphicsDevice.Viewport.Bounds.Height), new(0.0f, 0.2f, 0.0f, 0.3f), sprBatch);
 
             // solved text: 100 pixels above center of the screen, centered horizontally
-            Rectangle solvedTextRect = new(0, sprBatch.GraphicsDevice.Viewport.Bounds.Height / 2 - 100, sprBatch.GraphicsDevice.Viewport.Bounds.Width, 1);
+            Rectangle solvedTextRect = new(0, (sprBatch.GraphicsDevice.Viewport.Bounds.Height / 2) - 100, sprBatch.GraphicsDevice.Viewport.Bounds.Width, 1);
 
             // "how long the user took to solve" text: 50 pixels bellow solved text, everything else is the same
             Rectangle inTimeTextRect = new(0, solvedTextRect.Y + 50, sprBatch.GraphicsDevice.Viewport.Bounds.Width, 1);

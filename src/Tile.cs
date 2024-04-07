@@ -121,6 +121,6 @@ public struct Tile
     private Vector2 getScreenPos(int x, int y, int boardSize, GraphicsDevice graphDev)
     {
         int boardPx = boardSize * 32;
-        return new Vector2(x * 32 + (graphDev.Viewport.Bounds.Width / 2 - boardPx / 2), y * 32 + (graphDev.Viewport.Bounds.Height / 2 - boardPx / 2));
+        return new Vector2((x * 32) + ((graphDev.Viewport.Bounds.Width / 2) - (boardPx / 2)), (y * 32) + ((graphDev.Viewport.Bounds.Height / 2) - (boardPx / 2)));
     }
 }
