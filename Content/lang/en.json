@@ -18,5 +18,6 @@
   "hints": "Hints: {0}",
   "withHints": "with {0} hints",
   "withHints1": "with 1 hint",
-  "reset": "Reset"
+  "reset": "Reset",
+  "restart": "Restart"
 }

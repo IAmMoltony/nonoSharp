@@ -19,6 +19,7 @@ public class PlayState
     private bool _paused;
     private Button _solvedContinueButton;
     private Button _pauseBackButton;
+    private Button _pauseRestartButton;
     private int _usedHints;
 
     private static void SolveTimeTick()
@@ -37,6 +38,7 @@ public class PlayState
         _paused = false;
         _solvedContinueButton = new(0, 0, 0, 50, StringManager.GetString("continue"), Color.DarkGreen, Color.Green, true);
         _pauseBackButton = new(10, 130, 0, 50, StringManager.GetString("back"), Color.DarkGreen, Color.Green, true);
+        _pauseRestartButton = new(10, 190, 0, 50, StringManager.GetString("restart"), Color.DarkGreen, Color.Green, true);
         _usedHints = 0;
 
         _solveTimeThread = new(SolveTimeTick);
@@ -90,6 +92,12 @@ public class PlayState
             {
                 leave = true;
                 leaveGame();
+            }
+
+            _pauseRestartButton.Update(mouse, mouseOld, kb, kbOld);
+            if (_pauseRestartButton.IsClicked)
+            {
+                restart(graphDev);
             }
         }
 
@@ -152,6 +160,7 @@ public class PlayState
             TextRenderer.DrawText(sprBatch, "DefaultFont", 10, 10, StringManager.GetString("paused"), Color.White);
             TextRenderer.DrawText(sprBatch, "DefaultFont", 10, 80, 0.6f, StringManager.GetString("pauseTip"), Color.White);
             _pauseBackButton.Draw(sprBatch);
+            _pauseRestartButton.Draw(sprBatch);
         }
     }
 
@@ -185,5 +194,15 @@ public class PlayState
         _paused = false;
         _board.Reset();
         _usedHints = 0;
+    }
+
+    private void restart(GraphicsDevice graphDev)
+    {
+        _board.Clear();
+        _solveTime = 0f;
+        _solveTimeTick = true;
+        _usedHints = 0;
+        _paused = false;
+        Mouse.SetPosition(graphDev.Viewport.Bounds.Width / 2, graphDev.Viewport.Bounds.Height / 2); // TODO put this into a function
     }
 }

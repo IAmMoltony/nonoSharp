@@ -202,6 +202,13 @@ public class Board
         }
     }
 
+    public void Clear()
+    {
+        for (int i = 0; i < size; i++)
+            for (int j = 0; j < size; j++)
+                tiles[i, j].state = TileState.Empty;
+    }
+
     protected void MakeTilesAndSolution()
     {
         tiles = new Tile[size, size];
