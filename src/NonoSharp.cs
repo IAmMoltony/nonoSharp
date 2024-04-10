@@ -91,8 +91,15 @@ public class NonoSharpGame : Game
 
         _graphics.HardwareModeSwitch = false;
 
-        // initial window size: 85% of monitor size
-        setWindowSize((int)(GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width * 0.85f), (int)(GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height * 0.85f), false);
+        if (Settings.GetBool("fullScreen"))
+        {
+            setWindowSize(GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width, GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height, true);
+        }
+        else
+        {
+            // initial window size: 85% of monitor size
+            setWindowSize((int)(GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width * 0.85f), (int)(GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height * 0.85f), false);
+        }
 
         // allow the window to be resized
         Window.AllowUserResizing = true;
@@ -273,5 +280,6 @@ public class NonoSharpGame : Game
         _graphics.PreferredBackBufferWidth = w;
         _graphics.PreferredBackBufferHeight = h;
         _graphics.ApplyChanges();
+        Settings.Set("fullScreen", fullscreen);
     }
 }

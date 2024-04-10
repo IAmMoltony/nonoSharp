@@ -13,13 +13,14 @@ public static class Settings
 
     private static Dictionary<string, string> _defaultSettings = new()
     {
-        {"language", "System"}
+        {"language", "System"},
+        {"fullScreen", "no"}
     };
 
     public static void Initialize()
     {
         Log.Logger.Information("Initializing settings");
-        
+ 
         string settingsFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "nonoSharp");
         Log.Logger.Information($"Settings folder: {settingsFolder}");
         Directory.CreateDirectory(settingsFolder);
@@ -57,10 +58,20 @@ public static class Settings
         _settings[key] = val;
     }
 
+    public static void Set(string key, bool val)
+    {
+        _settings[key] = val ? "yes" : "no";
+    }
+
     public static string Get(string key)
     {
         if (_settings.ContainsKey(key))
             return _settings[key];
         return _defaultSettings[key];
+    }
+
+    public static bool GetBool(string key)
+    {
+        return Get(key) == "yes";
     }
 }
