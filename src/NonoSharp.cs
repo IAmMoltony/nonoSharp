@@ -89,14 +89,10 @@ public class NonoSharpGame : Game
         _editor = new();
         _play = new();
 
-        _graphics.IsFullScreen = false; // disable fullscreen
+        _graphics.HardwareModeSwitch = false;
 
         // initial window size: 85% of monitor size
-        int monitorWidth = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
-        int monitorHeight = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height;
-        _graphics.PreferredBackBufferWidth = (int)(monitorWidth * 0.85f);
-        _graphics.PreferredBackBufferHeight = (int)(monitorHeight * 0.85f);
-        _graphics.ApplyChanges();
+        setWindowSize((int)(GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width * 0.85f), (int)(GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height * 0.85f), false);
 
         // allow the window to be resized
         Window.AllowUserResizing = true;
@@ -184,6 +180,9 @@ public class NonoSharpGame : Game
         updateShowFPS();
         updatePerfInfo();
 
+        if (_kb.IsKeyDown(Keys.F11) && !_kbOld.IsKeyDown(Keys.F11))
+            toggleFullScreen();
+
         Mouse.SetCursor(Cursor);
 
         base.Update(gameTime);
@@ -257,5 +256,21 @@ public class NonoSharpGame : Game
     {
         if (_fpsCounter.TotalFrames % 50 == 0 && _showFPS)
             _gameProcess.Refresh();
+    }
+
+    private void toggleFullScreen()
+    {
+        if (_graphics.IsFullScreen)
+            setWindowSize((int)(GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width * 0.85f), (int)(GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height * 0.85f), false);
+        else
+            setWindowSize(GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width, GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height, true);
+    }
+
+    private void setWindowSize(int w, int h, bool fullscreen)
+    {
+        _graphics.IsFullScreen = fullscreen;
+        _graphics.PreferredBackBufferWidth = w;
+        _graphics.PreferredBackBufferHeight = h;
+        _graphics.ApplyChanges();
     }
 }
