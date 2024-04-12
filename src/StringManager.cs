@@ -1,11 +1,11 @@
-﻿using System;
+﻿using Serilog;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text.Json;
-using Serilog;
 
 namespace NonoSharp;
 
@@ -57,7 +57,7 @@ public static class StringManager
     private static void getLanguage()
     {
         string langSetting = Settings.Get("language");
-        
+
         if (langSetting == "System")
         {
             CultureInfo cultureInfo = CultureInfo.CurrentCulture;

@@ -1,7 +1,6 @@
-using System;
+using Serilog;
 using System.Collections.Generic;
 using System.Diagnostics;
-using Serilog;
 
 namespace NonoSharp;
 

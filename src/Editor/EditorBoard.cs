@@ -1,5 +1,3 @@
-using Microsoft.Xna.Framework.Graphics;
-
 namespace NonoSharp.Editor;
 
 public class EditorBoard : Board

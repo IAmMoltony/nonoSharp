@@ -1,11 +1,9 @@
-﻿using System;
-using System.Diagnostics;
-using System.Collections.Generic;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Serilog;
-using System.Threading;
+using System;
+using System.Diagnostics;
 
 namespace NonoSharp;
 

@@ -1,8 +1,8 @@
+using Serilog;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Text.Json;
-using System.Collections.Generic;
-using Serilog;
 
 namespace NonoSharp;
 
@@ -20,7 +20,7 @@ public static class Settings
     public static void Initialize()
     {
         Log.Logger.Information("Initializing settings");
- 
+
         string settingsFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "nonoSharp");
         Log.Logger.Information($"Settings folder: {settingsFolder}");
         Directory.CreateDirectory(settingsFolder);
