@@ -203,6 +203,6 @@ public class PlayState
         _solveTimeTick = true;
         _usedHints = 0;
         _paused = false;
-        Mouse.SetPosition(graphDev.Viewport.Bounds.Width / 2, graphDev.Viewport.Bounds.Height / 2); // TODO put this into a function
+        Mouse.SetPosition(graphDev.Viewport.Bounds.Width / 2, graphDev.Viewport.Bounds.Height / 2);
     }
 }
