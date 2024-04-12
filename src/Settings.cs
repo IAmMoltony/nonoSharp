@@ -76,8 +76,11 @@ public static class Settings
 
     public static string Get(string key)
     {
+        // If the setting is found in the settings dictionary, return it
         if (_settings.ContainsKey(key))
             return _settings[key];
+
+        // If it's not found, look it up in default settings
         return _defaultSettings[key];
     }
 

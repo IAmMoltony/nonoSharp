@@ -44,8 +44,8 @@ public class NonoSharpGame : Game
     {
         CrashHandler.Initialize();
 
-        // initialize serilog
-        using var log = new LoggerConfiguration()
+        // Initialize serilog
+        Log.Logger = new LoggerConfiguration()
             .WriteTo.Console(
                     outputTemplate: "{Timestamp:HH:mm:ss} {Level:u4} {Message:lj}{NewLine}"
                 )
@@ -55,7 +55,6 @@ public class NonoSharpGame : Game
                     retainedFileCountLimit: 15
                 )
             .CreateLogger();
-        Log.Logger = log; // global logger
 
 #if DEBUG
         // print if we're in debug config
