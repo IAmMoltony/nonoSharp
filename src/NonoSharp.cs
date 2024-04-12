@@ -20,7 +20,7 @@ public class NonoSharpGame : Game
 {
     public static MouseCursor Cursor;
 
-    private GraphicsDeviceManager _graphics;
+    private readonly GraphicsDeviceManager _graphics;
     private SpriteBatch _spriteBatch;
 
     private Process _gameProcess;
@@ -173,8 +173,7 @@ public class NonoSharpGame : Game
                 }
             case GameState.Editor:
                 {
-                    GameState newState;
-                    _editor.Update(_mouse, _mouseOld, _kb, _kbOld, GraphicsDevice, out newState);
+                    _editor.Update(_mouse, _mouseOld, _kb, _kbOld, GraphicsDevice, out GameState newState);
                     if (newState != GameState.None)
                         _state = newState;
                     break;

@@ -11,7 +11,7 @@ public static class Settings
     private static Dictionary<string, string> _settings;
     private static string _settingsFile;
 
-    private static Dictionary<string, string> _defaultSettings = new()
+    private static readonly Dictionary<string, string> _defaultSettings = new()
     {
         {"language", "System"},
         {"fullScreen", "no"}
@@ -34,8 +34,7 @@ public static class Settings
         else
             Load();
 
-        if (_settings == null)
-            _settings = new(_defaultSettings);
+        _settings ??= new(_defaultSettings);
 
         Log.Logger.Information("Current settings:");
         foreach (KeyValuePair<string, string> pair in _settings)
