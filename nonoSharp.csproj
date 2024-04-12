@@ -35,4 +35,10 @@
     <Message Text="Restoring dotnet tools" Importance="High" />
     <Exec Command="dotnet tool restore" />
   </Target>
+  <ItemGroup>
+    <EditorConfigFiles Remove="E:\dev\csharp\nonoSharp\.editorconfig" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="E:\dev\csharp\nonoSharp\.editorconfig" />
+  </ItemGroup>
 </Project>

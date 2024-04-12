@@ -1,0 +1,8 @@
+[*.cs]
+dotnet_naming_rule.private_method_camel_case.severity = suggestion
+dotnet_naming_rule.private_method_camel_case.symbols = private_method
+dotnet_naming_rule.private_method_camel_case.style = camel_case_style
+dotnet_naming_symbols.private_method.applicable_kinds = method
+dotnet_naming_symbols.private_method.applicable_accessibilities = private
+dotnet_naming_style.camel_case_style.capitalization = camel_case
+dotnet_naming_style.camel_case_style.required_prefix = 
