@@ -38,9 +38,7 @@ public class LevelSelect
 
         // copy over the list into the internal list and slap in buttons
         for (int i = 0; i < list.Count(); i++)
-        {
             _levels.Add(new(list[i], new(15, 110 + (120 * i) + 40, 0, 40, StringManager.GetString("playButton"), Color.DarkGreen, Color.Green, true)));
-        }
 
         stopwatch.Stop();
         Log.Logger.Information($"Found levels in {stopwatch.ElapsedMilliseconds} ms");

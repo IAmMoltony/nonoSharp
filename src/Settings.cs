@@ -34,6 +34,9 @@ public static class Settings
         else
             Load();
 
+        if (_settings == null)
+            _settings = new(_defaultSettings);
+
         Log.Logger.Information("Current settings:");
         foreach (KeyValuePair<string, string> pair in _settings)
             Log.Logger.Information($"{pair.Key}={pair.Value}");
@@ -50,7 +53,15 @@ public static class Settings
     {
         Log.Logger.Information("Loading settings");
         string jsonString = File.ReadAllText(_settingsFile);
-        _settings = JsonSerializer.Deserialize<Dictionary<string, string>>(jsonString);
+
+        try
+        {
+            _settings = JsonSerializer.Deserialize<Dictionary<string, string>>(jsonString);
+        }
+        catch (JsonException exception)
+        {
+            Log.Logger.Error(exception, "Failed to load settings.json");
+        }
     }
 
     public static void Set(string key, string val)
