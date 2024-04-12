@@ -1,13 +1,12 @@
-using System;
-using System.IO;
-using System.Diagnostics;
-using System.Linq;
-using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using NonoSharp.UI;
 using Serilog;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
 
 namespace NonoSharp;
 
@@ -32,6 +31,7 @@ public class LevelSelect
         Stopwatch stopwatch = new();
         stopwatch.Start();
 
+        // Find levels
         Log.Logger.Information("Finding levels");
         LevelList list = new();
         list.FindLevels();
@@ -39,7 +39,7 @@ public class LevelSelect
         // copy over the list into the internal list and slap in buttons
         for (int i = 0; i < list.Count(); i++)
         {
-            _levels.Add(new(list[i], new(10, 110 + (120 * i) + 40, 0, 40, StringManager.GetString("playButton"), Color.DarkGreen, Color.Green, true)));
+            _levels.Add(new(list[i], new(15, 110 + (120 * i) + 40, 0, 40, StringManager.GetString("playButton"), Color.DarkGreen, Color.Green, true)));
         }
 
         stopwatch.Stop();
@@ -52,9 +52,16 @@ public class LevelSelect
 
         for (int i = 0; i < _levels.Count; i++)
         {
+            // Draw the background
+            Rectangle backgroundRect = new(5, 105 + (120 * i) + (int)_scrollOffset, (int)((float)sprBatch.GraphicsDevice.Viewport.Width * 0.9f), 95);
+            RectRenderer.DrawRect(backgroundRect, Color.DarkGreen, sprBatch);
+            RectRenderer.DrawRectOutline(backgroundRect, Color.DarkGreen.Darker(0.5f), 3, sprBatch);
+
+            // Draw the level name
             string label = _levels[i].Item1.ToString();
-            TextRenderer.DrawText(sprBatch, "DefaultFont", 10, 110 + (120 * i) + (int)_scrollOffset, 0.56f, label, Color.White);
-            _levels[i].Item2.Draw(sprBatch);
+            TextRenderer.DrawText(sprBatch, "DefaultFont", 15, 110 + (120 * i) + (int)_scrollOffset, 0.56f, label, Color.White);
+
+            _levels[i].Item2.Draw(sprBatch); // Draw the level's play button
         }
 
         drawHeading(graphDev, sprBatch);
@@ -74,7 +81,7 @@ public class LevelSelect
             level.Item2.Update(mouse, mouseOld, kb, kbOld);
             if (level.Item2.IsClicked)
             {
-                Log.Logger.Information($"Clicked on button for level {level.Item1}");
+                Log.Logger.Information($"Clicked on level {level.Item1}");
                 newState = GameState.Game;
                 levelName = level.Item1.name;
             }
