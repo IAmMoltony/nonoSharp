@@ -21,7 +21,7 @@ public static class Settings
     {
         Log.Logger.Information("Initializing settings");
 
-        string settingsFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "nonoSharp");
+        string settingsFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "nonoSharp");
         Log.Logger.Information($"Settings folder: {settingsFolder}");
         Directory.CreateDirectory(settingsFolder);
 
