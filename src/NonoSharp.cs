@@ -34,8 +34,6 @@ public class NonoSharpGame : Game
     private FPSCounter _fpsCounter;
     private bool _showFPS;
 
-    private MenuBackground _menuBackground;
-
     private GameState _state;
     private MainMenu _mainMenu;
     private LevelSelect _levelSelect;
@@ -87,7 +85,6 @@ public class NonoSharpGame : Game
         _levelSelect = new();
         _editor = new();
         _play = new();
-        _menuBackground = new(GraphicsDevice);
 
         _graphics.HardwareModeSwitch = false;
 
@@ -160,8 +157,6 @@ public class NonoSharpGame : Game
                 else if (_mainMenu.EditorButton.IsClicked)
                     _state = GameState.Editor;
 
-                // Update menu background
-                _menuBackground.Update();
                 break;
             case GameState.LevelSelect:
                 {
@@ -177,8 +172,6 @@ public class NonoSharpGame : Game
                     if (newState != GameState.None)
                         _state = newState;
 
-                    // Update menu background
-                    _menuBackground.Update();
                     break;
                 }
             case GameState.Editor:
@@ -213,11 +206,9 @@ public class NonoSharpGame : Game
                 _play.Draw(_spriteBatch);
                 break;
             case GameState.MainMenu:
-                _menuBackground.Draw(_spriteBatch);
                 _mainMenu.Draw(_spriteBatch);
                 break;
             case GameState.LevelSelect:
-                _menuBackground.Draw(_spriteBatch);
                 _levelSelect.Draw(_spriteBatch);
                 break;
             case GameState.Editor:
