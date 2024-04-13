@@ -18,7 +18,7 @@ public enum GameState
 
 public class NonoSharpGame : Game
 {
-    public static MouseCursor Cursor;
+    public static MouseCursor Cursor { get; set; }
 
     private readonly GraphicsDeviceManager _graphics;
     private SpriteBatch _spriteBatch;
