@@ -1,6 +1,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using Serilog;
 using System;
 
 namespace NonoSharp;
@@ -23,6 +24,7 @@ public struct Tile
 
     public static void LoadTextures(ContentManager content)
     {
+        Log.Logger.Information("Loading tile textures");
         TextureCross = content.Load<Texture2D>("cross");
     }
 

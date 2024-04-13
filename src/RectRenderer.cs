@@ -27,4 +27,9 @@ public static class RectRenderer
         DrawRect(new Rectangle(rect.X + rect.Width, rect.Y, thickness, rect.Height + thickness), color, batch);
         DrawRect(new Rectangle(rect.X, rect.Y + rect.Height, rect.Width + thickness, thickness), color, batch);
     }
+
+    public static void DrawRectOutline(Rectangle rect, Color color, SpriteBatch sprBatch)
+    {
+        DrawRectOutline(rect, color, 1, sprBatch);
+    }
 }
