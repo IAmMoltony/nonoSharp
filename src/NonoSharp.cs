@@ -9,7 +9,7 @@ namespace NonoSharp;
 
 public enum GameState
 {
-    None, // Used to indicate the absense of a game state
+    None, // Used to indicate the absense of a game state (TODO: check if we can just use null)
     Game,
     MainMenu,
     LevelSelect,
