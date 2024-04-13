@@ -51,7 +51,7 @@ public class LevelSelect
         for (int i = 0; i < _levels.Count; i++)
         {
             // Draw the background
-            Rectangle backgroundRect = new(5, 105 + (120 * i) + (int)_scrollOffset, (int)((float)sprBatch.GraphicsDevice.Viewport.Width * 0.9f), 95);
+            Rectangle backgroundRect = new(5, 105 + (120 * i) + (int)_scrollOffset, (int)((float)sprBatch.GraphicsDevice.Viewport.Width * 0.8f), 95);
             RectRenderer.DrawRect(backgroundRect, Color.DarkGreen, sprBatch);
             RectRenderer.DrawRectOutline(backgroundRect, Color.DarkGreen.Darker(0.5f), 3, sprBatch);
 
