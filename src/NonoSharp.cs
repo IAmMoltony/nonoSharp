@@ -200,6 +200,8 @@ public class NonoSharpGame : Game
 
         _spriteBatch.Begin();
 
+        GridRenderer.DrawGrid(_spriteBatch, 0, 0, GraphicsDevice.Viewport.Bounds.Height / 32 + 1, GraphicsDevice.Viewport.Bounds.Width / 32 + 1, 32, Color.DarkGreen.Darker(0.7f));
+
         switch (_state)
         {
             case GameState.Game:
