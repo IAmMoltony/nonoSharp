@@ -40,8 +40,6 @@ public class NonoSharpGame : Game
     private PlayState _play;
     private Editor.Editor _editor;
 
-    private MenuBackgroundTile _t;
-
     public NonoSharpGame()
     {
         CrashHandler.Initialize();
@@ -182,8 +180,6 @@ public class NonoSharpGame : Game
                     break;
                 }
         }
-
-        _t.Update();
 
         updateShowFPS();
         updatePerfInfo();
