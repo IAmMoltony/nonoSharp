@@ -34,6 +34,8 @@ public class NonoSharpGame : Game
     private FPSCounter _fpsCounter;
     private bool _showFPS;
 
+    private MenuBackground _menuBackground;
+
     private GameState _state;
     private MainMenu _mainMenu;
     private LevelSelect _levelSelect;
@@ -85,6 +87,7 @@ public class NonoSharpGame : Game
         _levelSelect = new();
         _editor = new();
         _play = new();
+        _menuBackground = new(GraphicsDevice);
 
         _graphics.HardwareModeSwitch = false;
 
@@ -156,12 +159,16 @@ public class NonoSharpGame : Game
                 // editor button
                 else if (_mainMenu.EditorButton.IsClicked)
                     _state = GameState.Editor;
+
+                // Update menu background
+                _menuBackground.Update();
                 break;
             case GameState.LevelSelect:
                 {
                     GameState newState = GameState.None;
                     string levelName = "";
                     _levelSelect.Update(_mouse, _mouseOld, _kb, _kbOld, ref newState, ref levelName);
+
                     if (newState == GameState.Game)
                     {
                         Mouse.SetPosition(GraphicsDevice.Viewport.Bounds.Width / 2, GraphicsDevice.Viewport.Bounds.Height / 2); // put mouse in middle of screen
@@ -169,6 +176,9 @@ public class NonoSharpGame : Game
                     }
                     if (newState != GameState.None)
                         _state = newState;
+
+                    // Update menu background
+                    _menuBackground.Update();
                     break;
                 }
             case GameState.Editor:
@@ -203,9 +213,11 @@ public class NonoSharpGame : Game
                 _play.Draw(_spriteBatch);
                 break;
             case GameState.MainMenu:
+                _menuBackground.Draw(_spriteBatch);
                 _mainMenu.Draw(_spriteBatch);
                 break;
             case GameState.LevelSelect:
+                _menuBackground.Draw(_spriteBatch);
                 _levelSelect.Draw(_spriteBatch);
                 break;
             case GameState.Editor:

@@ -35,13 +35,13 @@ public class MenuBackgroundTile
         switch (State)
         {
             case TileState.Empty:
-                RectRenderer.DrawRect(rect, Color.DarkGray, sprBatch);
+                RectRenderer.DrawRect(rect, Color.DarkGray.Darker(0.6f), sprBatch);
                 break;
             case TileState.Filled:
-                RectRenderer.DrawRect(rect, Color.DarkGreen, sprBatch);
+                RectRenderer.DrawRect(rect, Color.DarkGreen.Darker(0.6f), sprBatch);
                 break;
             case TileState.Cross:
-                RectRenderer.DrawRect(rect, Color.DarkGray, sprBatch);
+                RectRenderer.DrawRect(rect, Color.DarkGray.Darker(0.6f), sprBatch);
                 sprBatch.Draw(Tile.TextureCross, new Vector2(x, y), Color.White);
                 break;
         }
