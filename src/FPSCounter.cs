@@ -11,7 +11,7 @@ public class FPSCounter
     public float CurrentFPS { get; private set; }
 
     private const int MAX_SAMPLES = 100;
-    private Queue<float> _sampleBuf;
+    private readonly Queue<float> _sampleBuf;
 
     public FPSCounter()
     {

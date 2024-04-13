@@ -7,9 +7,9 @@ namespace NonoSharp.Editor;
 
 public class SaveLevelState
 {
-    private UI.TextBox _levelNameBox;
-    private UI.Button _saveButton;
-    private bool _isWindows;
+    private readonly UI.TextBox _levelNameBox;
+    private readonly UI.Button _saveButton;
+    private readonly bool _isWindows;
 
     public SaveLevelState()
     {
@@ -34,7 +34,7 @@ public class SaveLevelState
     public void Draw(SpriteBatch sprBatch)
     {
         drawNameBox(sprBatch);
-        TextRenderer.DrawTextCenter(sprBatch, "DefaultFont", 0, 0, 0.6f, StringManager.GetString("enterLevelName"), Color.White, new(0,
+        TextRenderer.DrawTextCenter(sprBatch, "DefaultFont", 0.6f, StringManager.GetString("enterLevelName"), Color.White, new(0,
             _levelNameBox.y - 26, sprBatch.GraphicsDevice.Viewport.Bounds.Width, 2));
         drawSaveButton(sprBatch);
     }

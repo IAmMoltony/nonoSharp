@@ -15,14 +15,14 @@ public class PlayState
     private static bool _solveTimeThreadRunning = true;
     private static bool _solveTimeTick = true;
 
-    private Board _board;
+    private readonly Board _board;
     private bool _paused;
-    private Button _solvedContinueButton;
-    private Button _pauseBackButton;
-    private Button _pauseRestartButton;
+    private readonly Button _solvedContinueButton;
+    private readonly Button _pauseBackButton;
+    private readonly Button _pauseRestartButton;
     private int _usedHints;
 
-    private static void SolveTimeTick()
+    private static void solveTimeTick()
     {
         while (_solveTimeThreadRunning)
         {
@@ -41,7 +41,7 @@ public class PlayState
         _pauseRestartButton = new(10, 190, 0, 50, StringManager.GetString("restart"), Color.DarkGreen, Color.Green, true);
         _usedHints = 0;
 
-        _solveTimeThread = new(SolveTimeTick);
+        _solveTimeThread = new(solveTimeTick);
         _solveTimeTick = false;
         _solveTimeThread.Start();
     }
@@ -139,15 +139,15 @@ public class PlayState
             Rectangle withHintsTextRect = new(0, inTimeTextRect.Y + 50, sprBatch.GraphicsDevice.Viewport.Bounds.Width, 1);
 
             // render the text
-            TextRenderer.DrawTextCenter(sprBatch, "DefaultFont", 0, 0, 1.0f, StringManager.GetString("solved"), Color.White, solvedTextRect);
-            TextRenderer.DrawTextCenter(sprBatch, "DefaultFont", 0, 0, 1.0f, string.Format(StringManager.GetString("inSolveTime"), Math.Round(_solveTime / 1000, 2)), Color.White, inTimeTextRect);
+            TextRenderer.DrawTextCenter(sprBatch, "DefaultFont", 1.0f, StringManager.GetString("solved"), Color.White, solvedTextRect);
+            TextRenderer.DrawTextCenter(sprBatch, "DefaultFont", 1.0f, string.Format(StringManager.GetString("inSolveTime"), Math.Round(_solveTime / 1000, 2)), Color.White, inTimeTextRect);
             if (_usedHints > 0)
             {
                 // draw how many hints used
                 if (_usedHints > 1)
-                    TextRenderer.DrawTextCenter(sprBatch, "DefaultFont", 0, 0, 0.7f, string.Format(StringManager.GetString("withHints"), _usedHints), Color.Yellow, withHintsTextRect);
+                    TextRenderer.DrawTextCenter(sprBatch, "DefaultFont", 0.7f, string.Format(StringManager.GetString("withHints"), _usedHints), Color.Yellow, withHintsTextRect);
                 else
-                    TextRenderer.DrawTextCenter(sprBatch, "DefaultFont", 0, 0, 0.7f, StringManager.GetString("withHints1"), Color.Yellow, withHintsTextRect);
+                    TextRenderer.DrawTextCenter(sprBatch, "DefaultFont", 0.7f, StringManager.GetString("withHints1"), Color.Yellow, withHintsTextRect);
             }
 
             // draw the continue button
@@ -164,7 +164,7 @@ public class PlayState
         }
     }
 
-    public void StopSolveTimeThread()
+    public static void StopSolveTimeThread()
     {
         Log.Logger.Information("Stopping solve time thread");
         _solveTimeThreadRunning = false;

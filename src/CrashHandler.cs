@@ -14,19 +14,13 @@ public static class CrashHandler
         {
             string crashFile = $"{AppDomain.CurrentDomain.BaseDirectory}/CrashLog.txt";
             Exception exception = (Exception)ueea.ExceptionObject;
-            using (StreamWriter writer = new(crashFile))
-            {
-                DateTime dateTime = DateTime.Now;
-                writer.WriteLine($"--- nonoSharp Crash Log: {dateTime}");
-                writer.WriteLine("nonoSharp has crashed. Here's some information about the crash:\n");
-                writer.WriteLine(exception.ToString());
-            }
+            using StreamWriter writer = new(crashFile);
+            DateTime dateTime = DateTime.Now;
+            writer.WriteLine($"--- nonoSharp Crash Log: {dateTime}");
+            writer.WriteLine("nonoSharp has crashed. Here's some information about the crash:\n");
+            writer.WriteLine(exception.ToString());
 
-#if !DEBUG
-            // This might be unsafe...
-            // At least on linux
-            // Because you can set .../crashlog.txt to be executable and make it have whatever code
-            // (which would have to happen at quite a specific time and is extremely unlikely)
+#if !DEBUG // Not executed on debug builds because the error is visible in the console (and in VS if we're using it)
             Process proc = new()
             {
                 StartInfo = new()

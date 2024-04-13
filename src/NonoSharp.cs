@@ -229,7 +229,7 @@ public class NonoSharpGame : Game
 
     protected override void OnExiting(object sender, EventArgs e)
     {
-        _play.StopSolveTimeThread();
+        PlayState.StopSolveTimeThread();
         Settings.Save();
 
         base.OnExiting(sender, e);

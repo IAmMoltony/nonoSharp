@@ -15,7 +15,7 @@ public class LevelSelect
     private List<Tuple<LevelMetadata, Button>> _levels;
     private int _scrollOffsetGoal;
     private float _scrollOffset;
-    private Button _backButton;
+    private readonly Button _backButton;
 
     public LevelSelect()
     {
@@ -103,11 +103,11 @@ public class LevelSelect
             _scrollOffsetGoal = -((120 * _levels.Count) - 230);
     }
 
-    private void drawHeading(GraphicsDevice graphDev, SpriteBatch sprBatch)
+    private static void drawHeading(GraphicsDevice graphDev, SpriteBatch sprBatch)
     {
         Rectangle nameRect = new(0, 15, graphDev.Viewport.Bounds.Width, 100);
         Rectangle nameBackgroundRect = new(0, 0, graphDev.Viewport.Bounds.Width, 100);
         RectRenderer.DrawRect(nameBackgroundRect, Color.Black, sprBatch);
-        TextRenderer.DrawTextCenter(sprBatch, "DefaultFont", 0, 0, 0.9f, StringManager.GetString("selectLevel"), Color.White, nameRect);
+        TextRenderer.DrawTextCenter(sprBatch, "DefaultFont", 0.9f, StringManager.GetString("selectLevel"), Color.White, nameRect);
     }
 }

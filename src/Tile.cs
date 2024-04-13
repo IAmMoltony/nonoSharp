@@ -20,7 +20,7 @@ public struct Tile
 
     public static Texture2D TextureCross { get; private set; }
 
-    private FadeRect _fr;
+    private readonly FadeRect _fr;
 
     public static void LoadTextures(ContentManager content)
     {
@@ -63,7 +63,7 @@ public struct Tile
         isHovered = other.isHovered;
     }
 
-    public void Draw(int x, int y, int boardSize, SpriteBatch batch, GraphicsDevice graphDev)
+    public readonly void Draw(int x, int y, int boardSize, SpriteBatch batch, GraphicsDevice graphDev)
     {
         Vector2 posVec = getScreenPos(x, y, boardSize, graphDev);
         Rectangle rect = new((int)posVec.X, (int)posVec.Y, 32, 32);
@@ -92,8 +92,8 @@ public struct Tile
     public void Hover(int x, int y, int mx, int my, int boardSize, GraphicsDevice graphDev)
     {
         Vector2 screenPos = getScreenPos(x, y, boardSize, graphDev);
-        Rectangle rect = new Rectangle((int)screenPos.X, (int)screenPos.Y, 32, 32);
-        Point mousePoint = new Point(mx, my);
+        Rectangle rect = new((int)screenPos.X, (int)screenPos.Y, 32, 32);
+        Point mousePoint = new(mx, my);
         isHovered = rect.Contains(mousePoint);
     }
 
@@ -113,14 +113,14 @@ public struct Tile
             state = TileState.Empty;
     }
 
-    public void HintFlash()
+    public readonly void HintFlash()
     {
         _fr.r = 255;
         _fr.g = 255;
         _fr.b = 0;
     }
 
-    private Vector2 getScreenPos(int x, int y, int boardSize, GraphicsDevice graphDev)
+    private static Vector2 getScreenPos(int x, int y, int boardSize, GraphicsDevice graphDev)
     {
         int boardPx = boardSize * 32;
         return new Vector2((x * 32) + ((graphDev.Viewport.Bounds.Width / 2) - (boardPx / 2)), (y * 32) + ((graphDev.Viewport.Bounds.Height / 2) - (boardPx / 2)));

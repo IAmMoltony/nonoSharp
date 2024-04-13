@@ -15,8 +15,8 @@ public class Editor
 {
     private EditorState _state;
     private SetSizeState _setSize;
-    private EditorMain _main;
-    private SaveLevelState _saveLevel;
+    private readonly EditorMain _main;
+    private readonly SaveLevelState _saveLevel;
 
     public Editor()
     {

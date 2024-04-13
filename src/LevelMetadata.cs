@@ -17,8 +17,5 @@ public struct LevelMetadata
         size = 0;
     }
 
-    public override string ToString()
-    {
-        return $"{name} ({size}x{size})";
-    }
+    public override readonly string ToString() => $"{name} ({size}x{size})";
 }

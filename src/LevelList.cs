@@ -23,14 +23,13 @@ public class LevelList : IEnumerable<LevelMetadata>
         for (int i = 0; i < files.Length; i++)
         {
             string sizeStr = File.ReadAllLines($"{levelsDir}/{files[i].Name}")[0];
-            int size;
-            if (!int.TryParse(sizeStr, out size))
+            if (!int.TryParse(sizeStr, out int size))
             {
                 Log.Logger.Warning($"Level {files[i].Name} does not have a valid board size, skip");
                 continue;
             }
             Levels.Add(new(Path.GetFileNameWithoutExtension(files[i].Name), size));
-            Log.Logger.Information($"Found level: {Levels[Levels.Count - 1]}");
+            Log.Logger.Information($"Found level: {Levels[^1]}");
         }
     }
 
