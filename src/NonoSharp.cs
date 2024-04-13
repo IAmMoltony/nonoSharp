@@ -85,7 +85,6 @@ public class NonoSharpGame : Game
         _levelSelect = new();
         _editor = new();
         _play = new();
-        _t = new(128, 128);
 
         _graphics.HardwareModeSwitch = false;
 
@@ -220,8 +219,6 @@ public class NonoSharpGame : Game
             TextRenderer.DrawText(_spriteBatch, "DefaultFont", 10, GraphicsDevice.Viewport.Bounds.Height - 26, 0.33f, $"{Math.Round(_fpsCounter.CurrentFPS)} fps, {Math.Round(_fpsCounter.AverageFPS)} avg", Color.LightGray); // FPS
             TextRenderer.DrawText(_spriteBatch, "DefaultFont", 10, GraphicsDevice.Viewport.Bounds.Height - 42, 0.33f, $"mem: {Math.Round(((float)_gameProcess.WorkingSet64 / 1024 / 1024), 2)}M (peak {Math.Round(((float)_gameProcess.PeakWorkingSet64 / 1024 / 1024), 2)}M)", Color.LightGray); // Memory usage (current and peak)
         }
-
-        _t.Draw(_spriteBatch);
 
         _spriteBatch.End();
 
