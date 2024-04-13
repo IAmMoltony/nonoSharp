@@ -9,7 +9,6 @@ namespace NonoSharp;
 
 public enum GameState
 {
-    None, // Used to indicate the absense of a game state (TODO: check if we can just use null)
     Game,
     MainMenu,
     LevelSelect,
@@ -160,25 +159,24 @@ public class NonoSharpGame : Game
                 break;
             case GameState.LevelSelect:
                 {
-                    GameState newState = GameState.None;
                     string levelName = "";
-                    _levelSelect.Update(_mouse, _mouseOld, _kb, _kbOld, ref newState, ref levelName);
+                    _levelSelect.Update(_mouse, _mouseOld, _kb, _kbOld, out GameState? newState, ref levelName);
 
                     if (newState == GameState.Game)
                     {
                         Mouse.SetPosition(GraphicsDevice.Viewport.Bounds.Width / 2, GraphicsDevice.Viewport.Bounds.Height / 2); // put mouse in middle of screen
                         _play.Load($"{AppDomain.CurrentDomain.BaseDirectory}/Content/Levels/{levelName}.nono");
                     }
-                    if (newState != GameState.None)
-                        _state = newState;
+                    if (newState != null)
+                        _state = (GameState)newState;
 
                     break;
                 }
             case GameState.Editor:
                 {
-                    _editor.Update(_mouse, _mouseOld, _kb, _kbOld, GraphicsDevice, out GameState newState);
-                    if (newState != GameState.None)
-                        _state = newState;
+                    _editor.Update(_mouse, _mouseOld, _kb, _kbOld, GraphicsDevice, out GameState? newState);
+                    if (newState != null)
+                        _state = (GameState)newState;
                     break;
                 }
         }

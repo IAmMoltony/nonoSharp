@@ -27,9 +27,9 @@ public class Editor
     }
 
     public void Update(MouseState mouse, MouseState mouseOld, KeyboardState kb, KeyboardState kbOld, GraphicsDevice graphDev,
-                       out GameState newState)
+                       out GameState? newState)
     {
-        newState = GameState.None;
+        newState = null;
         switch (_state)
         {
             case EditorState.SetSize:

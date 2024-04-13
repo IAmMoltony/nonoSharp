@@ -66,8 +66,10 @@ public class LevelSelect
         _backButton.Draw(sprBatch);
     }
 
-    public void Update(MouseState mouse, MouseState mouseOld, KeyboardState kb, KeyboardState kbOld, ref GameState newState, ref string levelName)
+    public void Update(MouseState mouse, MouseState mouseOld, KeyboardState kb, KeyboardState kbOld, out GameState? newState, ref string levelName)
     {
+        newState = null;
+
         updateScroll(mouse, mouseOld);
 
         // lerp scroll offset
