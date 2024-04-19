@@ -55,6 +55,8 @@ public class Editor
                 _saveLevel.Update(mouse, mouseOld, kb, kbOld, _main.Board);
                 if (_saveLevel.OKButton.IsClicked)
                     newState = GameState.MainMenu;
+                if (_saveLevel.BackButton.IsClicked)
+                    _state = EditorState.Editor;
                 break;
         }
     }
