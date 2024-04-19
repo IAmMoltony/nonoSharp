@@ -10,12 +10,14 @@ public class SaveLevelState
     private readonly UI.TextBox _levelNameBox;
     private readonly UI.Button _saveButton;
     private readonly bool _isWindows;
+    private bool _saved;
 
     public SaveLevelState()
     {
         _levelNameBox = new(0, 0, 200, Color.DarkGray, Color.Gray, Color.White, Color.White, 230);
         _saveButton = new(0, 0, 0, 40, StringManager.GetString("save"), Color.DarkGreen, Color.Green, Keys.Enter, true);
         _isWindows = RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
+        _saved = false;
 
         if (_isWindows)
         {
@@ -36,17 +38,23 @@ public class SaveLevelState
         drawNameBox(sprBatch);
         TextRenderer.DrawTextCenter(sprBatch, "DefaultFont", 0.6f, StringManager.GetString("enterLevelName"), Color.White, new(0,
             _levelNameBox.y - 26, sprBatch.GraphicsDevice.Viewport.Bounds.Width, 2));
-        drawSaveButton(sprBatch);
+        if (!_saved)
+            drawSaveButton(sprBatch);
     }
 
     public void Update(MouseState mouse, MouseState mouseOld, KeyboardState kb, KeyboardState kbOld, Board board)
     {
         _levelNameBox.Update(mouse, mouseOld, kb, kbOld);
-        _saveButton.Update(mouse, mouseOld, kb, kbOld);
 
-        if (_saveButton.IsClicked)
+        if (!_saved)
         {
-            BoardSaver.SaveBoard(board, _levelNameBox.Text);
+            _saveButton.Update(mouse, mouseOld, kb, kbOld);
+
+            if (_saveButton.IsClicked)
+            {
+                BoardSaver.SaveBoard(board, _levelNameBox.Text);
+                _saved = true;
+            }
         }
     }
 
