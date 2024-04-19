@@ -48,6 +48,9 @@ public class SaveLevelState
 
         if (!_saved)
         {
+            if (_levelNameBox.Text == "")
+                _saveButton.disabled = true;
+
             _saveButton.Update(mouse, mouseOld, kb, kbOld);
 
             if (_saveButton.IsClicked)
