@@ -26,4 +26,23 @@ public static class ColorExtensions
 
         return new(r, g, b);
     }
+
+    /// <summary>
+    /// Get a lighter version of a color.
+    /// </summary>
+    /// <param name="color">The color to get a light version of</param>
+    /// <param name="howMuch">How much lighter to make the color (0.0 to 1.0 inclusive)</param>
+    /// <returns>A lighter version of the color</returns>
+    public static Color Lighter(this Color color, float howMuch)
+    {
+        // Make sure `howMuch' is 0.0 to 1.0
+        howMuch = Math.Max(0.0f, Math.Min(1.0f, howMuch));
+
+        // Calculate lighter color
+        int r = (int)(color.R + (255 - color.R) * howMuch);
+        int g = (int)(color.G + (255 - color.G) * howMuch);
+        int b = (int)(color.B + (255 - color.B) * howMuch);
+
+        return new(r, g, b);
+    }
 }
