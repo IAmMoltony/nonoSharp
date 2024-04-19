@@ -136,7 +136,7 @@ public class NonoSharpGame : Game
         switch (_state)
         {
             case GameState.Game:
-                _play.Update(_mouse, _mouseOld, _kb, _kbOld, GraphicsDevice, out bool leave);
+                _play.Update(_mouse, _mouseOld, _kb, _kbOld, GraphicsDevice, out bool leave, IsActive);
                 if (leave)
                     _state = GameState.LevelSelect;
                 break;

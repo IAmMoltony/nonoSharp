@@ -46,7 +46,7 @@ public class PlayState
         _solveTimeThread.Start();
     }
 
-    public void Update(MouseState mouse, MouseState mouseOld, KeyboardState kb, KeyboardState kbOld, GraphicsDevice graphDev, out bool leave)
+    public void Update(MouseState mouse, MouseState mouseOld, KeyboardState kb, KeyboardState kbOld, GraphicsDevice graphDev, out bool leave, bool hasFocus)
     {
         leave = false;
 
@@ -103,6 +103,10 @@ public class PlayState
 
         // pause button
         if (!_board.IsSolved && ((kb.IsKeyDown(Keys.Space) && !kbOld.IsKeyDown(Keys.Space)) || (kb.IsKeyDown(Keys.Escape) && !kbOld.IsKeyDown(Keys.Escape))))
+            pause(graphDev);
+
+        // when window inactive, force pause
+        if (!hasFocus && !_paused)
             pause(graphDev);
     }
 
