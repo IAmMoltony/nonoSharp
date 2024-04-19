@@ -22,6 +22,7 @@ public class TextBox : UIElement
     private Color _textColorHover;
     private bool _blinkCursor;
     private int _blinkCursorTimer;
+    private bool _illegalBlink;
 
     public TextBox(
         int x, int y, int width, Color fillColor, Color outlineColor, Color textColor,
@@ -35,6 +36,7 @@ public class TextBox : UIElement
         _outlineColor = outlineColor;
         _textColor = textColor;
         _textColorHover = textColorHover;
+        _illegalBlink = false;
         this.maxLength = maxLength;
     }
 
@@ -42,10 +44,18 @@ public class TextBox : UIElement
     {
         Color fc = Hovered ? _outlineColor : _fillColor;
         Color oc = Hovered ? _fillColor : _outlineColor;
+        if (_illegalBlink)
+        {
+            (fc, oc) = (oc, fc); // Python moment
+            fc = fc.Lighter(0.5f);
+            oc = oc.Lighter(0.5f);
+        }
         RectRenderer.DrawRect(getRect(), fc, sprBatch);
         RectRenderer.DrawRectOutline(getRect(), oc, 2, sprBatch);
 
         drawText(sprBatch);
+
+        _illegalBlink = false;
     }
 
     public override void Update(MouseState mouse, MouseState mouseOld, KeyboardState keyboard, KeyboardState keyboardOld)
@@ -68,8 +78,11 @@ public class TextBox : UIElement
                     BackSpace();
                     break;
                 default:
-                    if (checkLength() && !illegalChars.Contains(tiea.Character))
-                        Text += tiea.Character;
+                    if (checkLength())
+                        if (illegalChars.Contains(tiea.Character))
+                            _illegalBlink = true;
+                        else
+                            Text += tiea.Character;
                     break;
             }
         }
