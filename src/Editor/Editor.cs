@@ -53,6 +53,8 @@ public class Editor
                 break;
             case EditorState.SaveLevel:
                 _saveLevel.Update(mouse, mouseOld, kb, kbOld, _main.Board);
+                if (_saveLevel.OKButton.IsClicked)
+                    newState = GameState.MainMenu;
                 break;
         }
     }

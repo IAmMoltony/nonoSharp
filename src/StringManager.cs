@@ -63,7 +63,7 @@ public static class StringManager
     public static string GetString(string key)
     {
         if (!_strings.ContainsKey(key))
-            return key;
+            return $"{{ {key} }}";
         return _strings[key];
     }
 
