@@ -91,7 +91,7 @@ public class TextBox : UIElement
     public void BackSpace()
     {
         if (Text.Length > 0)
-            Text = Text.Substring(0, Text.Length - 1);
+            Text = Text[..^1];
     }
 
     public void Clear()
