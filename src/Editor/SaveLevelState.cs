@@ -1,7 +1,9 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using System.Runtime.InteropServices;
+using Serilog;
+using System.IO;
+using System.Linq;
 
 namespace NonoSharp.Editor;
 
@@ -9,7 +11,6 @@ public class SaveLevelState
 {
     private readonly UI.TextBox _levelNameBox;
     private readonly UI.Button _saveButton;
-    private readonly bool _isWindows;
     private bool _saved;
 
     public UI.Button OKButton { get; private set; }
@@ -19,24 +20,18 @@ public class SaveLevelState
     {
         _levelNameBox = new(0, 0, 200, Color.DarkGray, Color.Gray, Color.White, Color.White, 230);
         _saveButton = new(0, 0, 0, 40, StringManager.GetString("save"), Color.DarkGreen, Color.Green, Keys.Enter, true);
-        _isWindows = RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
         _saved = false;
 
         OKButton = new(0, 0, 0, 40, StringManager.GetString("ok"), Color.DarkGreen, Color.Green, Keys.Enter, true);
         BackButton = new(10, 10, 0, 40, StringManager.GetString("back"), Color.DarkGreen, Color.Green, Keys.Escape, true);
 
-        if (_isWindows)
-        {
-            // We're on Windows
-            // Windows doesn't allow certain characters in file names
-            _levelNameBox.illegalChars = new() { '<', '>', ':', '"', '/', '\\', '|', '?', '*' };
-        }
-        else
-        {
-            // We're on BSD/MacOS/Linux/something else
-            // Generally those OSes only don't allow the forward slash
-            _levelNameBox.illegalChars = new() { '/' };
-        }
+        // Some operating systems (windows) don't allow certain characters in file names. I don't
+        // really want to implement an error checker for the save button so I'm just going to make
+        // every invalid file name (and path name for good measure) character illegal.
+        char[] invalidPathChars = Path.GetInvalidPathChars();
+        char[] invalidFileNameChars = Path.GetInvalidFileNameChars();
+        _levelNameBox.illegalChars = invalidPathChars.Union(invalidFileNameChars).ToList();
+        Log.Logger.Information($"Illegal filename chars: {string.Join(", ", _levelNameBox.illegalChars)}");
     }
 
     public void Draw(SpriteBatch sprBatch)
