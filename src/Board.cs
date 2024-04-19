@@ -21,6 +21,15 @@ public class Board
     public int size;
     public bool IsSolved { get; private set; }
 
+    public static bool CompareSolutionTile(TileState a, TileState b)
+    {
+        if (a == TileState.Cross)
+            a = TileState.Empty;
+        if (b == TileState.Cross)
+            b = TileState.Empty;
+        return a == b;
+    }
+
     public Board()
     {
         size = 0;
@@ -243,7 +252,7 @@ public class Board
             {
                 TileState a = tiles[i, j].state;
                 TileState b = solution[i, j].state;
-                if (!compareSolutionTile(a, b))
+                if (!CompareSolutionTile(a, b))
                 {
                     solved = false;
                     goto CheckSolvedEnd;
@@ -278,14 +287,5 @@ public class Board
             tile.LeftClick();
         else
             tile.RightClick();
-    }
-
-    private bool compareSolutionTile(TileState a, TileState b)
-    {
-        if (a == TileState.Cross)
-            a = TileState.Empty;
-        if (b == TileState.Cross)
-            b = TileState.Empty;
-        return a == b;
     }
 }
