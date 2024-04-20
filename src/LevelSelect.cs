@@ -12,6 +12,8 @@ namespace NonoSharp;
 
 public class LevelSelect
 {
+    public static readonly int ScrollSpeed = 50;
+
     private List<Tuple<LevelMetadata, Button>> _levels;
     private int _scrollOffsetGoal;
     private float _scrollOffset;
@@ -73,7 +75,7 @@ public class LevelSelect
         updateScroll(mouse, mouseOld);
 
         // lerp scroll offset
-        _scrollOffset = MathHelper.Lerp(_scrollOffset, _scrollOffsetGoal, 0.12f);
+        _scrollOffset = MathHelper.Lerp(_scrollOffset, _scrollOffsetGoal, 0.3f);
 
         for (int i = 0; i < _levels.Count; i++)
         {
@@ -95,14 +97,14 @@ public class LevelSelect
 
     private void updateScroll(MouseState mouse, MouseState mouseOld)
     {
-        if (mouse.ScrollWheelValue > mouseOld.ScrollWheelValue)
-            _scrollOffsetGoal += 25;
-        else if (mouse.ScrollWheelValue < mouseOld.ScrollWheelValue)
-            _scrollOffsetGoal -= 25;
         if (_scrollOffsetGoal > 0)
             _scrollOffsetGoal = 0;
         if (_scrollOffsetGoal < -((120 * _levels.Count) - 230))
             _scrollOffsetGoal = -((120 * _levels.Count) - 230);
+        if (mouse.ScrollWheelValue > mouseOld.ScrollWheelValue)
+            _scrollOffsetGoal += ScrollSpeed;
+        else if (mouse.ScrollWheelValue < mouseOld.ScrollWheelValue)
+            _scrollOffsetGoal -= ScrollSpeed;
     }
 
     private static void drawHeading(GraphicsDevice graphDev, SpriteBatch sprBatch)
