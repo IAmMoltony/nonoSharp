@@ -25,13 +25,12 @@ public class SaveLevelState
         OKButton = new(0, 0, 0, 40, StringManager.GetString("ok"), Color.DarkGreen, Color.Green, Keys.Enter, true);
         BackButton = new(10, 10, 0, 40, StringManager.GetString("back"), Color.DarkGreen, Color.Green, Keys.Escape, true);
 
-        // Some operating systems (windows) don't allow certain characters in file names. I don't
+        // Some operating systems (especially windows) don't allow certain characters in file names. I don't
         // really want to implement an error checker for the save button so I'm just going to make
         // every invalid file name (and path name for good measure) character illegal.
         char[] invalidPathChars = Path.GetInvalidPathChars();
         char[] invalidFileNameChars = Path.GetInvalidFileNameChars();
         _levelNameBox.illegalChars = invalidPathChars.Union(invalidFileNameChars).ToList();
-        Log.Logger.Information($"Illegal filename chars: {string.Join(", ", _levelNameBox.illegalChars)}");
     }
 
     public void Draw(SpriteBatch sprBatch)
