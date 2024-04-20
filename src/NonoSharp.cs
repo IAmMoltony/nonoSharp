@@ -199,8 +199,14 @@ public class NonoSharpGame : Game
         _spriteBatch.Begin();
 
         // draw background grid
-        GridRenderer.DrawGrid(_spriteBatch, 0, 0, (GraphicsDevice.Viewport.Bounds.Height / 32) + 1, (GraphicsDevice.Viewport.Bounds.Width / 32) + 1, 32,
-                              Color.DarkGreen.Darker(0.7f));
+        GridRenderer.DrawGrid(
+                _spriteBatch,
+                (int)((_mouse.X - GraphicsDevice.Viewport.Bounds.Width / 2) * 0.03f) - 100,
+                (int)((_mouse.Y - GraphicsDevice.Viewport.Bounds.Height / 2) * 0.03f) - 100,
+                (GraphicsDevice.Viewport.Bounds.Height / 32) + 101, 
+                (GraphicsDevice.Viewport.Bounds.Width / 32) + 101,
+                32,
+                Color.DarkGreen.Darker(0.7f));
 
         switch (_state)
         {
