@@ -11,19 +11,23 @@ public class MainMenu
     public Button PlayButton { get; private set; }
     public Button QuitButton { get; private set; }
     public Button EditorButton { get; private set; }
+    public Button SettingsButton { get; private set; }
 
     public MainMenu()
     {
         PlayButton = new(0, 0, 0, 60, StringManager.GetString("playButton"), Color.DarkGreen, Color.Green, Keys.P, true);
         EditorButton = new(0, 0, 120, 60, StringManager.GetString("editorButton"), Color.DarkGreen, Color.Green, Keys.E, true);
+        SettingsButton = new(0, 0, 120, 60, StringManager.GetString("settingsButton"), Color.DarkGreen, Color.Green, Keys.S, true);
         QuitButton = new(0, 0, 120, 60, StringManager.GetString("quitButton"), Color.DarkGreen, Color.Green, Keys.Q, true);
 
-        int maxWidth = new[] { PlayButton.width, EditorButton.width, QuitButton.width }.Max();
+        int maxWidth = new[] { PlayButton.width, EditorButton.width, SettingsButton.width, QuitButton.width }.Max();
         PlayButton.isDynamicWidth = false;
         EditorButton.isDynamicWidth = false;
+        SettingsButton.isDynamicWidth = false;
         QuitButton.isDynamicWidth = false;
         PlayButton.width = maxWidth;
         EditorButton.width = maxWidth;
+        SettingsButton.width = maxWidth;
         QuitButton.width = maxWidth;
     }
 
@@ -37,8 +41,12 @@ public class MainMenu
         EditorButton.y = PlayButton.y + 70;
         EditorButton.Update(mouse, mouseOld, kb, kbOld);
 
+        SettingsButton.x = PlayButton.x;
+        SettingsButton.y = PlayButton.y + 140;
+        SettingsButton.Update(mouse, mouseOld, kb, kbOld);
+
         QuitButton.x = PlayButton.x;
-        QuitButton.y = PlayButton.y + 140;
+        QuitButton.y = PlayButton.y + 210;
         QuitButton.Update(mouse, mouseOld, kb, kbOld);
     }
 
@@ -51,6 +59,7 @@ public class MainMenu
 
         PlayButton.Draw(sprBatch);
         EditorButton.Draw(sprBatch);
+        SettingsButton.Draw(sprBatch);
         QuitButton.Draw(sprBatch);
     }
 }

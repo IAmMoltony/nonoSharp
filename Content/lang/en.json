@@ -19,5 +19,6 @@
   "withHints1": "with 1 hint",
   "reset": "Reset",
   "restart": "Restart",
-  "levelSaved": "Level saved!"
+  "levelSaved": "Level saved!",
+  "setings": "SettingsButton"
 }
