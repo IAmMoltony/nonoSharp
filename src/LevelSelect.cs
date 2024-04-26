@@ -13,6 +13,7 @@ namespace NonoSharp;
 public class LevelSelect
 {
     public static readonly int ScrollSpeed = 50;
+    public static readonly float KeyboardScrollSpeedMultiplier = 0.3f;
 
     private List<Tuple<LevelMetadata, Button>> _levels;
     private int _scrollOffsetGoal;
@@ -72,7 +73,7 @@ public class LevelSelect
     {
         newState = null;
 
-        updateScroll(mouse, mouseOld);
+        updateScroll(mouse, mouseOld, kb);
 
         // lerp scroll offset
         _scrollOffset = MathHelper.Lerp(_scrollOffset, _scrollOffsetGoal, 0.3f);
@@ -95,7 +96,7 @@ public class LevelSelect
             newState = GameState.MainMenu;
     }
 
-    private void updateScroll(MouseState mouse, MouseState mouseOld)
+    private void updateScroll(MouseState mouse, MouseState mouseOld, KeyboardState keyboard)
     {
         if (_scrollOffsetGoal > 0)
             _scrollOffsetGoal = 0;
@@ -105,6 +106,13 @@ public class LevelSelect
             _scrollOffsetGoal += ScrollSpeed;
         else if (mouse.ScrollWheelValue < mouseOld.ScrollWheelValue)
             _scrollOffsetGoal -= ScrollSpeed;
+
+        // arrow keys
+        int keyboardScrollSpeed = (int)(ScrollSpeed * KeyboardScrollSpeedMultiplier);
+        if (keyboard.IsKeyDown(Keys.Up))
+            _scrollOffsetGoal += keyboardScrollSpeed;
+        else if (keyboard.IsKeyDown(Keys.Down))
+            _scrollOffsetGoal -= keyboardScrollSpeed;
     }
 
     private static void drawHeading(GraphicsDevice graphDev, SpriteBatch sprBatch)
