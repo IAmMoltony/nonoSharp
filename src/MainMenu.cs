@@ -57,15 +57,22 @@ public class MainMenu
 
     private void updateButtonWidths()
     {
+        // find the biggest button width
         int maxWidth = new[] { PlayButton.width, EditorButton.width, SettingsButton.width, QuitButton.width }.Max();
+
+        // disable dynamic width
         PlayButton.isDynamicWidth = false;
         EditorButton.isDynamicWidth = false;
         SettingsButton.isDynamicWidth = false;
         QuitButton.isDynamicWidth = false;
+
+        // set the width of all buttons to the biggest width
         PlayButton.width = maxWidth;
         EditorButton.width = maxWidth;
         SettingsButton.width = maxWidth;
         QuitButton.width = maxWidth;
+
+        // enable dynamic width back
         PlayButton.isDynamicWidth = true;
         EditorButton.isDynamicWidth = true;
         SettingsButton.isDynamicWidth = true;
