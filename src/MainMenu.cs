@@ -19,16 +19,6 @@ public class MainMenu
         EditorButton = new(0, 0, 120, 60, StringManager.GetString("editorButton"), Color.DarkGreen, Color.Green, Keys.E, true);
         SettingsButton = new(0, 0, 120, 60, StringManager.GetString("settingsButton"), Color.DarkGreen, Color.Green, Keys.S, true);
         QuitButton = new(0, 0, 120, 60, StringManager.GetString("quitButton"), Color.DarkGreen, Color.Green, Keys.Q, true);
-
-        int maxWidth = new[] { PlayButton.width, EditorButton.width, SettingsButton.width, QuitButton.width }.Max();
-        PlayButton.isDynamicWidth = false;
-        EditorButton.isDynamicWidth = false;
-        SettingsButton.isDynamicWidth = false;
-        QuitButton.isDynamicWidth = false;
-        PlayButton.width = maxWidth;
-        EditorButton.width = maxWidth;
-        SettingsButton.width = maxWidth;
-        QuitButton.width = maxWidth;
     }
 
     public void Update(MouseState mouse, MouseState mouseOld, KeyboardState kb, KeyboardState kbOld, GraphicsDevice graphDev)
@@ -48,6 +38,8 @@ public class MainMenu
         QuitButton.x = PlayButton.x;
         QuitButton.y = PlayButton.y + 210;
         QuitButton.Update(mouse, mouseOld, kb, kbOld);
+
+        updateButtonWidths();
     }
 
     public void Draw(SpriteBatch sprBatch)
@@ -61,5 +53,22 @@ public class MainMenu
         EditorButton.Draw(sprBatch);
         SettingsButton.Draw(sprBatch);
         QuitButton.Draw(sprBatch);
+    }
+
+    private void updateButtonWidths()
+    {
+        int maxWidth = new[] { PlayButton.width, EditorButton.width, SettingsButton.width, QuitButton.width }.Max();
+        PlayButton.isDynamicWidth = false;
+        EditorButton.isDynamicWidth = false;
+        SettingsButton.isDynamicWidth = false;
+        QuitButton.isDynamicWidth = false;
+        PlayButton.width = maxWidth;
+        EditorButton.width = maxWidth;
+        SettingsButton.width = maxWidth;
+        QuitButton.width = maxWidth;
+        PlayButton.isDynamicWidth = true;
+        EditorButton.isDynamicWidth = true;
+        SettingsButton.isDynamicWidth = true;
+        QuitButton.isDynamicWidth = true;
     }
 }
