@@ -111,7 +111,7 @@ public class LevelSelect
     {
         Rectangle nameRect = new(0, 15, graphDev.Viewport.Bounds.Width, 100);
         Rectangle nameBackgroundRect = new(0, 0, graphDev.Viewport.Bounds.Width, 100);
-        RectRenderer.DrawRect(nameBackgroundRect, Color.Black, sprBatch);
+        RectRenderer.DrawRect(nameBackgroundRect, new Color(Color.Black, 0.7f), sprBatch);
         TextRenderer.DrawTextCenter(sprBatch, "DefaultFont", 0.9f, StringManager.GetString("selectLevel"), Color.White, nameRect);
     }
 }
