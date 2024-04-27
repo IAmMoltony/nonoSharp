@@ -12,7 +12,8 @@ public enum GameState
     Game,
     MainMenu,
     LevelSelect,
-    Editor
+    Editor,
+    Settings
 }
 
 public class NonoSharpGame : Game
@@ -38,6 +39,7 @@ public class NonoSharpGame : Game
     private LevelSelect _levelSelect;
     private PlayState _play;
     private Editor.Editor _editor;
+    private SettingsScreen _settings;
 
     public NonoSharpGame()
     {
@@ -84,6 +86,7 @@ public class NonoSharpGame : Game
         _levelSelect = new();
         _editor = new();
         _play = new();
+        _settings = new();
 
         _graphics.HardwareModeSwitch = false;
 
@@ -155,6 +158,9 @@ public class NonoSharpGame : Game
                 // editor button
                 else if (_mainMenu.EditorButton.IsClicked)
                     _state = GameState.Editor;
+                // settings button
+                else if (_mainMenu.SettingsButton.IsClicked)
+                    _state = GameState.Settings;
 
                 break;
             case GameState.LevelSelect:
@@ -179,6 +185,14 @@ public class NonoSharpGame : Game
                         _state = (GameState)newState;
                     break;
                 }
+            case GameState.Settings:
+                _settings.Update(_mouse, _mouseOld, _kb, _kbOld);
+                if (_settings.BackButton.IsClicked)
+                {
+                    Settings.Save();
+                    _state = GameState.MainMenu;
+                }
+                break;
         }
 
         updateShowFPS();
@@ -221,6 +235,9 @@ public class NonoSharpGame : Game
                 break;
             case GameState.Editor:
                 _editor.Draw(_spriteBatch);
+                break;
+            case GameState.Settings:
+                _settings.Draw(_spriteBatch);
                 break;
         }
 
