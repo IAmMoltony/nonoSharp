@@ -39,8 +39,10 @@ public class CheckBox : UIElement
         RectRenderer.DrawRect(rect, fc, sprBatch);
         RectRenderer.DrawRectOutline(rect, oc, 2, sprBatch);
 
+        Color checkColor = fc.IsLight() ? Color.Black : Color.White;
+
         if (isChecked)
-            sprBatch.Draw(TextureCheck, new Vector2(x, y), Color.White);
+            sprBatch.Draw(TextureCheck, new Vector2(x, y), checkColor);
     }
 
     public override void Update(MouseState mouse, MouseState mouseOld, KeyboardState keyboard, KeyboardState keyboardOld)
