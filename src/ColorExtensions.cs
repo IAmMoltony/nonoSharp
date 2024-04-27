@@ -45,4 +45,15 @@ public static class ColorExtensions
 
         return new(r, g, b);
     }
+
+    /// <summary>
+    /// Check if the color is light.
+    /// </summary>
+    /// <param name="color">The color to check</param>
+    /// <returns>Whether or not the color is light</returns>
+    public static bool IsLight(this Color color)
+    {
+        int brightness = (int)color.R + (int)color.G + (int)color.B;
+        return brightness >= 383;
+    } 
 }
