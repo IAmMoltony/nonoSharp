@@ -13,7 +13,7 @@ public class Button : UIElement
     public bool isDynamicWidth;
     public int dynamicWidthPad;
     public bool disabled;
-    public Keys shortcutKey;
+    public Keys[] shortcutKeys;
     public string font;
     public float fontScale;
 
@@ -32,7 +32,7 @@ public class Button : UIElement
         this.dynamicWidthPad = dynamicWidthPad;
         isDynamicWidth = dynamicWidth;
         disabled = false;
-        shortcutKey = Keys.None;
+        shortcutKeys = new Keys[] { Keys.None };
         font = "DefaultFont";
         fontScale = 0.5f;
 
@@ -47,7 +47,7 @@ public class Button : UIElement
 
     public Button(int x, int y, int width, int height, string text, Color fillColor, Color outlineColor, Keys shortcutKey, bool dynamicWidth = false, int dynamicWidthPad = 10) : this(x, y, width, height, text, fillColor, outlineColor, dynamicWidth, dynamicWidthPad)
     {
-        this.shortcutKey = shortcutKey;
+        this.shortcutKeys = new[] { shortcutKey };
     }
 
     public Button(int x, int y, int width, int height, string text, Color fillColor, Color outlineColor, float fontScale, bool dynamicWidth = false, int dynamicWidthPad = 10) : this(x, y, width, height, text, fillColor, outlineColor, dynamicWidth, dynamicWidthPad)
@@ -63,13 +63,13 @@ public class Button : UIElement
     public Button(int x, int y, int width, int height, string text, Color fillColor, Color outlineColor, float fontScale, Keys shortcutKey, bool dynamicWidth = false, int dynamicWidthPad = 10) : this(x, y, width, height, text, fillColor, outlineColor, dynamicWidth, dynamicWidthPad)
     {
         this.fontScale = fontScale;
-        this.shortcutKey = shortcutKey;
+        this.shortcutKeys = new Keys[] { shortcutKey };
     }
 
     public Button(int x, int y, int width, int height, string text, Color fillColor, Color outlineColor, float fontScale, string font, Keys shortcutKey, bool dynamicWidth = false, int dynamicWidthPad = 10) : this(x, y, width, height, text, fillColor, outlineColor, fontScale, dynamicWidth, dynamicWidthPad)
     {
         this.font = font;
-        this.shortcutKey = shortcutKey;
+        this.shortcutKeys = new Keys[] { shortcutKey };
     }
 
     public override void Draw(SpriteBatch sprBatch)
@@ -120,7 +120,10 @@ public class Button : UIElement
 
     private bool shortcutKeyPressed(KeyboardState kb, KeyboardState kbOld)
     {
-        return kb.IsKeyDown(shortcutKey) && !kbOld.IsKeyDown(shortcutKey);
+        foreach (Keys key in shortcutKeys)
+            if (kb.IsKeyDown(key) && !kbOld.IsKeyDown(key))
+                return true;
+        return false;
     }
 
     private Rectangle getRect() => new(x, y, width, height);
