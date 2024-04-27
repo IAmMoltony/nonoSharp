@@ -50,6 +50,11 @@ public class Button : UIElement
         this.shortcutKeys = new[] { shortcutKey };
     }
 
+    public Button(int x, int y, int width, int height, string text, Color fillColor, Color outlineColor, Keys[] shortcutKeys, bool dynamicWidth = false, int dynamicWidthPad = 10) : this(x, y, width, height, text, fillColor, outlineColor, dynamicWidth, dynamicWidthPad)
+    {
+        this.shortcutKeys = shortcutKeys;
+    }
+
     public Button(int x, int y, int width, int height, string text, Color fillColor, Color outlineColor, float fontScale, bool dynamicWidth = false, int dynamicWidthPad = 10) : this(x, y, width, height, text, fillColor, outlineColor, dynamicWidth, dynamicWidthPad)
     {
         this.fontScale = fontScale;
