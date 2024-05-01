@@ -16,6 +16,7 @@ public class CheckBox : UIElement
 
     private Color _fillColor, _outlineColor;
     private bool _isHovered;
+    private string _text;
 
     public static void LoadTextures(ContentManager content)
     {
@@ -23,12 +24,13 @@ public class CheckBox : UIElement
         TextureCheck = content.Load<Texture2D>("check");
     }
 
-    public CheckBox(int x, int y, Color fillColor, Color outlineColor) : base(x, y)
+    public CheckBox(int x, int y, string text, Color fillColor, Color outlineColor) : base(x, y)
     {
         isChecked = false;
         _fillColor = fillColor;
         _outlineColor = outlineColor;
         _isHovered = false;
+        _text = text;
     }
 
     public override void Draw(SpriteBatch sprBatch)
@@ -43,6 +45,8 @@ public class CheckBox : UIElement
 
         if (isChecked)
             sprBatch.Draw(TextureCheck, new Vector2(x, y), checkColor);
+
+        drawText(sprBatch,rect);
     }
 
     public override void Update(MouseState mouse, MouseState mouseOld, KeyboardState keyboard, KeyboardState keyboardOld)
@@ -56,5 +60,10 @@ public class CheckBox : UIElement
     private Rectangle getRect()
     {
         return new(x, y, Size, Size);
+    }
+
+    private void drawText(SpriteBatch sprBatch, Rectangle rect)
+    {
+        TextRenderer.DrawText(sprBatch, "DefaultFont", x + rect.Width + 10, y, 0.4f, _text, Color.White);
     }
 }

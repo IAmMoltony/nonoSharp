@@ -90,7 +90,7 @@ public class NonoSharpGame : Game
         _play = new();
         _settings = new();
 
-        _c = new(10, 10, Color.LightGray, Color.Gray);
+        _c = new(10, 10, "checkbox", Color.LightGray, Color.Gray);
 
         _graphics.HardwareModeSwitch = false;
 
