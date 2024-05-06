@@ -41,8 +41,6 @@ public class NonoSharpGame : Game
     private Editor.Editor _editor;
     private SettingsScreen _settings;
 
-    private UI.CheckBox _c;
-
     public NonoSharpGame()
     {
         CrashHandler.Initialize();
@@ -89,8 +87,6 @@ public class NonoSharpGame : Game
         _editor = new();
         _play = new();
         _settings = new();
-
-        _c = new(10, 10, "checkbox", Color.LightGray, Color.Gray);
 
         _graphics.HardwareModeSwitch = false;
 
@@ -200,8 +196,6 @@ public class NonoSharpGame : Game
                 break;
         }
 
-        _c.Update(_mouse, _mouseOld, _kb, _kbOld);
-
         updateShowFPS();
         updatePerfInfo();
 
@@ -247,8 +241,6 @@ public class NonoSharpGame : Game
                 _settings.Draw(_spriteBatch);
                 break;
         }
-
-        _c.Draw(_spriteBatch);
 
         // draw some performance info
         if (_showFPS)
