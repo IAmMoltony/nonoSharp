@@ -77,7 +77,7 @@ public struct Tile
                 break;
             case TileState.Filled:
                 _fr.color1 = Color.Green;
-                _fr.color2 = Color.Lime;
+                _fr.color2 = Color.Lime; // TODO light accent color
                 break;
         }
 

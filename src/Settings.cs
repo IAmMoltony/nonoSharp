@@ -1,3 +1,4 @@
+using Microsoft.Xna.Framework;
 using Serilog;
 using System;
 using System.Collections.Generic;
@@ -14,8 +15,11 @@ public static class Settings
     private static readonly Dictionary<string, string> _defaultSettings = new()
     {
         {"language", "System"},
-        {"fullScreen", "no"}
+        {"fullScreen", "no"},
+        {"accentColor", "0;128;0"}
     };
+
+    public const float AccentColorDefaultDarkerAmount = 0.3f;
 
     public static void Initialize()
     {
@@ -70,7 +74,12 @@ public static class Settings
 
     public static void Set(string key, bool val)
     {
-        _settings[key] = val ? "yes" : "no";
+        Set(key, val ? "yes" : "no");
+    }
+
+    public static void Set(string key, Color val)
+    {
+        Set(key, $"{val.R};{val.G};{val.B}");
     }
 
     public static string Get(string key)
@@ -86,5 +95,41 @@ public static class Settings
     public static bool GetBool(string key)
     {
         return Get(key) == "yes";
+    }
+
+    public static Color GetColor(string key)
+    {
+        string colorString = Get(key);
+        string[] parts = colorString.Split(';');
+        if (parts.Length != 3)
+            return Color.White;
+
+        int[] intParts = new int[3];
+        try
+        {
+            intParts = Array.ConvertAll(parts, int.Parse);
+        }
+        catch (ArgumentNullException)
+        {
+            return Color.White;
+        }
+
+        // Make sure the parts don't go over 255 or under 0
+        for (int i = 0; i < 3; i++)
+            if (intParts[i] > 255 || intParts[i] < 0)
+                return Color.White;
+        
+        return new(intParts[0], intParts[1], intParts[2]);
+    }
+
+    // this is for convenience so i don't have to type "Settings.GetColor("accentColor")" all the time
+    public static Color GetAccentColor()
+    {
+        return GetColor("accentColor");
+    }
+
+    public static Color GetDarkAccentColor(float darkAmount = AccentColorDefaultDarkerAmount)
+    {
+        return GetAccentColor().Darker(darkAmount);
     }
 }

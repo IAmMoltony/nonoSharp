@@ -14,8 +14,8 @@ public class EditorMain
     public EditorMain()
     {
         Board = new();
-        SaveButton = new(10, 10, 0, 45, StringManager.GetString("save"), Color.DarkGreen, Color.Green, Keys.S, true);
-        ResetButton = new(10, 65, 0, 45, StringManager.GetString("reset"), Color.DarkGreen, Color.Green, Keys.R, true);
+        SaveButton = new(10, 10, 0, 45, StringManager.GetString("save"), Settings.GetDarkAccentColor(), Settings.GetAccentColor(), Keys.S, true);
+        ResetButton = new(10, 65, 0, 45, StringManager.GetString("reset"), Settings.GetDarkAccentColor(), Settings.GetAccentColor(), Keys.R, true);
     }
 
     public void Update(MouseState mouse, MouseState mouseOld, KeyboardState kb, KeyboardState kbOld, GraphicsDevice graphDev)

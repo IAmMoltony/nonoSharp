@@ -213,15 +213,7 @@ public class NonoSharpGame : Game
 
         _spriteBatch.Begin();
 
-        // draw background grid
-        GridRenderer.DrawGrid(
-                _spriteBatch,
-                (int)((_mouse.X - GraphicsDevice.Viewport.Bounds.Width / 2) * 0.03f) - 100,
-                (int)((_mouse.Y - GraphicsDevice.Viewport.Bounds.Height / 2) * 0.03f) - 100,
-                (GraphicsDevice.Viewport.Bounds.Height / 32) + 101, 
-                (GraphicsDevice.Viewport.Bounds.Width / 32) + 101,
-                32,
-                Color.DarkGreen.Darker(0.7f));
+        drawBackgroundGrid();
 
         switch (_state)
         {
@@ -297,6 +289,19 @@ public class NonoSharpGame : Game
             setWindowSize((int)(GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width * 0.85f), (int)(GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height * 0.85f), false);
         else
             setWindowSize(GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width, GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height, true);
+    }
+
+    private void drawBackgroundGrid()
+    {
+        // draw background grid
+        GridRenderer.DrawGrid(
+                _spriteBatch,
+                (int)((_mouse.X - GraphicsDevice.Viewport.Bounds.Width / 2) * 0.03f) - 100,
+                (int)((_mouse.Y - GraphicsDevice.Viewport.Bounds.Height / 2) * 0.03f) - 100,
+                (GraphicsDevice.Viewport.Bounds.Height / 32) + 101,
+                (GraphicsDevice.Viewport.Bounds.Width / 32) + 101,
+                32,
+                Settings.GetDarkAccentColor(0.7f));
     }
 
     private void setWindowSize(int w, int h, bool fullscreen)

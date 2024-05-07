@@ -24,7 +24,7 @@ public class LevelSelect
     {
         _scrollOffsetGoal = 0;
         _scrollOffset = 0;
-        _backButton = new(10, 10, 0, 40, StringManager.GetString("back"), Color.DarkGreen, Color.Green, Keys.Escape, true);
+        _backButton = new(10, 10, 0, 40, StringManager.GetString("back"), Settings.GetDarkAccentColor(), Settings.GetAccentColor(), Keys.Escape, true);
     }
 
     public void FindLevels()
@@ -41,7 +41,7 @@ public class LevelSelect
 
         // copy over the list into the internal list and slap in buttons
         for (int i = 0; i < list.Count(); i++)
-            _levels.Add(new(list[i], new(15, 110 + (120 * i) + 40, 0, 40, StringManager.GetString("playButton"), Color.DarkGreen, Color.Green, true)));
+            _levels.Add(new(list[i], new(15, 110 + (120 * i) + 40, 0, 40, StringManager.GetString("playButton"), Settings.GetDarkAccentColor(), Settings.GetAccentColor(), true)));
 
         stopwatch.Stop();
         Log.Logger.Information($"Found levels in {stopwatch.ElapsedMilliseconds} ms");
@@ -55,8 +55,8 @@ public class LevelSelect
         {
             // Draw the background
             Rectangle backgroundRect = new(5, 105 + (120 * i) + (int)_scrollOffset, (int)((float)sprBatch.GraphicsDevice.Viewport.Width * 0.8f), 95);
-            RectRenderer.DrawRect(backgroundRect, Color.DarkGreen, sprBatch);
-            RectRenderer.DrawRectOutline(backgroundRect, Color.DarkGreen.Darker(0.5f), 3, sprBatch);
+            RectRenderer.DrawRect(backgroundRect, Settings.GetDarkAccentColor(), sprBatch);
+            RectRenderer.DrawRectOutline(backgroundRect, Settings.GetDarkAccentColor(0.8f), 3, sprBatch);
 
             // Draw the level name
             string label = _levels[i].Item1.ToString();

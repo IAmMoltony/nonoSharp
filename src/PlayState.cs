@@ -36,9 +36,9 @@ public class PlayState
     {
         _board = new();
         _paused = false;
-        _solvedContinueButton = new(0, 0, 0, 50, StringManager.GetString("continue"), Color.DarkGreen, Color.Green, true);
-        _pauseBackButton = new(10, 130, 0, 50, StringManager.GetString("back"), Color.DarkGreen, Color.Green, true);
-        _pauseRestartButton = new(10, 190, 0, 50, StringManager.GetString("restart"), Color.DarkGreen, Color.Green, true);
+        _solvedContinueButton = new(0, 0, 0, 50, StringManager.GetString("continue"), Settings.GetDarkAccentColor(), Settings.GetAccentColor(), true);
+        _pauseBackButton = new(10, 130, 0, 50, StringManager.GetString("back"), Settings.GetDarkAccentColor(), Settings.GetAccentColor(), true);
+        _pauseRestartButton = new(10, 190, 0, 50, StringManager.GetString("restart"), Settings.GetDarkAccentColor(), Settings.GetAccentColor(), true);
         _usedHints = 0;
 
         _solveTimeThread = new(solveTimeTick);

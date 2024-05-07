@@ -11,7 +11,7 @@ public class SettingsScreen
 
     public SettingsScreen()
     {
-        BackButton = new(10, 10, 0, 40, StringManager.GetString("back"), Color.DarkGreen, Color.Green, Keys.Escape, true);
+        BackButton = new(10, 10, 0, 40, StringManager.GetString("back"), Settings.GetDarkAccentColor(), Settings.GetAccentColor(), Keys.Escape, true);
     }
 
     public void Draw(SpriteBatch sprBatch)
