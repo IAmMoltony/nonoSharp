@@ -22,7 +22,7 @@ public class SaveLevelState
         _saveButton = new(0, 0, 0, 40, StringManager.GetString("save"), Settings.GetDarkAccentColor(), Settings.GetAccentColor(), Keys.Enter, true);
         _saved = false;
 
-        OKButton = new(0, 0, 0, 40, StringManager.GetString("ok"), Settings.GetDarkAccentColor(), Color.Green, Keys.Enter, true);
+        OKButton = new(0, 0, 0, 40, StringManager.GetString("ok"), Settings.GetDarkAccentColor(), Settings.GetAccentColor(), Keys.Enter, true);
         BackButton = new(10, 10, 0, 40, StringManager.GetString("back"), Settings.GetDarkAccentColor(), Settings.GetAccentColor(), Keys.Escape, true);
 
         // Some operating systems (especially windows) don't allow certain characters in file names. I don't
