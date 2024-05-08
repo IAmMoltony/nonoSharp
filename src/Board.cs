@@ -77,6 +77,7 @@ public class Board
         }
 
         clues = new(this);
+        crossZeroLines();
     }
 
     public void Draw(SpriteBatch batch)
@@ -287,5 +288,48 @@ public class Board
             tile.LeftClick();
         else
             tile.RightClick();
+    }
+
+    private void crossZeroLines()
+    {
+        // Find all lines that have no tiles and cross them
+
+        for (int i = 0; i < size; i++)
+        {
+            bool allZeros = true;
+            for (int j = 0; j < size; j++)
+            {
+                if (solution[j, i].state != TileState.Empty)
+                {
+                    allZeros = false;
+                    break;
+                }
+            }
+
+            if (allZeros)
+            {
+                // put crosses
+                for (int j = 0; j < size; j++)
+                    tiles[j, i].state = TileState.Cross;
+            }
+
+            // do the same in the other direction
+            allZeros = true;
+            for (int j = 0; j < size; j++)
+            {
+                if (solution[i, j].state != TileState.Empty)
+                {
+                    allZeros = false;
+                    break;
+                }
+            }
+
+            if (allZeros)
+            {
+                // put crosses
+                for (int j = 0; j < size; j++)
+                    tiles[i, j].state = TileState.Cross;
+            }
+        }
     }
 }
