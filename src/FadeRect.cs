@@ -9,8 +9,6 @@ public enum FadeRectMode
     FadeOut
 }
 
-// TODO use Color.Lerp in this class.
-
 public class FadeRect
 {
     public Rectangle rect;
