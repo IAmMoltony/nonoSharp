@@ -76,8 +76,8 @@ public struct Tile
                 _fr.color2 = Color.LightGray;
                 break;
             case TileState.Filled:
-                _fr.color1 = Color.Green;
-                _fr.color2 = Color.Lime; // TODO light accent color
+                _fr.color1 = Settings.GetAccentColor();
+                _fr.color2 = Settings.GetLightAccentColor();
                 break;
         }
 

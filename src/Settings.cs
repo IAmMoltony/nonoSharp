@@ -20,6 +20,7 @@ public static class Settings
     };
 
     public const float AccentColorDefaultDarkerAmount = 0.3f;
+    public const float AccentColorDefaultLighterAmount = 0.5f;
 
     public static void Initialize()
     {
@@ -131,5 +132,10 @@ public static class Settings
     public static Color GetDarkAccentColor(float darkAmount = AccentColorDefaultDarkerAmount)
     {
         return GetAccentColor().Darker(darkAmount);
+    }
+
+    public static Color GetLightAccentColor(float lightAmount = AccentColorDefaultLighterAmount)
+    {
+        return GetAccentColor().Lighter(lightAmount);
     }
 }
