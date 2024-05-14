@@ -55,5 +55,5 @@ public static class ColorExtensions
     {
         int brightness = (int)color.R + (int)color.G + (int)color.B;
         return brightness >= 383;
-    } 
+    }
 }

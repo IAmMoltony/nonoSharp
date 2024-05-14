@@ -46,7 +46,7 @@ public class CheckBox : UIElement
         if (isChecked)
             sprBatch.Draw(TextureCheck, new Vector2(x, y), checkColor);
 
-        drawText(sprBatch,rect);
+        drawText(sprBatch, rect);
     }
 
     public override void Update(MouseState mouse, MouseState mouseOld, KeyboardState keyboard, KeyboardState keyboardOld)

@@ -119,7 +119,7 @@ public static class Settings
         for (int i = 0; i < 3; i++)
             if (intParts[i] > 255 || intParts[i] < 0)
                 return Color.White;
-        
+
         return new(intParts[0], intParts[1], intParts[2]);
     }
 
