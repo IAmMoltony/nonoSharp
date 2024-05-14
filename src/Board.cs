@@ -78,6 +78,7 @@ public class Board
 
         clues = new(this);
         crossZeroLines();
+        fillFullLines();
     }
 
     public void Draw(SpriteBatch batch)
@@ -329,6 +330,50 @@ public class Board
                 // put crosses
                 for (int j = 0; j < size; j++)
                     tiles[i, j].state = TileState.Cross;
+            }
+        }
+    }
+
+    private void fillFullLines()
+    {
+        // Find all lines that have every tile filled and fill them
+        // Basically crossZeroLines but fill
+
+        for (int i = 0; i < size; i++)
+        {
+            bool allFilled = true;
+            for (int j = 0; j < size; j++)
+            {
+                if (solution[j, i].state != TileState.Filled)
+                {
+                    allFilled = false;
+                    break;
+                }
+            }
+
+            if (allFilled)
+            {
+                // fill
+                for (int j = 0; j < size; j++)
+                    tiles[j, i].state = TileState.Filled;
+            }
+
+            // do the same in the other direction
+            allFilled = true;
+            for (int j = 0; j < size; j++)
+            {
+                if (solution[i, j].state != TileState.Filled)
+                {
+                    allFilled = false;
+                    break;
+                }
+            }
+
+            if (allFilled)
+            {
+                // fill
+                for (int j = 0; j < size; j++)
+                    tiles[i, j].state = TileState.Filled;
             }
         }
     }
