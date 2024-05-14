@@ -16,7 +16,8 @@ public static class Settings
     {
         {"language", "System"},
         {"fullScreen", "no"},
-        {"accentColor", "0;128;0"}
+        {"accentColor", "0;128;0"},
+        {"enableHints", "yes"}
     };
 
     public const float AccentColorDefaultDarkerAmount = 0.3f;

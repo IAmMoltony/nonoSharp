@@ -9,9 +9,12 @@ public class SettingsScreen
 {
     public Button BackButton { get; private set; }
 
+    private CheckBox _enableHintsBox;
+
     public SettingsScreen()
     {
         BackButton = new(10, 10, 0, 40, StringManager.GetString("back"), Settings.GetDarkAccentColor(), Settings.GetAccentColor(), Keys.Escape, true);
+        _enableHintsBox = new(40, 110, StringManager.GetString("enableHints"), Color.Gray, Color.DarkGray, Settings.GetBool("enableHints"));
     }
 
     public void Draw(SpriteBatch sprBatch)
@@ -21,10 +24,21 @@ public class SettingsScreen
         TextRenderer.DrawTextCenter(sprBatch, "DefaultFont", 0.9f, StringManager.GetString("settingsButton"), Color.White, headingRect);
 
         BackButton.Draw(sprBatch);
+        _enableHintsBox.Draw(sprBatch);
     }
 
     public void Update(MouseState mouse, MouseState mouseOld, KeyboardState kb, KeyboardState kbOld)
     {
+        _enableHintsBox.Update(mouse, mouseOld, kb, kbOld);
+
         BackButton.Update(mouse, mouseOld, kb, kbOld);
+        if (BackButton.IsClicked)
+            close();
+    }
+
+    public void close()
+    {
+        Settings.Set("enableHints", _enableHintsBox.isChecked);
+        Settings.Save();
     }
 }

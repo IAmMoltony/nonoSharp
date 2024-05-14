@@ -80,7 +80,7 @@ public class PlayState
                     _board.RestoreState();
 
                 // hint button
-                if (kb.IsKeyDown(Keys.H) && !kbOld.IsKeyDown(Keys.H))
+                if (kb.IsKeyDown(Keys.H) && !kbOld.IsKeyDown(Keys.H) && Settings.GetBool("enableHints"))
                 {
                     _usedHints++;
                     Log.Logger.Information($"Doing a hint, used hints: {_usedHints}");

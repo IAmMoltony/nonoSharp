@@ -24,9 +24,9 @@ public class CheckBox : UIElement
         TextureCheck = content.Load<Texture2D>("check");
     }
 
-    public CheckBox(int x, int y, string text, Color fillColor, Color outlineColor) : base(x, y)
+    public CheckBox(int x, int y, string text, Color fillColor, Color outlineColor, bool isChecked = false) : base(x, y)
     {
-        isChecked = false;
+        this.isChecked = isChecked;
         _fillColor = fillColor;
         _outlineColor = outlineColor;
         _isHovered = false;
