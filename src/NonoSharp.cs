@@ -122,8 +122,10 @@ public class NonoSharpGame : Game
         RectRenderer.Load(GraphicsDevice);
         GridRenderer.Load(GraphicsDevice);
 
-        Tile.LoadTextures(Content); // load tile textures
-        UI.CheckBox.LoadTextures(Content); // load checkbox textures
+        // load textures
+        Tile.LoadTextures(Content);
+        UI.CheckBox.LoadTextures(Content);
+
         TextRenderer.LoadFont("DefaultFont", "DefaultFont", Content); // load noto sans font (i think it's a nice font)
 
         stopwatch.Stop();
