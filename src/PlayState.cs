@@ -73,10 +73,7 @@ public class PlayState
             else
             {
                 // undo button
-                if (
-                        (kb.IsKeyDown(Keys.Z) && !kbOld.IsKeyDown(Keys.Z)) ||
-                        kb.IsCombinationPressed(kbOld, Keys.LeftControl, Keys.Z) ||
-                        kb.IsCombinationPressed(kbOld, Keys.RightControl, Keys.Z))
+                if (kb.IsKeyDown(Keys.Z) && !kbOld.IsKeyDown(Keys.Z))
                     _board.RestoreState();
 
                 // hint button
