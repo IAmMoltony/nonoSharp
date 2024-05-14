@@ -20,5 +20,6 @@
   "reset": "Сбросить",
   "restart": "Заново",
   "levelSaved": "Уровень сохранён!",
-  "settingsButton": "Настройки"
+  "settingsButton": "Настройки",
+  "enableHints": "Включить подсказки"
 }

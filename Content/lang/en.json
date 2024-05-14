@@ -20,5 +20,6 @@
   "reset": "Reset",
   "restart": "Restart",
   "levelSaved": "Level saved!",
-  "setings": "SettingsButton"
+  "setings": "Settings",
+  "enableHints": "Enable hints"
 }
