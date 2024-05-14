@@ -115,9 +115,9 @@ public struct Tile
 
     public readonly void HintFlash()
     {
-        _fr.r = 255;
-        _fr.g = 255;
-        _fr.b = 0;
+        Color accentColor = Settings.GetAccentColor();
+        Color flashColor = new(((int)accentColor.R + 255) % 256, ((int)accentColor.G + 127) % 256, ((int)accentColor.B - 255) % 256);
+        _fr.SetColor(flashColor);
     }
 
     private static Vector2 getScreenPos(int x, int y, int boardSize, GraphicsDevice graphDev)

@@ -102,9 +102,12 @@ public static class Settings
     {
         string colorString = Get(key);
         string[] parts = colorString.Split(';');
+
+        // Return white if there's not 3 parts
         if (parts.Length != 3)
             return Color.White;
 
+        // Convert parts to integer array
         int[] intParts = new int[3];
         try
         {
@@ -112,6 +115,7 @@ public static class Settings
         }
         catch (ArgumentNullException)
         {
+            // Just incase `parts` is null (which it probably shouldn't, but better be safe than sorry)
             return Color.White;
         }
 

@@ -50,6 +50,13 @@ public class FadeRect
         RectRenderer.DrawRect(rect, color, batch);
     }
 
+    public void SetColor(Color color)
+    {
+        r = color.R;
+        g = color.G;
+        b = color.B;
+    }
+
     private void doFade(Color color)
     {
         r = MathHelper.Lerp(r, color.R, lerpTime);
