@@ -100,7 +100,7 @@ public class Button : UIElement
                 NonoSharpGame.Cursor = MouseCursor.No;
         }
         else
-            IsClicked = IsHovered && mouse.LeftButton == ButtonState.Pressed && mouseOld.LeftButton == ButtonState.Released || shortcutKeyPressed(keyboard, keyboardOld);
+            IsClicked = (IsHovered && mouse.LeftButton == ButtonState.Pressed && mouseOld.LeftButton == ButtonState.Released) || shortcutKeyPressed(keyboard, keyboardOld);
 
         IsHovered = mouse.X >= rect.X && mouse.Y >= rect.Y && mouse.X <= rect.X + rect.Width && mouse.Y <= rect.Y + rect.Height;
         if (IsHovered && !disabled)

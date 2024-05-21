@@ -298,8 +298,8 @@ public class NonoSharpGame : Game
         // draw background grid
         GridRenderer.DrawGrid(
                 _spriteBatch,
-                (int)((_mouse.X - GraphicsDevice.Viewport.Bounds.Width / 2) * 0.03f) - 100,
-                (int)((_mouse.Y - GraphicsDevice.Viewport.Bounds.Height / 2) * 0.03f) - 100,
+                (int)((_mouse.X - (GraphicsDevice.Viewport.Bounds.Width / 2)) * 0.03f) - 100,
+                (int)(((_mouse.Y - GraphicsDevice.Viewport.Bounds.Height / 2)) * 0.03f) - 100,
                 (GraphicsDevice.Viewport.Bounds.Height / 32) + 101,
                 (GraphicsDevice.Viewport.Bounds.Width / 32) + 101,
                 32,

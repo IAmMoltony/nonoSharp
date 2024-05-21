@@ -39,9 +39,9 @@ public static class ColorExtensions
         howMuch = Math.Max(0.0f, Math.Min(1.0f, howMuch));
 
         // Calculate lighter color
-        int r = (int)(color.R + (255 - color.R) * howMuch);
-        int g = (int)(color.G + (255 - color.G) * howMuch);
-        int b = (int)(color.B + (255 - color.B) * howMuch);
+        int r = (int)(color.R + ((255 - color.R) * howMuch));
+        int g = (int)(color.G + ((255 - color.G) * howMuch));
+        int b = (int)(color.B + ((255 - color.B) * howMuch));
 
         return new(r, g, b);
     }
