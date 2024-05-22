@@ -10,11 +10,13 @@ public class SettingsScreen
     public Button BackButton { get; private set; }
 
     private CheckBox _enableHintsBox;
+    private CheckBox _showBgBox;
 
     public SettingsScreen()
     {
         BackButton = new(10, 10, 0, 40, StringManager.GetString("back"), Settings.GetDarkAccentColor(), Settings.GetAccentColor(), Keys.Escape, true);
         _enableHintsBox = new(40, 110, StringManager.GetString("enableHints"), Color.Gray, Color.DarkGray, Settings.GetBool("enableHints"));
+        _showBgBox = new(40, 140, StringManager.GetString("showBgGrid"), Color.Gray, Color.DarkGray, Settings.GetBool("showBgGrid"));
     }
 
     public void Draw(SpriteBatch sprBatch)
@@ -25,11 +27,13 @@ public class SettingsScreen
 
         BackButton.Draw(sprBatch);
         _enableHintsBox.Draw(sprBatch);
+        _showBgBox.Draw(sprBatch);
     }
 
     public void Update(MouseState mouse, MouseState mouseOld, KeyboardState kb, KeyboardState kbOld)
     {
         _enableHintsBox.Update(mouse, mouseOld, kb, kbOld);
+        _showBgBox.Update(mouse, mouseOld, kb, kbOld);
 
         BackButton.Update(mouse, mouseOld, kb, kbOld);
         if (BackButton.IsClicked)
@@ -39,6 +43,7 @@ public class SettingsScreen
     public void close()
     {
         Settings.Set("enableHints", _enableHintsBox.isChecked);
+        Settings.Set("showBgGrid", _showBgBox.isChecked);
         Settings.Save();
     }
 }

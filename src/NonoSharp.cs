@@ -34,6 +34,8 @@ public class NonoSharpGame : Game
     private FPSCounter _fpsCounter;
     private bool _showFPS;
 
+    private bool _showBgGrid;
+
     private GameState _state;
     private MainMenu _mainMenu;
     private LevelSelect _levelSelect;
@@ -99,6 +101,8 @@ public class NonoSharpGame : Game
             // initial window size: 85% of monitor size
             setWindowSize((int)(GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width * 0.85f), (int)(GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height * 0.85f), false);
         }
+
+        _showBgGrid = Settings.GetBool("showBgGrid");
 
         // allow the window to be resized
         Window.AllowUserResizing = true;
@@ -193,6 +197,7 @@ public class NonoSharpGame : Game
                 if (_settings.BackButton.IsClicked)
                 {
                     Settings.Save();
+                    _showBgGrid = Settings.GetBool("showBgGrid");
                     _state = GameState.MainMenu;
                 }
                 break;
@@ -295,7 +300,8 @@ public class NonoSharpGame : Game
 
     private void drawBackgroundGrid()
     {
-        // draw background grid
+        if (!_showBgGrid)
+            return;
         GridRenderer.DrawGrid(
                 _spriteBatch,
                 (int)((_mouse.X - (GraphicsDevice.Viewport.Bounds.Width / 2)) * 0.03f) - 100,
