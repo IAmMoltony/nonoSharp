@@ -21,5 +21,6 @@
   "restart": "Заново",
   "levelSaved": "Уровень сохранён!",
   "settingsButton": "Настройки",
-  "enableHints": "Включить подсказки"
+  "enableHints": "Включить подсказки",
+  "showBgGrid": "Показывать фон"
 }
