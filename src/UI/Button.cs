@@ -7,6 +7,8 @@ namespace NonoSharp.UI;
 
 public class Button : UIElement
 {
+    public const float LerpTime = 0.16f;
+
     public int width, height;
     public string text;
     public Color fillColor, outlineColor;
@@ -90,7 +92,7 @@ public class Button : UIElement
     public override void Update(MouseState mouse, MouseState mouseOld, KeyboardState keyboard, KeyboardState keyboardOld)
     {
         if (isDynamicWidth)
-            updateDynamicWidth();
+            UpdateDynamicWidth();
 
         Rectangle rect = getRect();
         if (disabled)
@@ -120,16 +122,17 @@ public class Button : UIElement
         _frOutline.Update();
     }
 
-    private void createFadeRects()
-    {
-        _fr = new(new(x, y, width, height), fillColor, outlineColor);
-        _frOutline = new(new(x, y, width, height), outlineColor, fillColor, 0.07f, true, 2);
-    }
-
-    private void updateDynamicWidth()
+    public void UpdateDynamicWidth()
     {
         width = dynamicWidthPad + (int)(TextRenderer.MeasureString(font, text).X * fontScale);
     }
+
+    private void createFadeRects()
+    {
+        _fr = new(new(x, y, width, height), fillColor, outlineColor, LerpTime);
+        _frOutline = new(new(x, y, width, height), outlineColor, fillColor, LerpTime, true, 2);
+    }
+
 
     private bool shortcutKeyPressed(KeyboardState kb, KeyboardState kbOld)
     {
