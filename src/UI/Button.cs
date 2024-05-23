@@ -81,7 +81,7 @@ public class Button : UIElement
     {
         _fr.rect = getRect();
         _fr.Draw(sprBatch);
-        RectRenderer.DrawRectOutline(getRect(), (IsHovered && !disabled) ? fillColor : outlineColor, 2, sprBatch);
+       // RectRenderer.DrawRectOutline(getRect(), (IsHovered && !disabled) ? fillColor : outlineColor, 2, sprBatch);
         TextRenderer.DrawTextCenter(sprBatch, font, fontScale, text, disabled ? Color.Gray : Color.White, getRect());
     }
 
@@ -115,7 +115,7 @@ public class Button : UIElement
 
     private void createFadeRect()
     {
-        _fr = new(new(x, y, width, height), fillColor, outlineColor);
+        _fr = new(new(x, y, width, height), fillColor, outlineColor, 0.07f, true, 2);
     }
 
     private void updateDynamicWidth()

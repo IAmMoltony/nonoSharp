@@ -18,8 +18,10 @@ public class FadeRect
     public float g;
     public float b;
     public float lerpTime;
+    public bool isOutline;
+    public int thickness; // used when is outline
 
-    public FadeRect(Rectangle rect, Color color1, Color color2, float lerpTime = 0.07f)
+    public FadeRect(Rectangle rect, Color color1, Color color2, float lerpTime = 0.07f, bool isOutline = false, int thickness = 1)
     {
         mode = FadeRectMode.FadeOut;
         r = color1.R;
@@ -29,6 +31,8 @@ public class FadeRect
         this.color1 = color1;
         this.color2 = color2;
         this.rect = rect;
+        this.isOutline = isOutline;
+        this.thickness = 1;
     }
 
     public void Update()
@@ -47,7 +51,14 @@ public class FadeRect
     public void Draw(SpriteBatch batch)
     {
         Color color = new((int)r, (int)g, (int)b);
-        RectRenderer.DrawRect(rect, color, batch);
+        if (isOutline)
+        {
+            RectRenderer.DrawRectOutline(rect, color, thickness, batch);
+        }
+        else
+        {
+            RectRenderer.DrawRect(rect, color, batch);
+        }
     }
 
     public void SetColor(Color color)
