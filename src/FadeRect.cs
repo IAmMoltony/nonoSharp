@@ -32,7 +32,7 @@ public class FadeRect
         this.color2 = color2;
         this.rect = rect;
         this.isOutline = isOutline;
-        this.thickness = 1;
+        this.thickness = thickness;
     }
 
     public void Update()

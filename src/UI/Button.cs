@@ -21,6 +21,7 @@ public class Button : UIElement
     public bool IsClicked { get; private set; }
 
     private FadeRect _fr;
+    private FadeRect _frOutline;
 
     public Button(int x, int y, int width, int height, string text, Color fillColor, Color outlineColor, bool dynamicWidth = false, int dynamicWidthPad = 10) : base(x, y)
     {
@@ -39,7 +40,7 @@ public class Button : UIElement
         IsHovered = false;
         IsClicked = false;
 
-        createFadeRect();
+        createFadeRects();
 
         if (this.width < 0 || this.height < 0)
             throw new ArgumentException("Button width and height must not be negative");
@@ -80,8 +81,9 @@ public class Button : UIElement
     public override void Draw(SpriteBatch sprBatch)
     {
         _fr.rect = getRect();
+        _frOutline.rect = getRect();
         _fr.Draw(sprBatch);
-       // RectRenderer.DrawRectOutline(getRect(), (IsHovered && !disabled) ? fillColor : outlineColor, 2, sprBatch);
+        _frOutline.Draw(sprBatch);
         TextRenderer.DrawTextCenter(sprBatch, font, fontScale, text, disabled ? Color.Gray : Color.White, getRect());
     }
 
@@ -106,16 +108,22 @@ public class Button : UIElement
         if (IsHovered && !disabled)
         {
             _fr.mode = FadeRectMode.FadeIn;
+            _frOutline.mode = FadeRectMode.FadeIn;
             NonoSharpGame.Cursor = MouseCursor.Hand;
         }
         else
+        {
             _fr.mode = FadeRectMode.FadeOut;
+            _frOutline.mode = FadeRectMode.FadeOut;
+        }
         _fr.Update();
+        _frOutline.Update();
     }
 
-    private void createFadeRect()
+    private void createFadeRects()
     {
-        _fr = new(new(x, y, width, height), fillColor, outlineColor, 0.07f, true, 2);
+        _fr = new(new(x, y, width, height), fillColor, outlineColor);
+        _frOutline = new(new(x, y, width, height), outlineColor, fillColor, 0.07f, true, 2);
     }
 
     private void updateDynamicWidth()
