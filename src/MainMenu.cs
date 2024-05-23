@@ -15,14 +15,16 @@ public class MainMenu
 
     public MainMenu()
     {
-        PlayButton = new(0, 0, 0, 60, StringManager.GetString("playButton"), Settings.GetDarkAccentColor(), Settings.GetAccentColor(), Keys.P, true);
-        EditorButton = new(0, 0, 120, 60, StringManager.GetString("editorButton"), Settings.GetDarkAccentColor(), Settings.GetAccentColor(), Keys.E, true);
-        SettingsButton = new(0, 0, 120, 60, StringManager.GetString("settingsButton"), Settings.GetDarkAccentColor(), Settings.GetAccentColor(), Keys.S, true);
-        QuitButton = new(0, 0, 120, 60, StringManager.GetString("quitButton"), Settings.GetDarkAccentColor(), Settings.GetAccentColor(), new[] { Keys.Q, Keys.Escape }, true);
+        PlayButton = new(0, 0, 0, 60, StringManager.GetString("playButton"), Settings.GetDarkAccentColor(), Settings.GetAccentColor(), Keys.P);
+        EditorButton = new(0, 0, 120, 60, StringManager.GetString("editorButton"), Settings.GetDarkAccentColor(), Settings.GetAccentColor(), Keys.E);
+        SettingsButton = new(0, 0, 120, 60, StringManager.GetString("settingsButton"), Settings.GetDarkAccentColor(), Settings.GetAccentColor(), Keys.S);
+        QuitButton = new(0, 0, 120, 60, StringManager.GetString("quitButton"), Settings.GetDarkAccentColor(), Settings.GetAccentColor(), new[] { Keys.Q, Keys.Escape });
     }
 
     public void Update(MouseState mouse, MouseState mouseOld, KeyboardState kb, KeyboardState kbOld, GraphicsDevice graphDev)
     {
+        updateButtonWidths();
+
         PlayButton.x = (graphDev.Viewport.Bounds.Width / 2) - (PlayButton.width / 2);
         PlayButton.y = (graphDev.Viewport.Bounds.Height / 2) - (PlayButton.height / 2);
         PlayButton.Update(mouse, mouseOld, kb, kbOld);
@@ -38,8 +40,6 @@ public class MainMenu
         QuitButton.x = PlayButton.x;
         QuitButton.y = PlayButton.y + 210;
         QuitButton.Update(mouse, mouseOld, kb, kbOld);
-
-        updateButtonWidths();
     }
 
     public void Draw(SpriteBatch sprBatch)
@@ -57,25 +57,19 @@ public class MainMenu
 
     private void updateButtonWidths()
     {
+        // update the dynamic width of each button
+        PlayButton.UpdateDynamicWidth();
+        EditorButton.UpdateDynamicWidth();
+        SettingsButton.UpdateDynamicWidth();
+        QuitButton.UpdateDynamicWidth();
+
         // find the biggest button width
         int maxWidth = new[] { PlayButton.width, EditorButton.width, SettingsButton.width, QuitButton.width }.Max();
-
-        // disable dynamic width
-        PlayButton.isDynamicWidth = false;
-        EditorButton.isDynamicWidth = false;
-        SettingsButton.isDynamicWidth = false;
-        QuitButton.isDynamicWidth = false;
 
         // set the width of all buttons to the biggest width
         PlayButton.width = maxWidth;
         EditorButton.width = maxWidth;
         SettingsButton.width = maxWidth;
         QuitButton.width = maxWidth;
-
-        // enable dynamic width back
-        PlayButton.isDynamicWidth = true;
-        EditorButton.isDynamicWidth = true;
-        SettingsButton.isDynamicWidth = true;
-        QuitButton.isDynamicWidth = true;
     }
 }
