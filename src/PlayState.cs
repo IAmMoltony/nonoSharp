@@ -21,6 +21,7 @@ public class PlayState
     private readonly Button _pauseBackButton;
     private readonly Button _pauseRestartButton;
     private int _usedHints;
+    private int _hintsTextRedness;
 
     private static void solveTimeTick()
     {
@@ -40,6 +41,7 @@ public class PlayState
         _pauseBackButton = new(10, 130, 0, 50, StringManager.GetString("back"), Settings.GetDarkAccentColor(), Settings.GetAccentColor(), true);
         _pauseRestartButton = new(10, 190, 0, 50, StringManager.GetString("restart"), Settings.GetDarkAccentColor(), Settings.GetAccentColor(), true);
         _usedHints = 0;
+        _hintsTextRedness = 255;
 
         _solveTimeThread = new(solveTimeTick);
         _solveTimeTick = false;
@@ -49,6 +51,8 @@ public class PlayState
     public void Update(MouseState mouse, MouseState mouseOld, KeyboardState kb, KeyboardState kbOld, GraphicsDevice graphDev, out bool leave, bool hasFocus)
     {
         leave = false;
+
+        _hintsTextRedness = Math.Min(255, _hintsTextRedness + 10);
 
         // continue button
         if (_board.IsSolved)
@@ -85,6 +89,10 @@ public class PlayState
                         _usedHints++;
                         Log.Logger.Information($"Doing a hint, used hints: {_usedHints}");
                         _board.Hint();
+                    }
+                    else
+                    {
+                        _hintsTextRedness = 0;
                     }
                 }
             }
@@ -125,17 +133,19 @@ public class PlayState
     {
         _board.Draw(sprBatch);
 
+        Color hintsTextColor = new(255, _hintsTextRedness, _hintsTextRedness);
+
         // render time and hints if the board isn't solved
         if (!_board.IsSolved)
         {
             TextRenderer.DrawText(sprBatch, "DefaultFont", 10, 10, 0.5f, string.Format(StringManager.GetString("solveTime"), Math.Round(_solveTime / 1000, 2)), Color.White);
             if (_board.maxHints > -1)
             {
-                TextRenderer.DrawText(sprBatch, "DefaultFont", 10, 40, 0.5f, string.Format(StringManager.GetString("hintsOutOf"), _usedHints, _board.maxHints), Color.White);
+                TextRenderer.DrawText(sprBatch, "DefaultFont", 10, 40, 0.5f, string.Format(StringManager.GetString("hintsOutOf"), _usedHints, _board.maxHints), hintsTextColor);
             }
             else
             {
-                TextRenderer.DrawText(sprBatch, "DefaultFont", 10, 40, 0.5f, string.Format(StringManager.GetString("hints"), _usedHints), Color.White);
+                TextRenderer.DrawText(sprBatch, "DefaultFont", 10, 40, 0.5f, string.Format(StringManager.GetString("hints"), _usedHints), hintsTextColor);
             }
         }
 
