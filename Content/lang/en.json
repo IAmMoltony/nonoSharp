@@ -15,6 +15,7 @@
   "ok": "OK",
   "enterBoardSize": "Enter board size:",
   "hints": "Hints: {0}",
+  "hintsOutOf": "Hints: {0}/{1}",
   "withHints": "with {0} hints",
   "withHints1": "with 1 hint",
   "reset": "Reset",

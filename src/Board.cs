@@ -19,6 +19,7 @@ public class Board
     public Tile[,] tiles;
     public Tile[,] solution;
     public int size;
+    public int maxHints;
     public bool IsSolved { get; private set; }
 
     public static bool CompareSolutionTile(TileState a, TileState b)
@@ -33,6 +34,7 @@ public class Board
     public Board()
     {
         size = 0;
+        maxHints = -1;
         undoStack = new Stack<Tile[,]>();
         previousState = null;
         hintedLines = new();
@@ -41,6 +43,7 @@ public class Board
     public Board(int size)
     {
         this.size = size;
+        maxHints = -1;
         undoStack = new();
         previousState = null;
         hintedLines = new();
@@ -59,11 +62,17 @@ public class Board
     {
         Log.Logger.Information($"Loading board from file {fileName}");
         string[] boardData = File.ReadAllLines(fileName);
+        int solutionOffset = 2;
         size = int.Parse(boardData[0]);
+        if (!int.TryParse(boardData[1], out maxHints))
+        {
+            maxHints = -1;
+            solutionOffset = 1;
+        }
         Log.Logger.Information($"Board size: {size}");
         MakeTilesAndSolution();
 
-        for (int i = 1; i < size + 1; i++)
+        for (int i = solutionOffset; i < size + 1; i++)
         {
             string row = boardData[i];
             for (int j = 0; j < size; j++)

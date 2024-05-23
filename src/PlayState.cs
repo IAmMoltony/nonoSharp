@@ -79,9 +79,13 @@ public class PlayState
                 // hint button
                 if (kb.IsKeyDown(Keys.H) && !kbOld.IsKeyDown(Keys.H) && Settings.GetBool("enableHints"))
                 {
-                    _usedHints++;
-                    Log.Logger.Information($"Doing a hint, used hints: {_usedHints}");
-                    _board.Hint();
+                    bool canHint = _board.maxHints <= -1 || _board.maxHints > _usedHints;
+                    if (canHint)
+                    {
+                        _usedHints++;
+                        Log.Logger.Information($"Doing a hint, used hints: {_usedHints}");
+                        _board.Hint();
+                    }
                 }
             }
         }
@@ -125,7 +129,14 @@ public class PlayState
         if (!_board.IsSolved)
         {
             TextRenderer.DrawText(sprBatch, "DefaultFont", 10, 10, 0.5f, string.Format(StringManager.GetString("solveTime"), Math.Round(_solveTime / 1000, 2)), Color.White);
-            TextRenderer.DrawText(sprBatch, "DefaultFont", 10, 40, 0.5f, string.Format(StringManager.GetString("hints"), _usedHints), Color.White);
+            if (_board.maxHints > -1)
+            {
+                TextRenderer.DrawText(sprBatch, "DefaultFont", 10, 40, 0.5f, string.Format(StringManager.GetString("hintsOutOf"), _usedHints, _board.maxHints), Color.White);
+            }
+            else
+            {
+                TextRenderer.DrawText(sprBatch, "DefaultFont", 10, 40, 0.5f, string.Format(StringManager.GetString("hints"), _usedHints), Color.White);
+            }
         }
 
         if (_board.IsSolved)
