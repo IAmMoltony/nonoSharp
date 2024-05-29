@@ -56,3 +56,9 @@
 #begin Levels/TestLevel.nono
 /copy:Levels/TestLevel.nono
 
+#begin sound/tilePlace.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:sound/tilePlace.wav
+

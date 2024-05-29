@@ -18,7 +18,8 @@ public static class Settings
         {"fullScreen", "no"},
         {"accentColor", "0;128;0"},
         {"enableHints", "yes"},
-        {"showBgGrid", "yes"}
+        {"showBgGrid", "yes"},
+        {"sound", "yes"}
     };
 
     public const float AccentColorDefaultDarkerAmount = 0.3f;

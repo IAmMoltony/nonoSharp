@@ -72,16 +72,17 @@ public class Board
         Log.Logger.Information($"Board size: {size}");
         MakeTilesAndSolution();
 
-        for (int i = solutionOffset; i < size + 1; i++)
+        for (int i = solutionOffset; i < size + solutionOffset; i++)
         {
             string row = boardData[i];
+            Console.WriteLine(row);
             for (int j = 0; j < size; j++)
             {
                 char ch = row[j];
                 if (ch == '#')
-                    solution[j, i - 1].state = TileState.Filled;
+                    solution[j, i - solutionOffset].state = TileState.Filled;
                 else
-                    solution[j, i - 1].state = TileState.Empty;
+                    solution[j, i - solutionOffset].state = TileState.Empty;
             }
         }
 

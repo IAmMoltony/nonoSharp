@@ -13,7 +13,8 @@ public enum GameState
     MainMenu,
     LevelSelect,
     Editor,
-    Settings
+    Settings,
+    Credits
 }
 
 public class NonoSharpGame : Game
@@ -42,6 +43,7 @@ public class NonoSharpGame : Game
     private PlayState _play;
     private Editor.Editor _editor;
     private SettingsScreen _settings;
+    private Credits _credits;
 
     public NonoSharpGame()
     {
@@ -89,6 +91,7 @@ public class NonoSharpGame : Game
         _editor = new();
         _play = new();
         _settings = new();
+        _credits = new();
 
         _graphics.HardwareModeSwitch = false;
 
@@ -130,7 +133,10 @@ public class NonoSharpGame : Game
         Tile.LoadTextures(Content);
         UI.CheckBox.LoadTextures(Content);
 
-        TextRenderer.LoadFont("DefaultFont", "DefaultFont", Content); // load noto sans font (i think it's a nice font)
+        // load sounds
+        Tile.LoadSounds(Content);
+
+        TextRenderer.LoadFont("DefaultFont", "DefaultFont", Content); // load font
 
         stopwatch.Stop();
 
@@ -193,13 +199,20 @@ public class NonoSharpGame : Game
                     break;
                 }
             case GameState.Settings:
-                _settings.Update(_mouse, _mouseOld, _kb, _kbOld);
+                _settings.Update(_mouse, _mouseOld, _kb, _kbOld, GraphicsDevice);
                 if (_settings.BackButton.IsClicked)
                 {
                     Settings.Save();
                     _showBgGrid = Settings.GetBool("showBgGrid");
                     _state = GameState.MainMenu;
                 }
+                if (_settings.CreditsButton.IsClicked)
+                    _state = GameState.Credits;
+                break;
+            case GameState.Credits:
+                _credits.Update(_mouse, _mouseOld, _kb, _kbOld);
+                if (_credits.BackButton.IsClicked)
+                    _state = GameState.Settings;
                 break;
         }
 
@@ -238,6 +251,9 @@ public class NonoSharpGame : Game
                 break;
             case GameState.Settings:
                 _settings.Draw(_spriteBatch);
+                break;
+            case GameState.Credits:
+                _credits.Draw(_spriteBatch);
                 break;
         }
 

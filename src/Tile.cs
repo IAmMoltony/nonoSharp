@@ -1,6 +1,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Audio;
 using Serilog;
 using System;
 
@@ -19,6 +20,7 @@ public struct Tile
     public bool isHovered;
 
     public static Texture2D TextureCross { get; private set; }
+    public static SoundEffect SoundPlace { get; private set; }
 
     private readonly FadeRect _fr;
 
@@ -26,6 +28,12 @@ public struct Tile
     {
         Log.Logger.Information("Loading tile textures");
         TextureCross = content.Load<Texture2D>("image/cross");
+    }
+
+    public static void LoadSounds(ContentManager content)
+    {
+        Log.Logger.Information("Loading tile sounds");
+        SoundPlace = content.Load<SoundEffect>("sound/tilePlace");
     }
 
     public static void PrintTileArray(Tile[,] ta, int size)
@@ -100,7 +108,11 @@ public struct Tile
     public void LeftClick()
     {
         if (state == TileState.Empty)
+        {
+            if (Settings.GetBool("sound"))
+                SoundPlace.Play();
             state = TileState.Filled;
+        }
         else if (state == TileState.Filled)
             state = TileState.Empty;
     }
