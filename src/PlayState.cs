@@ -118,7 +118,7 @@ public class PlayState
             pause(graphDev);
 
         // when window inactive, force pause
-        if (!hasFocus && !_paused)
+        if (!hasFocus && !_paused && !_board.IsSolved)
             pause(graphDev);
     }
 
