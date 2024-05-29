@@ -154,7 +154,7 @@ public class Board
         Stopwatch stopwatch = new();
         stopwatch.Start();
 
-        string result = $"{size}\n";
+        string result = $"{size}\n{maxHints}\n";
         for (int j = 0; j < size; j++)
         {
             for (int i = 0; i < size; i++)

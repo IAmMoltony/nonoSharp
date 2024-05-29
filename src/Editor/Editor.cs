@@ -57,7 +57,7 @@ public class Editor
                 }
                 break;
             case EditorState.SaveLevel:
-                _saveLevel.Update(mouse, mouseOld, kb, kbOld, _main.Board);
+                _saveLevel.Update(mouse, mouseOld, kb, kbOld, _main.Board, _main.MaxHintsBox.GetNumberValue());
                 if (_saveLevel.OKButton.IsClicked)
                 {
                     _saveLevel = new();
@@ -95,6 +95,9 @@ public class Editor
                 break;
             case EditorState.SaveLevel:
                 _saveLevel.UpdateInput(sender, tiea);
+                break;
+            case EditorState.Editor:
+                _main.UpdateInput(sender, tiea);
                 break;
         }
     }

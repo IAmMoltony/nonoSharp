@@ -20,6 +20,9 @@ public class TextBox : UIElement
     private Color _outlineColor;
     private Color _textColor;
     private Color _textColorHover;
+    private Color _placeholderColor;
+    private Color _placeholderColorHover;
+    private string _placeholder;
     private bool _blinkCursor;
     private int _blinkCursorTimer;
     private bool _illegalBlink;
@@ -38,6 +41,16 @@ public class TextBox : UIElement
         _textColorHover = textColorHover;
         _illegalBlink = false;
         this.maxLength = maxLength;
+    }
+
+    public TextBox(
+        int x, int y, int width, Color fillColor, Color outlineColor, Color textColor,
+        Color textColorHover, Color placeholderColor, Color placeholderColorHover, string placeholder, int maxLength = 0)
+        : this(x, y, width, fillColor, outlineColor, textColor, textColorHover, maxLength)
+    {
+        _placeholderColor = placeholderColor;
+        _placeholderColorHover = placeholderColorHover;
+        _placeholder = placeholder;
     }
 
     public override void Draw(SpriteBatch sprBatch)
@@ -107,6 +120,7 @@ public class TextBox : UIElement
     private void drawText(SpriteBatch sprBatch)
     {
         Color textColor = Hovered ? _textColorHover : _textColor;
+        Color placeholderColor = Hovered ? _placeholderColorHover : _placeholderColor;
         Vector2 textSize = TextRenderer.MeasureString("DefaultFont", Text);
         float textWidth = textSize.X * 0.5f;
         float maxTextWidth = Width - 17;
@@ -123,7 +137,10 @@ public class TextBox : UIElement
         };
         sprBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, null, null, rs);
         sprBatch.GraphicsDevice.ScissorRectangle = getRect();
-        TextRenderer.DrawText(sprBatch, "DefaultFont", x + 4 - (int)offset, y, 0.5f, Text + ((_blinkCursor && Hovered) ? "_" : ""), textColor);
+        if (string.IsNullOrEmpty(Text) && !string.IsNullOrEmpty(_placeholder))
+            TextRenderer.DrawText(sprBatch, "DefaultFont", x + 4 - (int)offset, y, 0.5f, _placeholder, placeholderColor);
+        else
+            TextRenderer.DrawText(sprBatch, "DefaultFont", x + 4 - (int)offset, y, 0.5f, Text + ((_blinkCursor && Hovered) ? "_" : ""), textColor);
         sprBatch.End();
 
         sprBatch.Begin();

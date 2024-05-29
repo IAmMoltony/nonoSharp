@@ -51,7 +51,7 @@ public class SaveLevelState
         }
     }
 
-    public void Update(MouseState mouse, MouseState mouseOld, KeyboardState kb, KeyboardState kbOld, Board board)
+    public void Update(MouseState mouse, MouseState mouseOld, KeyboardState kb, KeyboardState kbOld, Board board, int maxHints)
     {
         _levelNameBox.Update(mouse, mouseOld, kb, kbOld);
 
@@ -62,7 +62,7 @@ public class SaveLevelState
 
             if (_saveButton.IsClicked)
             {
-                BoardSaver.SaveBoard(board, _levelNameBox.Text);
+                BoardSaver.SaveBoard(board, _levelNameBox.Text, maxHints);
                 _saved = true;
             }
 

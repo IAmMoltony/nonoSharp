@@ -23,6 +23,15 @@ public class NumberTextBox : TextBox
         SetMaxValue(max);
     }
 
+    public NumberTextBox(
+        int x, int y, int width, Color fillColor, Color outlineColor, Color textColor,
+        Color textColorHover, Color placeholderColor, Color placeholderColorHover, string placeholder)
+        : base(x, y, width, fillColor, outlineColor, textColor, textColorHover, placeholderColor, placeholderColorHover, placeholder)
+    {
+        _max = 0;
+        _hasMax = false;
+    }
+
     public override void UpdateInput(object sender, TextInputEventArgs tiea)
     {
         if (Hovered && (char.IsNumber(tiea.Character) || tiea.Key == Keys.Back))
@@ -34,8 +43,7 @@ public class NumberTextBox : TextBox
 
     public int GetNumberValue()
     {
-        int number;
-        if (!int.TryParse(Text, out number))
+        if (!int.TryParse(Text, out int number))
             return -1;
         return number;
     }
