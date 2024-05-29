@@ -75,7 +75,6 @@ public class Board
         for (int i = solutionOffset; i < size + solutionOffset; i++)
         {
             string row = boardData[i];
-            Console.WriteLine(row);
             for (int j = 0; j < size; j++)
             {
                 char ch = row[j];

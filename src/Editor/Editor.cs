@@ -50,6 +50,11 @@ public class Editor
                 _main.Update(mouse, mouseOld, kb, kbOld, graphDev);
                 if (_main.SaveButton.IsClicked)
                     _state = EditorState.SaveLevel;
+                if (_main.BackButton.IsClicked)
+                {
+                    _state = EditorState.SetSize;
+                    newState = GameState.MainMenu;
+                }
                 break;
             case EditorState.SaveLevel:
                 _saveLevel.Update(mouse, mouseOld, kb, kbOld, _main.Board);
