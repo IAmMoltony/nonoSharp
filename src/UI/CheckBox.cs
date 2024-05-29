@@ -21,7 +21,7 @@ public class CheckBox : UIElement
     public static void LoadTextures(ContentManager content)
     {
         Log.Logger.Information("Loading checkbox textures");
-        TextureCheck = content.Load<Texture2D>("check");
+        TextureCheck = content.Load<Texture2D>("image/check");
     }
 
     public CheckBox(int x, int y, string text, Color fillColor, Color outlineColor, bool isChecked = false) : base(x, y)

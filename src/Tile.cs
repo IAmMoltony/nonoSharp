@@ -25,7 +25,7 @@ public struct Tile
     public static void LoadTextures(ContentManager content)
     {
         Log.Logger.Information("Loading tile textures");
-        TextureCross = content.Load<Texture2D>("cross");
+        TextureCross = content.Load<Texture2D>("image/cross");
     }
 
     public static void PrintTileArray(Tile[,] ta, int size)
