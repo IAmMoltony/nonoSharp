@@ -15,8 +15,8 @@ public class Editor
 {
     private EditorState _state;
     private SetSizeState _setSize;
-    private readonly EditorMain _main;
-    private readonly SaveLevelState _saveLevel;
+    private EditorMain _main;
+    private SaveLevelState _saveLevel;
 
     public Editor()
     {
@@ -54,7 +54,11 @@ public class Editor
             case EditorState.SaveLevel:
                 _saveLevel.Update(mouse, mouseOld, kb, kbOld, _main.Board);
                 if (_saveLevel.OKButton.IsClicked)
+                {
+                    _saveLevel = new();
+                    _state = EditorState.SetSize;
                     newState = GameState.MainMenu;
+                }
                 if (_saveLevel.BackButton.IsClicked)
                     _state = EditorState.Editor;
                 break;
