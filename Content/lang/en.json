@@ -21,7 +21,7 @@
   "reset": "Reset",
   "restart": "Restart",
   "levelSaved": "Level saved!",
-  "setings": "Settings",
+  "settingsButton": "Settings",
   "enableHints": "Enable hints",
   "showBgGrid": "Show background"
 }
