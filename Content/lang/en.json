@@ -23,5 +23,9 @@
   "levelSaved": "Level saved!",
   "settingsButton": "Settings",
   "enableHints": "Enable hints",
-  "showBgGrid": "Show background"
+  "showBgGrid": "Show background",
+  "enableSound": "Enable sound",
+  "credits": "Credits",
+  "maxHints": "Max hints",
+  "maxHintsPlaceholder": "(infinite)"
 }

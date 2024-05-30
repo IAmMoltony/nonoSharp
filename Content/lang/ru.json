@@ -23,5 +23,9 @@
   "levelSaved": "Уровень сохранён!",
   "settingsButton": "Настройки",
   "enableHints": "Включить подсказки",
-  "showBgGrid": "Показывать фон"
+  "showBgGrid": "Показывать фон",
+  "enableSound": "Включить звук",
+  "credits": "Титры",
+  "maxHints": "Максимум подсказок",
+  "maxHintsPlaceholder": "(бесконечно)"
 }
