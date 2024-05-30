@@ -152,7 +152,7 @@ public class PlayState
         if (_board.IsSolved)
         {
             // draw green half transparent rectangle across the whole screen
-            RectRenderer.DrawRect(new(0, 0, sprBatch.GraphicsDevice.Viewport.Bounds.Width, sprBatch.GraphicsDevice.Viewport.Bounds.Height), new(Settings.GetDarkAccentColor(), 0.3f), sprBatch);
+            RectRenderer.DrawRect(new(0, 0, sprBatch.GraphicsDevice.Viewport.Bounds.Width, sprBatch.GraphicsDevice.Viewport.Bounds.Height), new(Settings.GetDarkAccentColor(), 0.2f), sprBatch);
 
             // solved text: 100 pixels above center of the screen, centered horizontally
             Rectangle solvedTextRect = new(0, (sprBatch.GraphicsDevice.Viewport.Bounds.Height / 2) - 100, sprBatch.GraphicsDevice.Viewport.Bounds.Width, 1);
@@ -181,7 +181,7 @@ public class PlayState
 
         if (_paused)
         {
-            RectRenderer.DrawRect(new(0, 0, sprBatch.GraphicsDevice.Viewport.Bounds.Width, sprBatch.GraphicsDevice.Viewport.Bounds.Height), new(Settings.GetDarkAccentColor(), 0.7f), sprBatch);
+            RectRenderer.DrawRect(new(0, 0, sprBatch.GraphicsDevice.Viewport.Bounds.Width, sprBatch.GraphicsDevice.Viewport.Bounds.Height), new(Settings.GetDarkAccentColor(), 0.2f), sprBatch);
             TextRenderer.DrawText(sprBatch, "DefaultFont", 10, 10, StringManager.GetString("paused"), Color.White);
             TextRenderer.DrawText(sprBatch, "DefaultFont", 10, 80, 0.6f, StringManager.GetString("pauseTip"), Color.White);
             _pauseBackButton.Draw(sprBatch);
