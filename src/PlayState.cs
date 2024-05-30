@@ -85,7 +85,7 @@ public class PlayState
                     if (canHint)
                     {
                         _usedHints++;
-                        Log.Logger.Information($"Doing a hint, used hints: {_usedHints}");
+                        Log.Logger.Information($"Doing a hint, used hints: {_usedHints}/{_board.maxHints}");
                         _board.Hint();
                     }
                     else
