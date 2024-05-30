@@ -37,7 +37,7 @@ public class PlayState
     {
         _board = new();
         _paused = false;
-        _solvedContinueButton = new(0, 0, 0, 50, StringManager.GetString("continue"), Settings.GetDarkAccentColor(), Settings.GetAccentColor(), true);
+        _solvedContinueButton = new(30, 194, 0, 50, StringManager.GetString("continue"), Settings.GetDarkAccentColor(), Settings.GetAccentColor(), true);
         _pauseBackButton = new(10, 130, 0, 50, StringManager.GetString("back"), Settings.GetDarkAccentColor(), Settings.GetAccentColor(), true);
         _pauseRestartButton = new(10, 190, 0, 50, StringManager.GetString("restart"), Settings.GetDarkAccentColor(), Settings.GetAccentColor(), true);
         _usedHints = 0;
@@ -57,8 +57,6 @@ public class PlayState
         // continue button
         if (_board.IsSolved)
         {
-            _solvedContinueButton.x = (graphDev.Viewport.Bounds.Width / 2) - (_solvedContinueButton.width / 2);
-            _solvedContinueButton.y = (graphDev.Viewport.Bounds.Height / 2) + 40;
             _solvedContinueButton.Update(mouse, mouseOld, kb, kbOld);
 
             if (_solvedContinueButton.IsClicked)
@@ -131,13 +129,12 @@ public class PlayState
 
     public void Draw(SpriteBatch sprBatch)
     {
-        _board.Draw(sprBatch);
-
         Color hintsTextColor = new(255, _hintsTextRedness, _hintsTextRedness);
 
         // render time and hints if the board isn't solved
         if (!_board.IsSolved)
         {
+            _board.Draw(sprBatch);
             TextRenderer.DrawText(sprBatch, "DefaultFont", 10, 10, 0.5f, string.Format(StringManager.GetString("solveTime"), Math.Round(_solveTime / 1000, 2)), Color.White);
             if (_board.maxHints > -1)
             {
@@ -154,29 +151,23 @@ public class PlayState
             // draw green half transparent rectangle across the whole screen
             RectRenderer.DrawRect(new(0, 0, sprBatch.GraphicsDevice.Viewport.Bounds.Width, sprBatch.GraphicsDevice.Viewport.Bounds.Height), new(Settings.GetDarkAccentColor(), 0.2f), sprBatch);
 
-            // solved text: 100 pixels above center of the screen, centered horizontally
-            Rectangle solvedTextRect = new(0, (sprBatch.GraphicsDevice.Viewport.Bounds.Height / 2) - 100, sprBatch.GraphicsDevice.Viewport.Bounds.Width, 1);
-
-            // "how long the user took to solve" text: 50 pixels bellow solved text, everything else is the same
-            Rectangle inTimeTextRect = new(0, solvedTextRect.Y + 50, sprBatch.GraphicsDevice.Viewport.Bounds.Width, 1);
-
-            // how many hints the user used: 50 pixels below in time text
-            Rectangle withHintsTextRect = new(0, inTimeTextRect.Y + 50, sprBatch.GraphicsDevice.Viewport.Bounds.Width, 1);
-
             // render the text
-            TextRenderer.DrawTextCenter(sprBatch, "DefaultFont", 1.0f, StringManager.GetString("solved"), Color.White, solvedTextRect);
-            TextRenderer.DrawTextCenter(sprBatch, "DefaultFont", 1.0f, string.Format(StringManager.GetString("inSolveTime"), Math.Round(_solveTime / 1000, 2)), Color.White, inTimeTextRect);
+            TextRenderer.DrawText(sprBatch, "DefaultFont", 30, 30, 1.0f, StringManager.GetString("solved"), Color.White);
+            TextRenderer.DrawText(sprBatch, "DefaultFont", 30, 90, 1.0f, string.Format(StringManager.GetString("inSolveTime"), Math.Round(_solveTime / 1000, 2)), Color.White);
             if (_usedHints > 0)
             {
                 // draw how many hints used
                 if (_usedHints > 1)
-                    TextRenderer.DrawTextCenter(sprBatch, "DefaultFont", 0.7f, string.Format(StringManager.GetString("withHints"), _usedHints), Color.Yellow, withHintsTextRect);
+                    TextRenderer.DrawText(sprBatch, "DefaultFont", 30, 146, 0.7f, string.Format(StringManager.GetString("withHints"), _usedHints), Color.Yellow);
                 else
-                    TextRenderer.DrawTextCenter(sprBatch, "DefaultFont", 0.7f, StringManager.GetString("withHints1"), Color.Yellow, withHintsTextRect);
+                    TextRenderer.DrawText(sprBatch, "DefaultFont", 30, 146, 0.7f, StringManager.GetString("withHints1"), Color.Yellow);
             }
 
             // draw the continue button
             _solvedContinueButton.Draw(sprBatch);
+
+            // draw the board, on top of everything
+            _board.Draw(sprBatch);
         }
 
         if (_paused)

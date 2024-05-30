@@ -95,16 +95,21 @@ public class Board
 
         for (int i = 0; i < size; i++)
             for (int j = 0; j < size; j++)
-                tiles[i, j].Draw(i, j, size, batch, graphDev);
+                tiles[i, j].Draw(i, j, size, IsSolved, batch);
 
         int pxSize = size * 32;
         int boardX = (graphDev.Viewport.Bounds.Width / 2) - (pxSize / 2);
         int boardY = (graphDev.Viewport.Bounds.Height / 2) - (pxSize / 2);
 
-        DrawClues(boardX, boardY, batch);
-
-        if (!IsSolved)
+        if (IsSolved)
+        {
+            RectRenderer.DrawRectOutline(new(boardX, boardY, pxSize, pxSize), Color.Black, 1, batch);
+        }
+        else
+        {
             GridRenderer.DrawGrid(batch, boardX, boardY, size, size, 32, Color.Black);
+            DrawClues(boardX, boardY, batch);
+        }
     }
 
     public void Update(MouseState mouseState, MouseState mouseStateOld, GraphicsDevice graphDev)

@@ -71,8 +71,10 @@ public struct Tile
         isHovered = other.isHovered;
     }
 
-    public readonly void Draw(int x, int y, int boardSize, SpriteBatch batch, GraphicsDevice graphDev)
+    public readonly void Draw(int x, int y, int boardSize, bool isBoardSolved, SpriteBatch batch)
     {
+        GraphicsDevice graphDev = batch.GraphicsDevice;
+
         Vector2 posVec = getScreenPos(x, y, boardSize, graphDev);
         Rectangle rect = new((int)posVec.X, (int)posVec.Y, 32, 32);
         _fr.rect = rect;
@@ -93,7 +95,7 @@ public struct Tile
         _fr.Update();
 
         _fr.Draw(batch);
-        if (state == TileState.Cross)
+        if (state == TileState.Cross && !isBoardSolved)
             batch.Draw(TextureCross, posVec, Color.White);
     }
 
