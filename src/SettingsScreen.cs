@@ -10,9 +10,9 @@ public class SettingsScreen
     public Button BackButton { get; private set; }
     public Button CreditsButton { get; private set; }
 
-    private CheckBox _enableHintsBox;
-    private CheckBox _showBgBox;
-    private CheckBox _enableSoundBox;
+    private readonly CheckBox _enableHintsBox;
+    private readonly CheckBox _showBgBox;
+    private readonly CheckBox _enableSoundBox;
 
     public SettingsScreen()
     {

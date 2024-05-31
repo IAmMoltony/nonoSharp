@@ -16,7 +16,7 @@ public class CheckBox : UIElement
 
     private Color _fillColor, _outlineColor;
     private bool _isHovered;
-    private string _text;
+    private readonly string _text;
 
     public static void LoadTextures(ContentManager content)
     {

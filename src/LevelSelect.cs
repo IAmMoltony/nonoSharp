@@ -73,9 +73,13 @@ public class LevelSelect
         for (int i = 0; i < list.Count(); i++)
         {
             int buttonY = 110 + (120 * i) + 40;
-            LevelButtons buttons = new();
-            buttons.playButton = new(15, buttonY, 0, 40, StringManager.GetString("playButton"), Settings.GetDarkAccentColor(), Settings.GetAccentColor(), true);
-            buttons.deleteButton = new(15, buttonY, 0, 40, StringManager.GetString("deleteButton"), Settings.GetDarkAccentColor(), Settings.GetAccentColor(), true);
+            Button playButton = new(15, buttonY, 0, 40, StringManager.GetString("playButton"), Settings.GetDarkAccentColor(), Settings.GetAccentColor(), true);
+            Button deleteButton = new(15, buttonY, 0, 40, StringManager.GetString("deleteButton"), Settings.GetDarkAccentColor(), Settings.GetAccentColor(), true);
+            LevelButtons buttons = new()
+            {
+                playButton = playButton,
+                deleteButton = deleteButton
+            };
             
             _levels.Add(new(list[i], buttons));
         }
