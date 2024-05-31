@@ -27,5 +27,6 @@
   "enableSound": "Enable sound",
   "credits": "Credits",
   "maxHints": "Max hints",
-  "maxHintsPlaceholder": "(infinite)"
+  "maxHintsPlaceholder": "(infinite)",
+  "deleteButton": "Delete"
 }

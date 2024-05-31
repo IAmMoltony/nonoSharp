@@ -27,5 +27,6 @@
   "enableSound": "Включить звук",
   "credits": "Титры",
   "maxHints": "Максимум подсказок",
-  "maxHintsPlaceholder": "(бесконечно)"
+  "maxHintsPlaceholder": "(бесконечно)",
+  "deleteButton": "Удалить"
 }

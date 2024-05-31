@@ -10,12 +10,42 @@ using System.Linq;
 
 namespace NonoSharp;
 
+public struct LevelButtons
+{
+    public Button playButton;
+    public Button deleteButton;
+
+    public readonly void SetY(int value)
+    {
+        playButton.y = value;
+        deleteButton.y = value;
+    }
+
+    public LevelButtons()
+    {
+        playButton = null;
+        deleteButton = null;
+    }
+
+    public readonly void Draw(SpriteBatch sprBatch)
+    {
+        playButton.Draw(sprBatch);
+        deleteButton.Draw(sprBatch);
+    }
+
+    public readonly void Update(MouseState mouse, MouseState mouseOld, KeyboardState keyboard, KeyboardState keyboardOld)
+    {
+        playButton.Update(mouse, mouseOld, keyboard, keyboardOld);
+        deleteButton.Update(mouse, mouseOld, keyboard, keyboardOld);
+    }
+}
+
 public class LevelSelect
 {
     public static readonly int ScrollSpeed = 50;
     public static readonly float KeyboardScrollSpeedMultiplier = 0.3f;
 
-    private List<Tuple<LevelMetadata, Button>> _levels;
+    private List<Tuple<LevelMetadata, LevelButtons>> _levels;
     private int _scrollOffsetGoal;
     private float _scrollOffset;
     private readonly Button _backButton;
@@ -41,7 +71,14 @@ public class LevelSelect
 
         // copy over the list into the internal list and slap in buttons
         for (int i = 0; i < list.Count(); i++)
-            _levels.Add(new(list[i], new(15, 110 + (120 * i) + 40, 0, 40, StringManager.GetString("playButton"), Settings.GetDarkAccentColor(), Settings.GetAccentColor(), true)));
+        {
+            int buttonY = 110 + (120 * i) + 40;
+            LevelButtons buttons = new();
+            buttons.playButton = new(15, buttonY, 0, 40, StringManager.GetString("playButton"), Settings.GetDarkAccentColor(), Settings.GetAccentColor(), true);
+            buttons.deleteButton = new(15, buttonY, 0, 40, StringManager.GetString("deleteButton"), Settings.GetDarkAccentColor(), Settings.GetAccentColor(), true);
+            
+            _levels.Add(new(list[i], buttons));
+        }
 
         stopwatch.Stop();
         Log.Logger.Information($"Found levels in {stopwatch.ElapsedMilliseconds} ms");
@@ -82,13 +119,14 @@ public class LevelSelect
         {
             var level = _levels[i];
             level.Item2.Update(mouse, mouseOld, kb, kbOld);
-            if (level.Item2.IsClicked)
+            if (level.Item2.playButton.IsClicked)
             {
                 Log.Logger.Information($"Clicked on level {level.Item1}");
                 newState = GameState.Game;
                 levelName = level.Item1.name;
             }
-            _levels[i].Item2.y = 110 + (120 * i) + 40 + (int)_scrollOffset;
+            _levels[i].Item2.SetY(110 + (120 * i) + 40 + (int)_scrollOffset);
+            _levels[i].Item2.deleteButton.x = _levels[i].Item2.playButton.x + _levels[i].Item2.playButton.width + 10;
         }
 
         _backButton.Update(mouse, mouseOld, kb, kbOld);
