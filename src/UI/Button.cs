@@ -133,7 +133,6 @@ public class Button : UIElement
         _frOutline = new(new(x, y, width, height), outlineColor, fillColor, LerpTime, true, 2);
     }
 
-
     private bool shortcutKeyPressed(KeyboardState kb, KeyboardState kbOld)
     {
         foreach (Keys key in shortcutKeys)
