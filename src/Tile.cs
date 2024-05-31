@@ -17,7 +17,8 @@ public enum TileState
 public struct Tile
 {
     public TileState state;
-    public bool isHovered;
+    public bool isHoveredX;
+    public bool isHoveredY;
 
     public static Texture2D TextureCross { get; private set; }
     public static SoundEffect SoundPlace { get; private set; }
@@ -60,7 +61,8 @@ public struct Tile
     public Tile()
     {
         state = TileState.Empty;
-        isHovered = false;
+        isHoveredX = false;
+        isHoveredY = false;
         _fr = new(new(0, 0, 0, 0), Color.Black, Color.Black, 0.13f);
     }
 
@@ -68,7 +70,8 @@ public struct Tile
     {
         // Do a copy without constructing the tile again
         state = other.state;
-        isHovered = other.isHovered;
+        isHoveredX = other.isHoveredX;
+        isHoveredY = other.isHoveredY;
     }
 
     public readonly void Draw(int x, int y, int boardSize, bool isBoardSolved, SpriteBatch batch)
@@ -83,15 +86,15 @@ public struct Tile
         {
             default:
                 _fr.color1 = Color.Gray;
-                _fr.color2 = Color.LightGray;
+                _fr.color2 = (isHoveredX ^ isHoveredY) ? Color.Gray.Lighter(0.16f) : Color.LightGray;
                 break;
             case TileState.Filled:
                 _fr.color1 = Settings.GetAccentColor();
-                _fr.color2 = Settings.GetLightAccentColor();
+                _fr.color2 = Settings.GetLightAccentColor(0.16f);
                 break;
         }
 
-        _fr.mode = isHovered ? FadeRectMode.FadeIn : FadeRectMode.FadeOut;
+        _fr.mode = (isHoveredX || isHoveredY) ? FadeRectMode.FadeIn : FadeRectMode.FadeOut;
         _fr.Update();
 
         _fr.Draw(batch);
@@ -103,8 +106,8 @@ public struct Tile
     {
         Vector2 screenPos = getScreenPos(x, y, boardSize, graphDev);
         Rectangle rect = new((int)screenPos.X, (int)screenPos.Y, 32, 32);
-        Point mousePoint = new(mx, my);
-        isHovered = rect.Contains(mousePoint);
+        isHoveredX = mx > rect.X && mx < rect.X + rect.Width;
+        isHoveredY = my > rect.Y && my < rect.Y + rect.Height;
     }
 
     public void LeftClick()

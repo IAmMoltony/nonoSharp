@@ -22,6 +22,9 @@ public class Board
     public int maxHints;
     public bool IsSolved { get; private set; }
 
+    private int _boardX;
+    private int _boardY;
+
     public static bool CompareSolutionTile(TileState a, TileState b)
     {
         if (a == TileState.Cross)
@@ -38,6 +41,8 @@ public class Board
         undoStack = new Stack<Tile[,]>();
         previousState = null;
         hintedLines = new();
+        _boardX = 0;
+        _boardY = 0;
     }
 
     public Board(int size)
@@ -48,6 +53,8 @@ public class Board
         previousState = null;
         hintedLines = new();
         MakeTilesAndSolution();
+        _boardX = 0;
+        _boardY = 0;
     }
 
     public Board(string fileName)
@@ -56,6 +63,8 @@ public class Board
         previousState = null;
         hintedLines = new();
         Load(fileName);
+        _boardX = 0;
+        _boardY = 0;
     }
 
     public void Load(string fileName)
@@ -98,17 +107,17 @@ public class Board
                 tiles[i, j].Draw(i, j, size, IsSolved, batch);
 
         int pxSize = size * 32;
-        int boardX = (graphDev.Viewport.Bounds.Width / 2) - (pxSize / 2);
-        int boardY = (graphDev.Viewport.Bounds.Height / 2) - (pxSize / 2);
+        _boardX = (graphDev.Viewport.Bounds.Width / 2) - (pxSize / 2);
+        _boardY = (graphDev.Viewport.Bounds.Height / 2) - (pxSize / 2);
 
         if (IsSolved)
         {
-            RectRenderer.DrawRectOutline(new(boardX, boardY, pxSize, pxSize), Color.Black, 1, batch);
+            RectRenderer.DrawRectOutline(getRect(), Color.Black, 1, batch);
         }
         else
         {
-            GridRenderer.DrawGrid(batch, boardX, boardY, size, size, 32, Color.Black);
-            DrawClues(boardX, boardY, batch);
+            GridRenderer.DrawGrid(batch, _boardX, _boardY, size, size, 32, Color.Black);
+            DrawClues(_boardX, _boardY, batch);
         }
     }
 
@@ -117,13 +126,22 @@ public class Board
         if (IsSolved)
             return;
 
+        Point mousePoint = new(mouseState.X, mouseState.Y);
+        bool canHover = getRect().Contains(mousePoint);
+
         for (int i = 0; i < size; i++)
         {
             for (int j = 0; j < size; j++)
             {
                 ref Tile tile = ref tiles[i, j];
-                tile.Hover(i, j, mouseState.X, mouseState.Y, size, graphDev);
-                if (tile.isHovered)
+                if (canHover)
+                    tile.Hover(i, j, mouseState.X, mouseState.Y, size, graphDev);
+                else
+                {
+                    tile.isHoveredX = false;
+                    tile.isHoveredY = false;
+                }
+                if (tile.isHoveredX && tile.isHoveredY)
                 {
                     bool left = mouseStateOld.LeftButton == ButtonState.Released && mouseState.LeftButton == ButtonState.Pressed;
                     bool right = mouseStateOld.RightButton == ButtonState.Released && mouseState.RightButton == ButtonState.Pressed;
@@ -281,7 +299,10 @@ public class Board
             Log.Logger.Information("Board is solved");
             for (int i = 0; i < size; i++)
                 for (int j = 0; j < size; j++)
-                    tiles[i, j].isHovered = false;
+                {
+                    tiles[i, j].isHoveredX = false;
+                    tiles[i, j].isHoveredY = false;
+                }
         }
     }
 
@@ -345,5 +366,11 @@ public class Board
                     tiles[i, j].state = TileState.Cross;
             }
         }
+    }
+
+    private Rectangle getRect()
+    {
+        int pxSize = size * 32;
+        return new(_boardX, _boardY, pxSize, pxSize);
     }
 }
