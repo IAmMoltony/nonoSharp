@@ -184,7 +184,6 @@ public class LevelSelect
         _deleteLevel = false;
         File.Delete($"{AppDomain.CurrentDomain.BaseDirectory}/Content/Levels/{_deleteLevelName}.json");
         _levels.Remove(_levels.Find(x => x.Item1.name == _deleteLevelName));
-        //_scrollOffsetGoal = -((120 * _levels.Count) - 230);
     }
 
     private static void drawHeading(GraphicsDevice graphDev, SpriteBatch sprBatch)
