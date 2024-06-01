@@ -30,5 +30,6 @@ public class Credits
         TextRenderer.DrawText(sprBatch, "DefaultFont", 10, 160, 0.4f, "Licensed under the MIT license", Color.White);
         TextRenderer.DrawText(sprBatch, "DefaultFont", 10, 180, 0.4f, "Powered by MonoGame", Color.White);
         TextRenderer.DrawText(sprBatch, "DefaultFont", 10, 230, 0.4f, "Tile place sound: Pop_5 from Pops pack by SunnySideSound", Color.White);
+        TextRenderer.DrawText(sprBatch, "DefaultFont", 10, 250, 0.4f, "Font: Noto Sans, licensed under Open Font License", Color.White);
     }
 }
