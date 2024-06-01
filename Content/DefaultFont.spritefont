@@ -68,6 +68,12 @@ with.
         <Start>&#x0400;</Start>
         <End>&#x04FF;</End>
       </CharacterRegion>
+	
+      <!-- Latin-1 Supplement -->
+	  <CharacterRegion>
+		<Start>&#x00A0;</Start>
+	    <End>&#x00FF;</End>
+	  </CharacterRegion>
     </CharacterRegions>
   </Asset>
 </XnaContent>
