@@ -102,6 +102,8 @@ public class LevelSelect
             RectRenderer.DrawRectOutline(_dialogRect, Settings.GetAccentColor(), 2, sprBatch);
             TextRenderer.DrawTextCenter(sprBatch, "DefaultFont", 0.8f, StringManager.GetString("deleteSure"), Color.White, dialogTextRect);
 
+            TextRenderer.DrawTextWrapped(sprBatch, "DefaultFont", _dialogRect.X + 10, _dialogRect.Y + 60, 0.5f, string.Format(StringManager.GetString("deleteDialogText"), _deleteLevelName), _dialogRect.Width - 30, Color.White);
+
             _deleteNoButton.Draw(sprBatch);
             _deleteYesButton.Draw(sprBatch);
         }

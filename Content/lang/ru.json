@@ -30,6 +30,7 @@
   "maxHintsPlaceholder": "(бесконечно)",
   "deleteButton": "Удалить",
   "deleteSure": "Удалить?",
+  "deleteDialogText": "Точно удалить «{0}»? Это нельзя будет отменить.",
   "yes": "Да",
   "no": "Нет"
 }

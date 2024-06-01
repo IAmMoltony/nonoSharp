@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Serilog;
 using System.Collections.Generic;
+using System.Text;
 
 namespace NonoSharp;
 
@@ -72,6 +73,11 @@ public static class TextRenderer
         batch.DrawString(_fonts[font], text, new Vector2(centerX, centerY), color, 0, Vector2.Zero, scale, SpriteEffects.None, 1.0f);
     }
 
+    public static void DrawTextWrapped(SpriteBatch batch, string font, int x, int y, float scale, string text, float maxWidth, Color color)
+    {
+        batch.DrawString(_fonts[font], wrapText(_fonts[font], text, maxWidth, scale), new(x, y), color, 0, Vector2.Zero, scale, SpriteEffects.None, 1.0f);
+    }
+
     /// <summary>
     /// Measure the size of text
     /// </summary>
@@ -81,5 +87,32 @@ public static class TextRenderer
     public static Vector2 MeasureString(string font, string text)
     {
         return _fonts[font].MeasureString(text);
+    }
+
+    private static string wrapText(SpriteFont spriteFont, string text, float maxLineWidth, float scale)
+    {
+        // i stole this code from stackoverflow
+        string[] words = text.Split(' ');
+        StringBuilder sb = new StringBuilder();
+        float lineWidth = 0f;
+        float spaceWidth = spriteFont.MeasureString(" ").X;
+
+        foreach (string word in words)
+        {
+            Vector2 size = spriteFont.MeasureString(word) * scale;
+
+            if (lineWidth + size.X < maxLineWidth)
+            {
+                sb.Append(word + " ");
+                lineWidth += size.X + spaceWidth;
+            }
+            else
+            {
+                sb.Append("\n" + word + " ");
+                lineWidth = size.X + spaceWidth;
+            }
+        }
+
+        return sb.ToString();
     }
 }
