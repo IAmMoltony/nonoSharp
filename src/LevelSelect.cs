@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.IO;
 
 namespace NonoSharp;
 
@@ -123,6 +124,8 @@ public class LevelSelect
 
             if (_deleteNoButton.IsClicked)
                 _deleteLevel = false;
+            if (_deleteYesButton.IsClicked)
+                doDelete();
         }
         else
         {
@@ -174,6 +177,14 @@ public class LevelSelect
             _scrollOffsetGoal += keyboardScrollSpeed;
         else if (keyboard.IsKeyDown(Keys.Down))
             _scrollOffsetGoal -= keyboardScrollSpeed;
+    }
+
+    private void doDelete()
+    {
+        _deleteLevel = false;
+        File.Delete($"{AppDomain.CurrentDomain.BaseDirectory}/Content/Levels/{_deleteLevelName}.json");
+        _levels.Remove(_levels.Find(x => x.Item1.name == _deleteLevelName));
+        //_scrollOffsetGoal = -((120 * _levels.Count) - 230);
     }
 
     private static void drawHeading(GraphicsDevice graphDev, SpriteBatch sprBatch)

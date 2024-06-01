@@ -22,7 +22,7 @@ public class TextBox : UIElement
     private Color _textColorHover;
     private Color _placeholderColor;
     private Color _placeholderColorHover;
-    private string _placeholder;
+    private readonly string _placeholder;
     private bool _blinkCursor;
     private int _blinkCursorTimer;
     private bool _illegalBlink;
