@@ -179,7 +179,7 @@ public class NonoSharpGame : Game
             case GameState.LevelSelect:
                 {
                     string levelName = "";
-                    _levelSelect.Update(_mouse, _mouseOld, _kb, _kbOld, out GameState? newState, ref levelName);
+                    _levelSelect.Update(_mouse, _mouseOld, _kb, _kbOld, GraphicsDevice, out GameState? newState, ref levelName);
 
                     if (newState == GameState.Game)
                     {

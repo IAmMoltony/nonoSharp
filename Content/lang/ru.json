@@ -28,5 +28,8 @@
   "credits": "Титры",
   "maxHints": "Максимум подсказок",
   "maxHintsPlaceholder": "(бесконечно)",
-  "deleteButton": "Удалить"
+  "deleteButton": "Удалить",
+  "deleteSure": "Удалить?",
+  "yes": "Да",
+  "no": "Нет"
 }

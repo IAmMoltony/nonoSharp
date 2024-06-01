@@ -28,5 +28,8 @@
   "credits": "Credits",
   "maxHints": "Max hints",
   "maxHintsPlaceholder": "(infinite)",
-  "deleteButton": "Delete"
+  "deleteButton": "Delete",
+  "deleteSure": "Delete?",
+  "yes": "Yes",
+  "no": "No"
 }
