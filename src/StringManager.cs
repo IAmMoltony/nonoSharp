@@ -72,7 +72,7 @@ public static class StringManager
     /// </summary>
     private static void parseLanguage()
     {
-        string fileName = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Content", "lang", "{_lang}.json");
+        string fileName = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Content", "lang", $"{_lang}.json");
         string langString = File.ReadAllText(fileName);
         _strings = JsonSerializer.Deserialize<Dictionary<string, string>>(langString);
     }
