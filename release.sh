@@ -23,8 +23,8 @@ mv bin/Release/net6.0/win7-x64 windows-build
 
 echo -e "  *** \033[0;32mZipping Linux build\033[0m ***"
 cd linux-build
-zip -r ../nonoSharpLinux$1.zip -xi ./*
+zip -r ../nonoSharpLinux"$1".zip -xi ./*
 
 echo -e "  *** \033[0;32mZipping Windows build\033[0m ***"
 cd ../windows-build
-zip -r ../nonoSharpWindows$1.zip -xi ./*
+zip -r ../nonoSharpWindows"$1".zip -xi ./*
