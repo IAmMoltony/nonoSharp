@@ -31,6 +31,10 @@ public class SaveLevelState
         char[] invalidPathChars = Path.GetInvalidPathChars();
         char[] invalidFileNameChars = Path.GetInvalidFileNameChars();
         _levelNameBox.illegalChars = invalidPathChars.Union(invalidFileNameChars).ToList();
+
+        // make it so that level names can't have return chars in them
+        _levelNameBox.illegalChars.Add('\r');
+        _levelNameBox.illegalChars.Add('\n');
     }
 
     public void Draw(SpriteBatch sprBatch)
