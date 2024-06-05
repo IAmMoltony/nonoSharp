@@ -184,7 +184,7 @@ public class LevelSelect
     private void doDelete()
     {
         _deleteLevel = false;
-        File.Delete($"{AppDomain.CurrentDomain.BaseDirectory}/Content/Levels/{_deleteLevelName}.json");
+        File.Delete(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Content", "Levels", $"{_deleteLevelName}.nono"));
         _levels.Remove(_levels.Find(x => x.Item1.name == _deleteLevelName));
     }
 

@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Serilog;
 using System;
+using System.IO;
 using System.Diagnostics;
 
 namespace NonoSharp;
@@ -55,7 +56,7 @@ public class NonoSharpGame : Game
                     outputTemplate: "{Timestamp:HH:mm:ss} {Level:u4} {Message:lj}{NewLine}"
                 )
             .WriteTo.File(
-                    $"{AppDomain.CurrentDomain.BaseDirectory}/logs/nonoSharp.log", // TODO make all paths use Path.Combine
+                    Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "logs", "nonoSharp.log"),
                     rollingInterval: RollingInterval.Minute,
                     retainedFileCountLimit: 15
                 )

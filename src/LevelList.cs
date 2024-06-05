@@ -17,7 +17,7 @@ public class LevelList : IEnumerable<LevelMetadata>
 
     public void FindLevels()
     {
-        findLevelsInDir(AppDomain.CurrentDomain.BaseDirectory + "/Content/Levels", false);
+        findLevelsInDir(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Content", "Levels"), false);
         findLevelsInDir(BoardSaver.GetLevelSavePath(), true);
     }
 
@@ -53,7 +53,7 @@ public class LevelList : IEnumerable<LevelMetadata>
         }
         for (int i = 0; i < files.Length; i++)
         {
-            string sizeStr = File.ReadAllLines($"{levelsDir}/{files[i].Name}")[0];
+            string sizeStr = File.ReadAllLines(Path.Combine(levelsDir, files[i].Name))[0];
             if (!int.TryParse(sizeStr, out int size))
             {
                 Log.Logger.Warning($"Level {files[i].Name} does not have a valid board size, skip");
