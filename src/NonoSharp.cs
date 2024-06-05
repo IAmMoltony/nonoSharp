@@ -55,7 +55,7 @@ public class NonoSharpGame : Game
                     outputTemplate: "{Timestamp:HH:mm:ss} {Level:u4} {Message:lj}{NewLine}"
                 )
             .WriteTo.File(
-                    $"{AppDomain.CurrentDomain.BaseDirectory}/logs/nonoSharp.log",
+                    $"{AppDomain.CurrentDomain.BaseDirectory}/logs/nonoSharp.log", // TODO make all paths use Path.Combine
                     rollingInterval: RollingInterval.Minute,
                     retainedFileCountLimit: 15
                 )
@@ -178,13 +178,13 @@ public class NonoSharpGame : Game
                 break;
             case GameState.LevelSelect:
                 {
-                    string levelName = "";
-                    _levelSelect.Update(_mouse, _mouseOld, _kb, _kbOld, GraphicsDevice, out GameState? newState, ref levelName);
+                    LevelMetadata levelMetadata = new();
+                    _levelSelect.Update(_mouse, _mouseOld, _kb, _kbOld, GraphicsDevice, out GameState? newState, ref levelMetadata);
 
                     if (newState == GameState.Game)
                     {
                         Mouse.SetPosition(GraphicsDevice.Viewport.Bounds.Width / 2, GraphicsDevice.Viewport.Bounds.Height / 2); // put mouse in middle of screen
-                        _play.Load($"{AppDomain.CurrentDomain.BaseDirectory}/Content/Levels/{levelName}.nono");
+                        _play.Load(levelMetadata.GetPath());
                     }
                     if (newState != null)
                         _state = (GameState)newState;

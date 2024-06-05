@@ -17,20 +17,8 @@ public class LevelList : IEnumerable<LevelMetadata>
 
     public void FindLevels()
     {
-        string levelsDir = AppDomain.CurrentDomain.BaseDirectory + "/Content/Levels";
-        DirectoryInfo dirInfo = new(levelsDir);
-        FileInfo[] files = dirInfo.GetFiles("*.nono");
-        for (int i = 0; i < files.Length; i++)
-        {
-            string sizeStr = File.ReadAllLines($"{levelsDir}/{files[i].Name}")[0];
-            if (!int.TryParse(sizeStr, out int size))
-            {
-                Log.Logger.Warning($"Level {files[i].Name} does not have a valid board size, skip");
-                continue;
-            }
-            Levels.Add(new(Path.GetFileNameWithoutExtension(files[i].Name), size));
-            Log.Logger.Information($"Found level: {Levels[^1]}");
-        }
+        findLevelsInDir(AppDomain.CurrentDomain.BaseDirectory + "/Content/Levels", false);
+        findLevelsInDir(BoardSaver.GetLevelSavePath(), true);
     }
 
     public IEnumerator<LevelMetadata> GetEnumerator()
@@ -47,5 +35,32 @@ public class LevelList : IEnumerable<LevelMetadata>
     {
         get { return Levels[index]; }
         set { Levels[index] = value; }
+    }
+
+    private void findLevelsInDir(string levelsDir, bool isCustomLevelDir)
+    {
+        Log.Logger.Information($"Searching for levels in folder {levelsDir} (custom: {isCustomLevelDir})");
+        DirectoryInfo dirInfo = new(levelsDir);
+        FileInfo[] files = new FileInfo[1];
+        try
+        {
+            files = dirInfo.GetFiles("*.nono");
+        }
+        catch (DirectoryNotFoundException)
+        {
+            Log.Logger.Warning($"Directory {levelsDir} not found, skipping");
+            return;
+        }
+        for (int i = 0; i < files.Length; i++)
+        {
+            string sizeStr = File.ReadAllLines($"{levelsDir}/{files[i].Name}")[0];
+            if (!int.TryParse(sizeStr, out int size))
+            {
+                Log.Logger.Warning($"Level {files[i].Name} does not have a valid board size, skip");
+                continue;
+            }
+            Levels.Add(new(Path.GetFileNameWithoutExtension(files[i].Name), size, isCustomLevelDir));
+            Log.Logger.Information($"Found level: {Levels[^1]}");
+        }
     }
 }

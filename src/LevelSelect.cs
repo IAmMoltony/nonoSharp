@@ -109,7 +109,7 @@ public class LevelSelect
         }
     }
 
-    public void Update(MouseState mouse, MouseState mouseOld, KeyboardState kb, KeyboardState kbOld, GraphicsDevice graphDev, out GameState? newState, ref string levelName)
+    public void Update(MouseState mouse, MouseState mouseOld, KeyboardState kb, KeyboardState kbOld, GraphicsDevice graphDev, out GameState? newState, ref LevelMetadata levelMetadata)
     {
         newState = null;
 
@@ -144,7 +144,7 @@ public class LevelSelect
                 {
                     Log.Logger.Information($"Clicked on level {level.Item1}");
                     newState = GameState.Game;
-                    levelName = level.Item1.name;
+                    levelMetadata = level.Item1;
                 }
                 _levels[i].Item2.SetY(110 + (120 * i) + 40 + (int)_scrollOffset);
                 _levels[i].Item2.deleteButton.x = _levels[i].Item2.playButton.x + _levels[i].Item2.playButton.width + 10;
