@@ -15,6 +15,7 @@ public static class BoardSaver
         board.maxHints = maxHints;
         string saveData = board.Serialize();
         string filePath = Path.Combine(GetLevelSavePath(), $"{fileName}.nono");
+        Directory.CreateDirectory(Path.GetDirectoryName(filePath));
         using StreamWriter writer = new(filePath);
         writer.WriteLine(saveData);
     }
