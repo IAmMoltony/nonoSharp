@@ -29,6 +29,8 @@ echo -e "  *** \033[0;32mZipping Windows build\033[0m ***"
 cd ../windows-build
 zip -r ../nonoSharpWindows"$1".zip -xi ./*
 
+cd ..
+
 mkdir -p ReleaseBuilds
 mv nonoSharpLinux"$1".zip ReleaseBuilds/
 mv nonoSharpWindows"$1".zip ReleaseBuilds/
