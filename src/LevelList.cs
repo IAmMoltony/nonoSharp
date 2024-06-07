@@ -6,6 +6,12 @@ using System.IO;
 
 namespace NonoSharp;
 
+public enum LevelSortOption
+{
+    Alphabetical,
+    CreationDate
+}
+
 public class LevelList : IEnumerable<LevelMetadata>
 {
     public List<LevelMetadata> Levels { get; private set; }
@@ -35,6 +41,28 @@ public class LevelList : IEnumerable<LevelMetadata>
     {
         get { return Levels[index]; }
         set { Levels[index] = value; }
+    }
+
+    public void Sort(LevelSortOption option, bool reverse)
+    {
+        Comparison<LevelMetadata> comparison;
+
+        switch (option)
+        {
+            case LevelSortOption.Alphabetical:
+                comparison = (a, b) => a.name.CompareTo(b.name);
+                break;
+            case LevelSortOption.CreationDate:
+                comparison = (a, b) => a.creationDate.CompareTo(b.creationDate);
+                break;
+            default:
+                throw new NotImplementedException();
+        }
+
+        if (reverse)
+            Levels.Sort((a, b) => -comparison(a, b));
+        else
+            Levels.Sort(comparison);
     }
 
     private void findLevelsInDir(string levelsDir, bool isCustomLevelDir)
