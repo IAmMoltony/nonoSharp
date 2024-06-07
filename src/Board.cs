@@ -95,7 +95,7 @@ public class Board
         }
 
         clues = new(this);
-        crossZeroLines();
+        CrossZeroLines();
     }
 
     public void Draw(SpriteBatch batch)
@@ -325,7 +325,7 @@ public class Board
             tile.RightClick();
     }
 
-    private void crossZeroLines()
+    public void CrossZeroLines()
     {
         // Find all lines that have no tiles and cross them
 
