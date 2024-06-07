@@ -148,8 +148,11 @@ public class PlayState
 
         if (_board.IsSolved)
         {
-            // draw green half transparent rectangle across the whole screen
+            // draw half transparent rectangle across the whole screen
             RectRenderer.DrawRect(new(0, 0, sprBatch.GraphicsDevice.Viewport.Bounds.Width, sprBatch.GraphicsDevice.Viewport.Bounds.Height), new(Settings.GetDarkAccentColor(), 0.2f), sprBatch);
+
+            // draw the board, on top of the rect
+            _board.Draw(sprBatch);
 
             // render the text
             TextRenderer.DrawText(sprBatch, "DefaultFont", 30, 30, 1.0f, StringManager.GetString("solved"), Color.White);
@@ -165,9 +168,6 @@ public class PlayState
 
             // draw the continue button
             _solvedContinueButton.Draw(sprBatch);
-
-            // draw the board, on top of everything
-            _board.Draw(sprBatch);
         }
 
         if (_paused)
