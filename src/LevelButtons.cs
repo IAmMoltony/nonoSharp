@@ -11,8 +11,10 @@ public struct LevelButtons
 
     public readonly void SetY(int value)
     {
-        playButton.y = value;
-        deleteButton.y = value;
+        if (playButton != null)
+            playButton.y = value;
+        if (deleteButton != null)
+            deleteButton.y = value;
     }
 
     public LevelButtons()
@@ -23,13 +25,13 @@ public struct LevelButtons
 
     public readonly void Draw(SpriteBatch sprBatch)
     {
-        playButton.Draw(sprBatch);
-        deleteButton.Draw(sprBatch);
+        playButton?.Draw(sprBatch);
+        deleteButton?.Draw(sprBatch);
     }
 
     public readonly void Update(MouseState mouse, MouseState mouseOld, KeyboardState keyboard, KeyboardState keyboardOld)
     {
-        playButton.Update(mouse, mouseOld, keyboard, keyboardOld);
-        deleteButton.Update(mouse, mouseOld, keyboard, keyboardOld);
+        playButton?.Update(mouse, mouseOld, keyboard, keyboardOld);
+        deleteButton?.Update(mouse, mouseOld, keyboard, keyboardOld);
     }
 }

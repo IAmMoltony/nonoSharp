@@ -55,16 +55,18 @@ public class LevelSelect
         // copy over the list into the internal list and slap in buttons
         for (int i = 0; i < list.Count(); i++)
         {
+            LevelMetadata metadata = list[i];
+
             int buttonY = 110 + (120 * i) + 40;
             Button playButton = new(15, buttonY, 0, 40, StringManager.GetString("playButton"), Settings.GetDarkAccentColor(), Settings.GetAccentColor(), true);
-            Button deleteButton = new(15, buttonY, 0, 40, StringManager.GetString("deleteButton"), Settings.GetDarkAccentColor(), Settings.GetAccentColor(), true);
+            Button deleteButton = metadata.isCustomLevel ? new(15, buttonY, 0, 40, StringManager.GetString("deleteButton"), Settings.GetDarkAccentColor(), Settings.GetAccentColor(), true) : null;
             LevelButtons buttons = new()
             {
                 playButton = playButton,
                 deleteButton = deleteButton
             };
             
-            _levels.Add(new(list[i], buttons));
+            _levels.Add(new(metadata, buttons));
         }
 
         stopwatch.Stop();
@@ -147,12 +149,15 @@ public class LevelSelect
                     levelMetadata = level.Item1;
                 }
                 _levels[i].Item2.SetY(110 + (120 * i) + 40 + (int)_scrollOffset);
-                _levels[i].Item2.deleteButton.x = _levels[i].Item2.playButton.x + _levels[i].Item2.playButton.width + 10;
-
-                if (_levels[i].Item2.deleteButton.IsClicked)
+                if (_levels[i].Item2.deleteButton != null)
                 {
-                    _deleteLevelName = _levels[i].Item1.name;
-                    _deleteLevel = true;
+                    _levels[i].Item2.deleteButton.x = _levels[i].Item2.playButton.x + _levels[i].Item2.playButton.width + 10;
+
+                    if (_levels[i].Item2.deleteButton.IsClicked)
+                    {
+                        _deleteLevelName = _levels[i].Item1.name;
+                        _deleteLevel = true;
+                    }
                 }
             }
 
