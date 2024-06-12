@@ -22,6 +22,7 @@ public struct Tile
 
     public static Texture2D TextureCross { get; private set; }
     public static SoundEffect SoundPlace { get; private set; }
+    public static SoundEffect SoundCross { get; private set; }
 
     private readonly FadeRect _fr;
 
@@ -35,6 +36,7 @@ public struct Tile
     {
         Log.Logger.Information("Loading tile sounds");
         SoundPlace = content.Load<SoundEffect>("sound/tilePlace");
+        SoundCross = content.Load<SoundEffect>("sound/cross");
     }
 
     public static void PrintTileArray(Tile[,] ta, int size)
@@ -125,7 +127,11 @@ public struct Tile
     public void RightClick()
     {
         if (state == TileState.Empty)
+        {
+            if (Settings.GetBool("sound"))
+                SoundCross.Play();
             state = TileState.Cross;
+        }
         else if (state == TileState.Cross)
             state = TileState.Empty;
     }

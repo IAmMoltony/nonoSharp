@@ -24,6 +24,8 @@ public class Credits
         Rectangle headingRect = new(0, 15, sprBatch.GraphicsDevice.Viewport.Bounds.Width, 100);
         TextRenderer.DrawTextCenter(sprBatch, "DefaultFont", 0.9f, StringManager.GetString("credits"), Color.White, headingRect);
 
+        // TODO put into file
+
         BackButton.Draw(sprBatch);
         TextRenderer.DrawText(sprBatch, "DefaultFont", 10, 120, 0.4f, $"nonoSharp {GameVersion.GetGameVersion()}", Color.White);
         TextRenderer.DrawText(sprBatch, "DefaultFont", 10, 140, 0.4f, "Created by Moltony, 2024", Color.White);
