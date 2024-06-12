@@ -68,6 +68,12 @@
 #begin Levels/TwoLines.nono
 /copy:Levels/TwoLines.nono
 
+#begin sound/cross.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:sound/cross.wav
+
 #begin sound/tilePlace.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor
