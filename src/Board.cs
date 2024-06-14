@@ -251,6 +251,19 @@ public class Board
                 tiles[i, j].state = TileState.Empty;
     }
 
+    public void DoReplayMove(ReplayMove move)
+    {
+        switch (move.type)
+        {
+            case ReplayMoveType.LeftClick:
+                DoMouseInput(true, ref tiles[move.tileX, move.tileY]);
+                break;
+            case ReplayMoveType.RightClick:
+                DoMouseInput(false, ref tiles[move.tileX, move.tileY]);
+                break;
+        }
+    }
+
     protected void MakeTilesAndSolution()
     {
         tiles = new Tile[size, size];
