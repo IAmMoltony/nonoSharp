@@ -24,6 +24,8 @@ public class Board
 
     private int _boardX;
     private int _boardY;
+    private Replay _replay;
+    private uint _frameCounter;
 
     public static bool CompareSolutionTile(TileState a, TileState b)
     {
@@ -43,6 +45,8 @@ public class Board
         hintedLines = new();
         _boardX = 0;
         _boardY = 0;
+        _replay = new();
+        _frameCounter = 0;
     }
 
     public Board(int size)
@@ -55,6 +59,8 @@ public class Board
         MakeTilesAndSolution();
         _boardX = 0;
         _boardY = 0;
+        _replay = new();
+        _frameCounter = 0;
     }
 
     public Board(string fileName)
@@ -65,6 +71,7 @@ public class Board
         Load(fileName);
         _boardX = 0;
         _boardY = 0;
+        _frameCounter = 0;
     }
 
     public void Load(string fileName)
@@ -151,13 +158,22 @@ public class Board
                         SaveState();
 
                     if (left)
+                    {
                         DoMouseInput(true, ref tile);
+                        _replay.AddMove(new(ReplayMoveType.LeftClick, i, j), _frameCounter);
+                    }
                     if (right)
+                    {
                         DoMouseInput(false, ref tile);
+                        _replay.AddMove(new(ReplayMoveType.RightClick, i, j), _frameCounter);
+                    }
                 }
             }
         }
+
         CheckSolution();
+
+        _frameCounter++;
     }
 
     public virtual void RestoreState()
@@ -309,6 +325,7 @@ public class Board
 
         if (IsSolved)
         {
+            // TODO maybe extract this code into function
             Log.Logger.Information("Board is solved");
             for (int i = 0; i < size; i++)
                 for (int j = 0; j < size; j++)
@@ -316,6 +333,8 @@ public class Board
                     tiles[i, j].isHoveredX = false;
                     tiles[i, j].isHoveredY = false;
                 }
+
+            _replay.Save("replay test");
         }
     }
 
