@@ -117,7 +117,7 @@ public struct Tile
         if (state == TileState.Empty)
         {
             if (Settings.GetBool("sound"))
-                SoundPlace.Play();
+                SoundPlace.Play(1.0f, (float)Random.Shared.Next(-50, 50) / 100, 0.0f);
             state = TileState.Filled;
         }
         else if (state == TileState.Filled)
@@ -129,7 +129,7 @@ public struct Tile
         if (state == TileState.Empty)
         {
             if (Settings.GetBool("sound"))
-                SoundCross.Play();
+                SoundCross.Play(1.0f, (float)Random.Shared.Next(-10, 10) / 100, 0.0f);
             state = TileState.Cross;
         }
         else if (state == TileState.Cross)
