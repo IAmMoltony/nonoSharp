@@ -21,6 +21,8 @@ public static class CrashHandler
             writer.WriteLine("nonoSharp has crashed. Here's some information about the crash:\n");
             writer.WriteLine(exception.ToString());
 
+            NonoSharpGame.Close();
+
 #if !DEBUG // Not executed on debug builds because the error is visible in the console (and in VS if we're using it)
             Process proc = new()
             {

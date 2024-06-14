@@ -46,6 +46,13 @@ public class NonoSharpGame : Game
     private SettingsScreen _settings;
     private Credits _credits;
 
+    private static NonoSharpGame _instance;
+
+    public static void Close()
+    {
+        _instance.Exit();
+    }
+
     public NonoSharpGame()
     {
         CrashHandler.Initialize();
@@ -83,6 +90,7 @@ public class NonoSharpGame : Game
         Settings.Initialize();
         StringManager.Initialize();
 
+        _instance = this;
         _state = GameState.MainMenu;
         _fpsCounter = new();
         _showFPS = false;
