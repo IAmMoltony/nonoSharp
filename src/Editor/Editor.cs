@@ -11,7 +11,7 @@ public enum EditorState
     SaveLevel,
 }
 
-public class Editor
+public class Editor : IGameState
 {
     private EditorState _state;
     private SetSizeState _setSize;

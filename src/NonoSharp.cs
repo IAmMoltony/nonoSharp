@@ -15,8 +15,12 @@ public enum GameState
     LevelSelect,
     Editor,
     Settings,
-    Credits,
-    KeySettings
+    Credits
+}
+
+public interface IGameState
+{
+    void Draw(SpriteBatch sprBatch);
 }
 
 public class NonoSharpGame : Game
@@ -26,25 +30,28 @@ public class NonoSharpGame : Game
     private readonly GraphicsDeviceManager _graphics;
     private SpriteBatch _spriteBatch;
 
+    private Process _gameProcess;
+
     private MouseState _mouse;
     private MouseState _mouseOld;
 
     private KeyboardState _kb;
     private KeyboardState _kbOld;
 
-    private PerformanceInfo _perfInfo;
-    private bool _showPerformanceInfo;
+    private FPSCounter _fpsCounter;
+    private bool _showFPS;
 
     private bool _showBgGrid;
 
     private GameState _state;
+    private IGameState _currentState;
+    
     private MainMenu _mainMenu;
     private LevelSelect _levelSelect;
     private PlayState _play;
     private Editor.Editor _editor;
     private SettingsScreen _settings;
     private Credits _credits;
-    private KeySettingsScreen _keySettings;
 
     private static NonoSharpGame _instance;
 
@@ -85,21 +92,23 @@ public class NonoSharpGame : Game
 
         Window.Title = $"nonoSharp {GameVersion.GetGameVersion()}";
 
+        _gameProcess = Process.GetCurrentProcess();
+
         Settings.Initialize();
         StringManager.Initialize();
 
         _instance = this;
         _state = GameState.MainMenu;
-        _perfInfo = new();
-        _showPerformanceInfo = false;
+        _fpsCounter = new();
+        _showFPS = false;
         IsMouseVisible = true;
         _mainMenu = new();
+        _currentState = _mainMenu;
         _levelSelect = new();
         _editor = new();
         _play = new();
         _settings = new();
         _credits = new();
-        _keySettings = new();
 
         _graphics.HardwareModeSwitch = false;
 
@@ -162,7 +171,11 @@ public class NonoSharpGame : Game
             case GameState.Game:
                 _play.Update(_mouse, _mouseOld, _kb, _kbOld, GraphicsDevice, out bool leave, IsActive);
                 if (leave)
+                {
                     _state = GameState.LevelSelect;
+                    _currentState = _levelSelect;
+                }
+                    
                 break;
             case GameState.MainMenu:
                 _mainMenu.Update(_mouse, _mouseOld, _kb, _kbOld, GraphicsDevice);
@@ -172,16 +185,23 @@ public class NonoSharpGame : Game
                 {
                     _levelSelect.FindLevels();
                     _state = GameState.LevelSelect;
+                    _currentState = _levelSelect;
                 }
                 // quit button
                 else if (_mainMenu.QuitButton.IsClicked)
                     Exit();
                 // editor button
                 else if (_mainMenu.EditorButton.IsClicked)
+                {
                     _state = GameState.Editor;
+                    _currentState = _editor;
+                }
                 // settings button
                 else if (_mainMenu.SettingsButton.IsClicked)
+                {
                     _state = GameState.Settings;
+                    _currentState = _settings;
+                }
 
                 break;
             case GameState.LevelSelect:
@@ -193,6 +213,11 @@ public class NonoSharpGame : Game
                     {
                         Mouse.SetPosition(GraphicsDevice.Viewport.Bounds.Width / 2, GraphicsDevice.Viewport.Bounds.Height / 2); // put mouse in middle of screen
                         _play.Load(levelMetadata.GetPath());
+                        _currentState = _play;
+                    }
+                    else if (newState == GameState.MainMenu)
+                    {
+                        _currentState = _mainMenu;
                     }
                     if (newState != null)
                         _state = (GameState)newState;
@@ -203,7 +228,10 @@ public class NonoSharpGame : Game
                 {
                     _editor.Update(_mouse, _mouseOld, _kb, _kbOld, GraphicsDevice, out GameState? newState);
                     if (newState != null)
+                    {
                         _state = (GameState)newState;
+                        _currentState = _mainMenu;
+                    }
                     break;
                 }
             case GameState.Settings:
@@ -213,32 +241,27 @@ public class NonoSharpGame : Game
                     Settings.Save();
                     _showBgGrid = Settings.GetBool("showBgGrid");
                     _state = GameState.MainMenu;
+                    _currentState = _mainMenu;
                 }
                 if (_settings.CreditsButton.IsClicked)
+                {
                     _state = GameState.Credits;
-                if (_settings.KeySettingsButton.IsClicked)
-                    _state = GameState.KeySettings;
+                    _currentState = _credits;
+                }
                 break;
             case GameState.Credits:
                 _credits.Update(_mouse, _mouseOld, _kb, _kbOld);
                 if (_credits.BackButton.IsClicked)
+                {
                     _state = GameState.Settings;
-                break;
-            case GameState.KeySettings:
-                _keySettings.Update(_mouse, _mouseOld, _kb, _kbOld);
-                if (_keySettings.BackButton.IsClicked)
-                    _state = GameState.Settings;
+                    _currentState = _settings;
+                }
                 break;
         }
 
-        // Show/hide perf info when pressing F12
-        if (_kb.IsKeyDown(Keys.F12) && !_kbOld.IsKeyDown(Keys.F12))
-            _showPerformanceInfo = !_showPerformanceInfo;
+        updateShowFPS();
+        updatePerfInfo();
 
-        if (_showPerformanceInfo)
-            _perfInfo.UpdatePerformanceInfo();
-
-        // Toggle fullscreen with F11
         if (_kb.IsKeyDown(Keys.F11) && !_kbOld.IsKeyDown(Keys.F11))
             toggleFullScreen();
 
@@ -255,38 +278,18 @@ public class NonoSharpGame : Game
 
         drawBackgroundGrid();
 
-        switch (_state)
-        {
-            case GameState.Game:
-                _play.Draw(_spriteBatch);
-                break;
-            case GameState.MainMenu:
-                _mainMenu.Draw(_spriteBatch);
-                break;
-            case GameState.LevelSelect:
-                _levelSelect.Draw(_spriteBatch);
-                break;
-            case GameState.Editor:
-                _editor.Draw(_spriteBatch);
-                break;
-            case GameState.Settings:
-                _settings.Draw(_spriteBatch);
-                break;
-            case GameState.Credits:
-                _credits.Draw(_spriteBatch);
-                break;
-            case GameState.KeySettings:
-                _keySettings.Draw(_spriteBatch);
-                break;
-        }
+        _currentState.Draw(_spriteBatch);
 
         // draw some performance info
-        if (_showPerformanceInfo)
-            _perfInfo.Draw(_spriteBatch);
+        if (_showFPS)
+        {
+            TextRenderer.DrawText(_spriteBatch, "DefaultFont", 10, GraphicsDevice.Viewport.Bounds.Height - 26, 0.33f, $"{Math.Round(_fpsCounter.CurrentFPS)} fps, {Math.Round(_fpsCounter.AverageFPS)} avg", Color.LightGray); // FPS
+            TextRenderer.DrawText(_spriteBatch, "DefaultFont", 10, GraphicsDevice.Viewport.Bounds.Height - 42, 0.33f, $"mem: {Math.Round(((float)_gameProcess.WorkingSet64 / 1024 / 1024), 2)}M (peak {Math.Round(((float)_gameProcess.PeakWorkingSet64 / 1024 / 1024), 2)}M)", Color.LightGray); // Memory usage (current and peak)
+        }
 
         _spriteBatch.End();
 
-        _perfInfo.UpdateFPS(gameTime);
+        _fpsCounter.Update((float)gameTime.ElapsedGameTime.TotalSeconds);
 
         base.Draw(gameTime);
     }
@@ -302,7 +305,7 @@ public class NonoSharpGame : Game
     private void doTextInput(object sender, TextInputEventArgs tiea)
     {
         // update editor input when in editor
-        if (_state == GameState.Editor)
+        if (_currentState == _editor)
             _editor.UpdateInput(sender, tiea);
     }
 
@@ -312,6 +315,18 @@ public class NonoSharpGame : Game
         _kbOld = _kb;
         _mouse = Mouse.GetState();
         _kb = Keyboard.GetState();
+    }
+
+    private void updateShowFPS()
+    {
+        if (_kb.IsKeyDown(Keys.F12) && !_kbOld.IsKeyDown(Keys.F12))
+            _showFPS = !_showFPS;
+    }
+
+    private void updatePerfInfo()
+    {
+        if (_fpsCounter.TotalFrames % 50 == 0 && _showFPS)
+            _gameProcess.Refresh();
     }
 
     private void toggleFullScreen()

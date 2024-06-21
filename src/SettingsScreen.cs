@@ -5,7 +5,7 @@ using NonoSharp.UI;
 
 namespace NonoSharp;
 
-public class SettingsScreen
+public class SettingsScreen : IGameState
 {
     public Button BackButton { get; private set; }
     public Button CreditsButton { get; private set; }

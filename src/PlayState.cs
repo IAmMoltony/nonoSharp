@@ -8,7 +8,7 @@ using System.Threading;
 
 namespace NonoSharp;
 
-public class PlayState
+public class PlayState : IGameState
 {
     private static float _solveTime = 0;
     private static Thread _solveTimeThread;

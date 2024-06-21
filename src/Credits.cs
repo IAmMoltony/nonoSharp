@@ -5,7 +5,7 @@ using NonoSharp.UI;
 
 namespace NonoSharp;
 
-public class Credits
+public class Credits : IGameState
 {
     public Button BackButton { get; private set; }
 

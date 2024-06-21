@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace NonoSharp;
 
-public class MainMenu
+public class MainMenu : IGameState
 {
     public Button PlayButton { get; private set; }
     public Button QuitButton { get; private set; }

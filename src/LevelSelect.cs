@@ -11,7 +11,7 @@ using System.IO;
 
 namespace NonoSharp;
 
-public class LevelSelect
+public class LevelSelect : IGameState
 {
     public const int ScrollSpeed = 50;
     public const float KeyboardScrollSpeedMultiplier = 0.3f;
