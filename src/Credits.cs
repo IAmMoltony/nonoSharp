@@ -14,9 +14,16 @@ public class Credits : IGameState
         BackButton = new(10, 10, 0, 40, StringManager.GetString("back"), Settings.GetDarkAccentColor(), Settings.GetAccentColor(), true);
     }
 
-    public void Update(MouseState mouse, MouseState mouseOld, KeyboardState kb, KeyboardState kbOld)
+    public IGameState? Update(MouseState mouse, MouseState mouseOld, KeyboardState kb, KeyboardState kbOld, GraphicsDevice graphDev, out GameState? newState, ref LevelMetadata levelMetadata, bool hasFocus)
     {
+        newState = null;
         BackButton.Update(mouse, mouseOld, kb, kbOld);
+        if (BackButton.IsClicked)
+        {
+            return new SettingsScreen();
+        }
+
+        return null;
     }
 
     public void Draw(SpriteBatch sprBatch)

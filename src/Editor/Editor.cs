@@ -26,8 +26,8 @@ public class Editor : IGameState
         _saveLevel = new();
     }
 
-    public void Update(MouseState mouse, MouseState mouseOld, KeyboardState kb, KeyboardState kbOld, GraphicsDevice graphDev,
-                       out GameState? newState)
+    public IGameState? Update(MouseState mouse, MouseState mouseOld, KeyboardState kb, KeyboardState kbOld, GraphicsDevice graphDev,
+                       out GameState? newState, ref LevelMetadata levelMetadata, bool hasFocus)
     {
         newState = null;
         switch (_state)
@@ -44,6 +44,7 @@ public class Editor : IGameState
                     _state = EditorState.SetSize;
                     _setSize = new();
                     newState = GameState.MainMenu;
+                    return new MainMenu();
                 }
                 break;
             case EditorState.Editor:
@@ -54,6 +55,7 @@ public class Editor : IGameState
                 {
                     _state = EditorState.SetSize;
                     newState = GameState.MainMenu;
+                    return new MainMenu();
                 }
                 break;
             case EditorState.SaveLevel:
@@ -63,11 +65,14 @@ public class Editor : IGameState
                     _saveLevel = new();
                     _state = EditorState.SetSize;
                     newState = GameState.MainMenu;
+                    return new MainMenu();
                 }
                 if (_saveLevel.BackButton.IsClicked)
                     _state = EditorState.Editor;
                 break;
         }
+
+        return null;
     }
 
     public void Draw(SpriteBatch sprBatch)

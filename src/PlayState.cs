@@ -48,9 +48,10 @@ public class PlayState : IGameState
         _solveTimeThread.Start();
     }
 
-    public void Update(MouseState mouse, MouseState mouseOld, KeyboardState kb, KeyboardState kbOld, GraphicsDevice graphDev, out bool leave, bool hasFocus)
+    public IGameState? Update(MouseState mouse, MouseState mouseOld, KeyboardState kb, KeyboardState kbOld, GraphicsDevice graphDev,
+        out GameState? newState, ref LevelMetadata levelMetadata, bool hasFocus)
     {
-        leave = false;
+        newState = null;
 
         _hintsTextRedness = Math.Min(255, _hintsTextRedness + 10);
 
@@ -61,9 +62,11 @@ public class PlayState : IGameState
 
             if (_solvedContinueButton.IsClicked)
             {
-                leave = true;
+                newState = GameState.LevelSelect;
                 leaveGame();
-                return;
+                var levelSelect = new LevelSelect();
+                levelSelect.FindLevels();
+                return levelSelect;
             }
         }
 
@@ -100,8 +103,11 @@ public class PlayState : IGameState
             _pauseBackButton.Update(mouse, mouseOld, kb, kbOld);
             if (_pauseBackButton.IsClicked)
             {
-                leave = true;
+                newState = GameState.LevelSelect;
                 leaveGame();
+                var levelSelect = new LevelSelect();
+                levelSelect.FindLevels();
+                return levelSelect;
             }
 
             _pauseRestartButton.Update(mouse, mouseOld, kb, kbOld);
@@ -118,6 +124,8 @@ public class PlayState : IGameState
         // when window inactive, force pause
         if (!hasFocus && !_paused && !_board.IsSolved)
             pause(graphDev);
+
+        return null;
     }
 
     public void Load(string levelPath)
@@ -184,7 +192,7 @@ public class PlayState : IGameState
     {
         Log.Logger.Information("Stopping solve time thread");
         _solveTimeThreadRunning = false;
-        _solveTimeThread.Join();
+        _solveTimeThread?.Join();
     }
 
     private void pause(GraphicsDevice graphDev)

@@ -21,6 +21,7 @@ public enum GameState
 public interface IGameState
 {
     void Draw(SpriteBatch sprBatch);
+    IGameState? Update(MouseState mouse, MouseState mouseOld, KeyboardState kb, KeyboardState kbOld, GraphicsDevice graphDev, out GameState? newState, ref LevelMetadata levelMetadata, bool hasFocus);
 }
 
 public class NonoSharpGame : Game
@@ -41,17 +42,11 @@ public class NonoSharpGame : Game
     private FPSCounter _fpsCounter;
     private bool _showFPS;
 
-    private bool _showBgGrid;
-
     private GameState _state;
     private IGameState _currentState;
     
     private MainMenu _mainMenu;
-    private LevelSelect _levelSelect;
-    private PlayState _play;
     private Editor.Editor _editor;
-    private SettingsScreen _settings;
-    private Credits _credits;
 
     private static NonoSharpGame _instance;
 
@@ -104,11 +99,7 @@ public class NonoSharpGame : Game
         IsMouseVisible = true;
         _mainMenu = new();
         _currentState = _mainMenu;
-        _levelSelect = new();
         _editor = new();
-        _play = new();
-        _settings = new();
-        _credits = new();
 
         _graphics.HardwareModeSwitch = false;
 
@@ -121,8 +112,6 @@ public class NonoSharpGame : Game
             // initial window size: 85% of monitor size
             setWindowSize((int)(GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width * 0.85f), (int)(GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height * 0.85f), false);
         }
-
-        _showBgGrid = Settings.GetBool("showBgGrid");
 
         // allow the window to be resized
         Window.AllowUserResizing = true;
@@ -166,99 +155,17 @@ public class NonoSharpGame : Game
 
         Cursor = MouseCursor.Arrow;
 
-        switch (_state)
+        LevelMetadata levelMetadata = new();
+        if (_currentState.Update(_mouse, _mouseOld, _kb, _kbOld, GraphicsDevice, out GameState? gameState,
+                ref levelMetadata, IsActive) is { } newState)
         {
-            case GameState.Game:
-                _play.Update(_mouse, _mouseOld, _kb, _kbOld, GraphicsDevice, out bool leave, IsActive);
-                if (leave)
-                {
-                    _state = GameState.LevelSelect;
-                    _currentState = _levelSelect;
-                }
-                    
-                break;
-            case GameState.MainMenu:
-                _mainMenu.Update(_mouse, _mouseOld, _kb, _kbOld, GraphicsDevice);
-
-                // when play button is pressed then go to level select
-                if (_mainMenu.PlayButton.IsClicked)
-                {
-                    _levelSelect.FindLevels();
-                    _state = GameState.LevelSelect;
-                    _currentState = _levelSelect;
-                }
-                // quit button
-                else if (_mainMenu.QuitButton.IsClicked)
-                    Exit();
-                // editor button
-                else if (_mainMenu.EditorButton.IsClicked)
-                {
-                    _state = GameState.Editor;
-                    _currentState = _editor;
-                }
-                // settings button
-                else if (_mainMenu.SettingsButton.IsClicked)
-                {
-                    _state = GameState.Settings;
-                    _currentState = _settings;
-                }
-
-                break;
-            case GameState.LevelSelect:
-                {
-                    LevelMetadata levelMetadata = new();
-                    _levelSelect.Update(_mouse, _mouseOld, _kb, _kbOld, GraphicsDevice, out GameState? newState, ref levelMetadata);
-
-                    if (newState == GameState.Game)
-                    {
-                        Mouse.SetPosition(GraphicsDevice.Viewport.Bounds.Width / 2, GraphicsDevice.Viewport.Bounds.Height / 2); // put mouse in middle of screen
-                        _play.Load(levelMetadata.GetPath());
-                        _currentState = _play;
-                    }
-                    else if (newState == GameState.MainMenu)
-                    {
-                        _currentState = _mainMenu;
-                    }
-                    if (newState != null)
-                        _state = (GameState)newState;
-
-                    break;
-                }
-            case GameState.Editor:
-                {
-                    _editor.Update(_mouse, _mouseOld, _kb, _kbOld, GraphicsDevice, out GameState? newState);
-                    if (newState != null)
-                    {
-                        _state = (GameState)newState;
-                        _currentState = _mainMenu;
-                    }
-                    break;
-                }
-            case GameState.Settings:
-                _settings.Update(_mouse, _mouseOld, _kb, _kbOld, GraphicsDevice);
-                if (_settings.BackButton.IsClicked)
-                {
-                    Settings.Save();
-                    _showBgGrid = Settings.GetBool("showBgGrid");
-                    _state = GameState.MainMenu;
-                    _currentState = _mainMenu;
-                }
-                if (_settings.CreditsButton.IsClicked)
-                {
-                    _state = GameState.Credits;
-                    _currentState = _credits;
-                }
-                break;
-            case GameState.Credits:
-                _credits.Update(_mouse, _mouseOld, _kb, _kbOld);
-                if (_credits.BackButton.IsClicked)
-                {
-                    _state = GameState.Settings;
-                    _currentState = _settings;
-                }
-                break;
+            _currentState = newState;
         }
-
+        if (_currentState == _mainMenu && _mainMenu.QuitButton.IsClicked)
+        {
+            Exit();
+        }
+        
         updateShowFPS();
         updatePerfInfo();
 
@@ -339,7 +246,7 @@ public class NonoSharpGame : Game
 
     private void drawBackgroundGrid()
     {
-        if (!_showBgGrid)
+        if (!Settings.GetBool("showBgGrid"))
             return;
         GridRenderer.DrawGrid(
                 _spriteBatch,

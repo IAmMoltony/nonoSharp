@@ -21,8 +21,10 @@ public class MainMenu : IGameState
         QuitButton = new(0, 0, 120, 60, StringManager.GetString("quitButton"), Settings.GetDarkAccentColor(), Settings.GetAccentColor(), new[] { Keys.Q, Keys.Escape });
     }
 
-    public void Update(MouseState mouse, MouseState mouseOld, KeyboardState kb, KeyboardState kbOld, GraphicsDevice graphDev)
+    public IGameState? Update(MouseState mouse, MouseState mouseOld, KeyboardState kb, KeyboardState kbOld, GraphicsDevice graphDev,
+        out GameState? newState, ref LevelMetadata levelMetadata, bool hasFocus)
     {
+        newState = null;
         updateButtonWidths();
 
         PlayButton.x = (graphDev.Viewport.Bounds.Width / 2) - (PlayButton.width / 2);
@@ -40,6 +42,18 @@ public class MainMenu : IGameState
         QuitButton.x = PlayButton.x;
         QuitButton.y = PlayButton.y + 210;
         QuitButton.Update(mouse, mouseOld, kb, kbOld);
+
+        if (PlayButton.IsClicked)
+        {
+            var levelSelect = new LevelSelect();
+            levelSelect.FindLevels();
+            return levelSelect;
+        }
+        if (EditorButton.IsClicked)
+        {
+            return new Editor.Editor();
+        }
+        return SettingsButton.IsClicked ? new SettingsScreen() : null;
     }
 
     public void Draw(SpriteBatch sprBatch)

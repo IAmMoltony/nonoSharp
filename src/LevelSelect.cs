@@ -111,7 +111,7 @@ public class LevelSelect : IGameState
         }
     }
 
-    public void Update(MouseState mouse, MouseState mouseOld, KeyboardState kb, KeyboardState kbOld, GraphicsDevice graphDev, out GameState? newState, ref LevelMetadata levelMetadata)
+    public IGameState? Update(MouseState mouse, MouseState mouseOld, KeyboardState kb, KeyboardState kbOld, GraphicsDevice graphDev, out GameState? newState, ref LevelMetadata levelMetadata, bool hasFocus)
     {
         newState = null;
 
@@ -147,6 +147,10 @@ public class LevelSelect : IGameState
                     Log.Logger.Information($"Clicked on level {level.Item1}");
                     newState = GameState.Game;
                     levelMetadata = level.Item1;
+                    Mouse.SetPosition(graphDev.Viewport.Bounds.Width / 2, graphDev.Viewport.Bounds.Height / 2); // put mouse in middle of screen
+                    var play = new PlayState();
+                    play.Load(levelMetadata.GetPath());
+                    return play;
                 }
                 _levels[i].Item2.SetY(110 + (120 * i) + 40 + (int)_scrollOffset);
                 if (_levels[i].Item2.deleteButton != null)
@@ -163,8 +167,13 @@ public class LevelSelect : IGameState
 
             _backButton.Update(mouse, mouseOld, kb, kbOld);
             if (_backButton.IsClicked)
+            {
                 newState = GameState.MainMenu;
+                return new MainMenu();
+            }
         }
+
+        return null;
     }
 
     private void updateScroll(MouseState mouse, MouseState mouseOld, KeyboardState keyboard, KeyboardState keyboardOld, GraphicsDevice graphDev)
