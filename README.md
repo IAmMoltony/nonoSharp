@@ -1,7 +1,7 @@
 <p align="center">
     <img src="https://github.com/IAmMoltony/nonoSharp/raw/main/Icon.bmp">
-    <p style="font-size: 1.5em">nonoSharp</span>
 </p>
+<p align="center"><i>a Nonogram game in C#</i></p>
 
 [![CodeFactor](https://www.codefactor.io/repository/github/iammoltony/nonosharp/badge)](https://www.codefactor.io/repository/github/iammoltony/nonosharp)
 
