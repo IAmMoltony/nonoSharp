@@ -1,7 +1,7 @@
-
-# nonoSharp
-
-nonoSharp is a Nonogram game written in C#.
+<p align="center">
+    <img src="https://github.com/IAmMoltony/nonoSharp/raw/main/Icon.bmp">
+    <h1>nonoSharp</h1>
+</p>
 
 [![CodeFactor](https://www.codefactor.io/repository/github/iammoltony/nonosharp/badge)](https://www.codefactor.io/repository/github/iammoltony/nonosharp)
 
