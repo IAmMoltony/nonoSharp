@@ -1,6 +1,6 @@
 <p align="center">
     <img src="https://github.com/IAmMoltony/nonoSharp/raw/main/Icon.bmp">
-    <big><big><big>nonoSharp</big></big></big>
+    <p style="font-size: 1.5em">nonoSharp</span>
 </p>
 
 [![CodeFactor](https://www.codefactor.io/repository/github/iammoltony/nonosharp/badge)](https://www.codefactor.io/repository/github/iammoltony/nonosharp)
