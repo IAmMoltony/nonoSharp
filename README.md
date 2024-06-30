@@ -2,8 +2,9 @@
     <img src="https://github.com/IAmMoltony/nonoSharp/raw/main/Icon.bmp">
 </p>
 <p align="center"><i>a Nonogram game in C#</i></p>
-
-[![CodeFactor](https://www.codefactor.io/repository/github/iammoltony/nonosharp/badge)](https://www.codefactor.io/repository/github/iammoltony/nonosharp)
+<p align="center">
+    <a href="https://www.codefactor.io/repository/github/iammoltony/nonosharp"><img src="https://www.codefactor.io/repository/github/iammoltony/nonosharp/badge" alt="CodeFactor" /></a>
+</p>
 
 ## Dependencies
 
