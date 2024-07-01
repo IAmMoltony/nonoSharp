@@ -169,17 +169,25 @@ public class LevelSelect
 
     private void updateScroll(MouseState mouse, MouseState mouseOld, KeyboardState keyboard)
     {
+        // clamping scroll offest
         if (_scrollOffsetGoal > 0)
             _scrollOffsetGoal = 0;
         if (_scrollOffsetGoal < -((120 * _levels.Count) - 230))
             _scrollOffsetGoal = -((120 * _levels.Count) - 230);
+
+        // Scrolling using mouse
         if (mouse.ScrollWheelValue > mouseOld.ScrollWheelValue)
             _scrollOffsetGoal += ScrollSpeed;
         else if (mouse.ScrollWheelValue < mouseOld.ScrollWheelValue)
             _scrollOffsetGoal -= ScrollSpeed;
 
-        // arrow keys
+        // Scrolling using arrow keys
+
         int keyboardScrollSpeed = (int)(ScrollSpeed * KeyboardScrollSpeedMultiplier);
+        if (keyboard.IsKeyDown(Keys.LeftShift) || keyboard.IsKeyDown(Keys.RightShift))
+            // When shift is pressed make it go faster
+            keyboardScrollSpeed *= 2;
+
         if (keyboard.IsKeyDown(Keys.Up))
             _scrollOffsetGoal += keyboardScrollSpeed;
         else if (keyboard.IsKeyDown(Keys.Down))
