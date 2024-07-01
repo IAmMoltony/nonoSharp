@@ -25,16 +25,14 @@ public class NonoSharpGame : Game
     private readonly GraphicsDeviceManager _graphics;
     private SpriteBatch _spriteBatch;
 
-    private Process _gameProcess;
-
     private MouseState _mouse;
     private MouseState _mouseOld;
 
     private KeyboardState _kb;
     private KeyboardState _kbOld;
 
-    private FPSCounter _fpsCounter;
-    private bool _showFPS;
+    private PerformanceInfo _perfInfo;
+    private bool _showPerformanceInfo;
 
     private bool _showBgGrid;
 
@@ -85,15 +83,13 @@ public class NonoSharpGame : Game
 
         Window.Title = $"nonoSharp {GameVersion.GetGameVersion()}";
 
-        _gameProcess = Process.GetCurrentProcess();
-
         Settings.Initialize();
         StringManager.Initialize();
 
         _instance = this;
         _state = GameState.MainMenu;
-        _fpsCounter = new();
-        _showFPS = false;
+        _perfInfo = new();
+        _showPerformanceInfo = false;
         IsMouseVisible = true;
         _mainMenu = new();
         _levelSelect = new();
@@ -225,9 +221,14 @@ public class NonoSharpGame : Game
                 break;
         }
 
-        updateShowFPS();
-        updatePerfInfo();
+        // Show/hide perf info when pressing F12
+        if (_kb.IsKeyDown(Keys.F12) && !_kbOld.IsKeyDown(Keys.F12))
+            _showPerformanceInfo = !_showPerformanceInfo;
 
+        if (_showPerformanceInfo)
+            _perfInfo.UpdatePerformanceInfo();
+
+        // Toggle fullscreen with F11
         if (_kb.IsKeyDown(Keys.F11) && !_kbOld.IsKeyDown(Keys.F11))
             toggleFullScreen();
 
@@ -267,15 +268,12 @@ public class NonoSharpGame : Game
         }
 
         // draw some performance info
-        if (_showFPS)
-        {
-            TextRenderer.DrawText(_spriteBatch, "DefaultFont", 10, GraphicsDevice.Viewport.Bounds.Height - 26, 0.33f, $"{Math.Round(_fpsCounter.CurrentFPS)} fps, {Math.Round(_fpsCounter.AverageFPS)} avg", Color.LightGray); // FPS
-            TextRenderer.DrawText(_spriteBatch, "DefaultFont", 10, GraphicsDevice.Viewport.Bounds.Height - 42, 0.33f, $"mem: {Math.Round(((float)_gameProcess.WorkingSet64 / 1024 / 1024), 2)}M (peak {Math.Round(((float)_gameProcess.PeakWorkingSet64 / 1024 / 1024), 2)}M)", Color.LightGray); // Memory usage (current and peak)
-        }
+        if (_showPerformanceInfo)
+            _perfInfo.Draw(_spriteBatch);
 
         _spriteBatch.End();
 
-        _fpsCounter.Update((float)gameTime.ElapsedGameTime.TotalSeconds);
+        _perfInfo.UpdateFPS(gameTime);
 
         base.Draw(gameTime);
     }
@@ -301,18 +299,6 @@ public class NonoSharpGame : Game
         _kbOld = _kb;
         _mouse = Mouse.GetState();
         _kb = Keyboard.GetState();
-    }
-
-    private void updateShowFPS()
-    {
-        if (_kb.IsKeyDown(Keys.F12) && !_kbOld.IsKeyDown(Keys.F12))
-            _showFPS = !_showFPS;
-    }
-
-    private void updatePerfInfo()
-    {
-        if (_fpsCounter.TotalFrames % 50 == 0 && _showFPS)
-            _gameProcess.Refresh();
     }
 
     private void toggleFullScreen()
