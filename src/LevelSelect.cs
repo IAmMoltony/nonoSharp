@@ -133,7 +133,7 @@ public class LevelSelect
         }
         else
         {
-            updateScroll(mouse, mouseOld, kb);
+            updateScroll(mouse, mouseOld, kb, kbOld);
 
             // lerp scroll offset
             _scrollOffset = MathHelper.Lerp(_scrollOffset, _scrollOffsetGoal, 0.3f);
@@ -167,13 +167,19 @@ public class LevelSelect
         }
     }
 
-    private void updateScroll(MouseState mouse, MouseState mouseOld, KeyboardState keyboard)
+    private void updateScroll(MouseState mouse, MouseState mouseOld, KeyboardState keyboard, KeyboardState keyboardOld)
     {
+        // Home and End to go to the start and end of the list
+        if (keyboard.IsKeyDown(Keys.Home) && !keyboardOld.IsKeyDown(Keys.Home))
+            _scrollOffsetGoal = 0;
+        else if (keyboard.IsKeyDown(Keys.End) && !keyboardOld.IsKeyDown(Keys.End))
+            _scrollOffsetGoal = maxScrollOffset();
+
         // clamping scroll offest
         if (_scrollOffsetGoal > 0)
             _scrollOffsetGoal = 0;
-        if (_scrollOffsetGoal < -((120 * _levels.Count) - 230))
-            _scrollOffsetGoal = -((120 * _levels.Count) - 230);
+        if (_scrollOffsetGoal < maxScrollOffset())
+            _scrollOffsetGoal = maxScrollOffset();
 
         // Scrolling using mouse
         if (mouse.ScrollWheelValue > mouseOld.ScrollWheelValue)
@@ -192,6 +198,11 @@ public class LevelSelect
             _scrollOffsetGoal += keyboardScrollSpeed;
         else if (keyboard.IsKeyDown(Keys.Down))
             _scrollOffsetGoal -= keyboardScrollSpeed;
+    }
+
+    private int maxScrollOffset()
+    {
+        return -((120 * _levels.Count) - 230);
     }
 
     private void doDelete()
