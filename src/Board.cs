@@ -167,11 +167,13 @@ public class Board
                         DoMouseInput(false, ref tile);
                         _replay.AddMove(new(ReplayMoveType.RightClick, i, j), _frameCounter);
                     }
+
+                    if (left || right)
+                        CheckSolution();
                 }
             }
         }
 
-        CheckSolution();
 
         _frameCounter++;
     }
