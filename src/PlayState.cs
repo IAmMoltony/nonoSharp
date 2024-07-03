@@ -69,7 +69,7 @@ public class PlayState
 
         if (!_paused)
         {
-            _board.Update(mouse, mouseOld, graphDev);
+            _board.Update(mouse, mouseOld, kb, kbOld, graphDev);
             if (_board.IsSolved)
                 _solveTimeTick = false;
             else

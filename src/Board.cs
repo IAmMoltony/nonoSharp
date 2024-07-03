@@ -128,7 +128,7 @@ public class Board
         }
     }
 
-    public void Update(MouseState mouseState, MouseState mouseStateOld, GraphicsDevice graphDev)
+    public void Update(MouseState mouseState, MouseState mouseStateOld, KeyboardState kb, KeyboardState kbOld, GraphicsDevice graphDev)
     {
         if (IsSolved)
             return;
@@ -150,8 +150,8 @@ public class Board
                 }
                 if (tile.isHoveredX && tile.isHoveredY)
                 {
-                    bool left = mouseStateOld.LeftButton == ButtonState.Released && mouseState.LeftButton == ButtonState.Pressed;
-                    bool right = mouseStateOld.RightButton == ButtonState.Released && mouseState.RightButton == ButtonState.Pressed;
+                    bool left = (mouseStateOld.LeftButton == ButtonState.Released && mouseState.LeftButton == ButtonState.Pressed) || (kb.IsKeyDown(Keys.X) && !kbOld.IsKeyDown(Keys.X));
+                    bool right = (mouseStateOld.RightButton == ButtonState.Released && mouseState.RightButton == ButtonState.Pressed) || (kb.IsKeyDown(Keys.C) && !kbOld.IsKeyDown(Keys.C));
 
                     // Save state only if mouse is pressed
                     if (left || right)

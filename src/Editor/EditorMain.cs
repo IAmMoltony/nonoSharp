@@ -24,7 +24,7 @@ public class EditorMain
 
     public void Update(MouseState mouse, MouseState mouseOld, KeyboardState kb, KeyboardState kbOld, GraphicsDevice graphDev)
     {
-        Board.Update(mouse, mouseOld, graphDev);
+        Board.Update(mouse, mouseOld, kb, kbOld, graphDev);
         SaveButton.Update(mouse, mouseOld, kb, kbOld);
         ResetButton.Update(mouse, mouseOld, kb, kbOld);
         BackButton.Update(mouse, mouseOld, kb, kbOld);
