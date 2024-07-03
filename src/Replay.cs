@@ -1,12 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Text.Json;
 
 namespace NonoSharp;
 
 public class Replay
 {
     public Dictionary<uint, ReplayMove> Moves { get; private set; }
+
+    public static string GetReplayDirectory()
+    {
+        return Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "nonoSharp", "Replays");
+    }
+
+    public static string GetReplayFullPath(string replayName)
+    {
+        return Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "nonoSharp", "Replays", $"{replayName}.rpy");
+    }
 
     public Replay()
     {
@@ -21,9 +32,9 @@ public class Replay
     public void Save(string name)
     {
         string dateTime = DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss");
-        string replayDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "nonoSharp", "Replays");
+        string replayDirectory = GetReplayDirectory();
         Directory.CreateDirectory(replayDirectory);
-        string realName = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + $"/nonoSharp/Replays/{name}_{dateTime}.rpy";
+        string realName = GetReplayFullPath($"{name}_{dateTime}");
 
         // I understand that writing JSON manually isn't a very good idea
         // But it's the one that I could implement with the least amount of headaches.
@@ -37,5 +48,20 @@ public class Replay
         json += "}}";
 
         File.WriteAllText(realName, json);
+    }
+
+    public bool Load(string name)
+    {
+        string replayDirectory = GetReplayDirectory();
+        string realName = GetReplayFullPath(name);
+
+        if (!File.Exists(realName))
+            return false;
+
+        string replayJson = File.ReadAllText(realName);
+
+        JsonDocument replayDocument = JsonDocument.Parse(replayJson);
+
+        return true;
     }
 }
