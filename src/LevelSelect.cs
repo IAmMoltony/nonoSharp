@@ -133,7 +133,7 @@ public class LevelSelect
         }
         else
         {
-            updateScroll(mouse, mouseOld, kb, kbOld);
+            updateScroll(mouse, mouseOld, kb, kbOld, graphDev);
 
             // lerp scroll offset
             _scrollOffset = MathHelper.Lerp(_scrollOffset, _scrollOffsetGoal, 0.3f);
@@ -167,8 +167,14 @@ public class LevelSelect
         }
     }
 
-    private void updateScroll(MouseState mouse, MouseState mouseOld, KeyboardState keyboard, KeyboardState keyboardOld)
+    private void updateScroll(MouseState mouse, MouseState mouseOld, KeyboardState keyboard, KeyboardState keyboardOld, GraphicsDevice graphDev)
     {
+        // PageUp and PageDown scroll by the window height
+        if (keyboard.IsKeyDown(Keys.PageUp) && !keyboardOld.IsKeyDown(Keys.PageUp))
+            _scrollOffsetGoal += graphDev.Viewport.Bounds.Height;
+        else if (keyboard.IsKeyDown(Keys.PageDown) && !keyboardOld.IsKeyDown(Keys.PageDown))
+            _scrollOffsetGoal -= graphDev.Viewport.Bounds.Height;
+
         // Home and End to go to the start and end of the list
         if (keyboard.IsKeyDown(Keys.Home) && !keyboardOld.IsKeyDown(Keys.Home))
             _scrollOffsetGoal = 0;
