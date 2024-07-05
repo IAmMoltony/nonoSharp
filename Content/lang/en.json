@@ -32,5 +32,6 @@
   "deleteSure": "Delete?",
   "deleteDialogText": "Really delete \"{0}\"? You cannot undo this action.",
   "yes": "Yes",
-  "no": "No"
+  "no": "No",
+  "keySettings": "Key settings"
 }

@@ -9,6 +9,7 @@ public class SettingsScreen
 {
     public Button BackButton { get; private set; }
     public Button CreditsButton { get; private set; }
+    public Button KeySettingsButton { get; private set; }
 
     private readonly CheckBox _enableHintsBox;
     private readonly CheckBox _showBgBox;
@@ -18,6 +19,7 @@ public class SettingsScreen
     {
         BackButton = new(10, 10, 0, 40, StringManager.GetString("back"), Settings.GetDarkAccentColor(), Settings.GetAccentColor(), Keys.Escape, true);
         CreditsButton = new(10, 0, 0, 40, StringManager.GetString("credits"), Settings.GetDarkAccentColor(), Settings.GetAccentColor(), Keys.C, true);
+        KeySettingsButton = new(10, 0, 0, 40, StringManager.GetString("keySettings"), Settings.GetDarkAccentColor(), Settings.GetAccentColor(), Keys.K, true);
 
         _enableHintsBox = new(40, 110, StringManager.GetString("enableHints"), Color.Gray, Color.DarkGray, Settings.GetBool("enableHints"));
         _showBgBox = new(40, 140, StringManager.GetString("showBgGrid"), Color.Gray, Color.DarkGray, Settings.GetBool("showBgGrid"));
@@ -32,6 +34,7 @@ public class SettingsScreen
 
         BackButton.Draw(sprBatch);
         CreditsButton.Draw(sprBatch);
+        KeySettingsButton.Draw(sprBatch);
 
         _enableHintsBox.Draw(sprBatch);
         _showBgBox.Draw(sprBatch);
@@ -47,8 +50,13 @@ public class SettingsScreen
         BackButton.Update(mouse, mouseOld, kb, kbOld);
         if (BackButton.IsClicked)
             close();
-        CreditsButton.Update(mouse, mouseOld, kb, kbOld);
+
         CreditsButton.y = graphDev.Viewport.Bounds.Height - 50;
+        CreditsButton.Update(mouse, mouseOld, kb, kbOld);
+
+        KeySettingsButton.y = CreditsButton.y;
+        KeySettingsButton.x = CreditsButton.x + CreditsButton.width + 10;
+        KeySettingsButton.Update(mouse, mouseOld, kb, kbOld);
     }
 
     public void close()
