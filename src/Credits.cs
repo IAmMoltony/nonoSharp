@@ -33,6 +33,6 @@ public class Credits
         TextRenderer.DrawText(sprBatch, "DefaultFont", 10, 180, 0.4f, "Powered by MonoGame", Color.White);
         TextRenderer.DrawText(sprBatch, "DefaultFont", 10, 230, 0.4f, "Tile place sound: Pop_5.aif by SunnySideSound -- https://freesound.org/s/67091/ -- License: Attribution 4.0", Color.White);
         TextRenderer.DrawText(sprBatch, "DefaultFont", 10, 250, 0.4f, "Cross place sound: pencil.wav by zakkolar -- https://freesound.org/s/431438/ -- License: Creative Commons 0", Color.White);
-        TextRenderer.DrawText(sprBatch, "DefaultFont", 10, 270, 0.4f, "Font: Noto Sans, licensed under Open Font License", Color.White);
+        TextRenderer.DrawText(sprBatch, "DefaultFont", 10, 270, 0.4f, "Font: Cascadia Mono, licensed under Open Font License", Color.White);
     }
 }
