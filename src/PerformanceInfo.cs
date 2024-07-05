@@ -7,8 +7,8 @@ namespace NonoSharp;
 
 public class PerformanceInfo
 {
-    private FPSCounter _fpsCounter;
-    private Process _gameProcess;
+    private readonly FPSCounter _fpsCounter;
+    private readonly Process _gameProcess;
 
     public PerformanceInfo()
     {

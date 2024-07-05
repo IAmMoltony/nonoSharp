@@ -93,7 +93,7 @@ public static class TextRenderer
     {
         // i stole this code from stackoverflow
         string[] words = text.Split(' ');
-        StringBuilder sb = new StringBuilder();
+        StringBuilder sb = new();
         float lineWidth = 0f;
         float spaceWidth = spriteFont.MeasureString(" ").X;
 

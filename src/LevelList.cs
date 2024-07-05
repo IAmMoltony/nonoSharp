@@ -69,7 +69,7 @@ public class LevelList : IEnumerable<LevelMetadata>
     {
         Log.Logger.Information($"Searching for levels in folder {levelsDir} (custom: {isCustomLevelDir})");
         DirectoryInfo dirInfo = new(levelsDir);
-        FileInfo[] files = new FileInfo[1];
+        FileInfo[] files;
         try
         {
             files = dirInfo.GetFiles("*.nono");
