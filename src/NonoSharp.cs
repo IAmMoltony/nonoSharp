@@ -15,7 +15,8 @@ public enum GameState
     LevelSelect,
     Editor,
     Settings,
-    Credits
+    Credits,
+    KeySettings
 }
 
 public class NonoSharpGame : Game
@@ -43,6 +44,7 @@ public class NonoSharpGame : Game
     private Editor.Editor _editor;
     private SettingsScreen _settings;
     private Credits _credits;
+    private KeySettingsScreen _keySettings;
 
     private static NonoSharpGame _instance;
 
@@ -97,6 +99,7 @@ public class NonoSharpGame : Game
         _play = new();
         _settings = new();
         _credits = new();
+        _keySettings = new();
 
         _graphics.HardwareModeSwitch = false;
 
@@ -213,10 +216,17 @@ public class NonoSharpGame : Game
                 }
                 if (_settings.CreditsButton.IsClicked)
                     _state = GameState.Credits;
+                if (_settings.KeySettingsButton.IsClicked)
+                    _state = GameState.KeySettings;
                 break;
             case GameState.Credits:
                 _credits.Update(_mouse, _mouseOld, _kb, _kbOld);
                 if (_credits.BackButton.IsClicked)
+                    _state = GameState.Settings;
+                break;
+            case GameState.KeySettings:
+                _keySettings.Update(_mouse, _mouseOld, _kb, _kbOld);
+                if (_keySettings.BackButton.IsClicked)
                     _state = GameState.Settings;
                 break;
         }
@@ -264,6 +274,9 @@ public class NonoSharpGame : Game
                 break;
             case GameState.Credits:
                 _credits.Draw(_spriteBatch);
+                break;
+            case GameState.KeySettings:
+                _keySettings.Draw(_spriteBatch);
                 break;
         }
 
