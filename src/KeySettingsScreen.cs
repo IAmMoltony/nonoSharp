@@ -2,6 +2,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Graphics;
 using NonoSharp.UI;
+using Serilog;
 
 namespace NonoSharp;
 
@@ -25,5 +26,8 @@ public class KeySettingsScreen
     public void Update(MouseState mouse, MouseState mouseOld, KeyboardState kb, KeyboardState kbOld)
     {
         BackButton.Update(mouse, mouseOld, kb, kbOld);
+
+        if (kb.AnyKeyPressed() && !kbOld.AnyKeyPressed())
+            Log.Logger.Information($"pressed {kb.GetPressedKeys()[0]} code {(int)kb.GetPressedKeys()[0]}");
     }
 }
