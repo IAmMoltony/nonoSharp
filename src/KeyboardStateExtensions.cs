@@ -9,4 +9,9 @@ public static class KeyboardStateExtensions
     {
         return keys.All(key => state.IsKeyDown(key)) && keys.Any(key => !oldState.IsKeyDown(key));
     }
+
+    public static bool AnyKeyPressed(this KeyboardState state)
+    {
+        return state.GetPressedKeys().Length > 0;
+    }
 }
