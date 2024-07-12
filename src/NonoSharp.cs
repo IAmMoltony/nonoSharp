@@ -16,7 +16,7 @@ public interface IGameState
 
 public class NonoSharpGame : Game
 {
-    public static MouseCursor Cursor { get; set; }
+    public static MouseCursor Cursor { get; set; } = MouseCursor.Arrow;
 
     private readonly GraphicsDeviceManager _graphics;
     private SpriteBatch _spriteBatch;
