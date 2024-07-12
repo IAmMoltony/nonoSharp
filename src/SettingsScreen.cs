@@ -50,21 +50,25 @@ public class SettingsScreen : IGameState
         BackButton.Update(mouse, mouseOld, kb, kbOld);
         if (BackButton.IsClicked)
         {
-            close();
+            saveSettings();
             return new MainMenu();
         }
 
         CreditsButton.y = graphDev.Viewport.Bounds.Height - 50;
         CreditsButton.Update(mouse, mouseOld, kb, kbOld);
+        if (CreditsButton.IsClicked)
+            return new Credits();
 
         KeySettingsButton.y = CreditsButton.y;
         KeySettingsButton.x = CreditsButton.x + CreditsButton.width + 10;
         KeySettingsButton.Update(mouse, mouseOld, kb, kbOld);
+        if (KeySettingsButton.IsClicked)
+            return new KeySettingsScreen();
 
         return null;
     }
 
-    public void close()
+    public void saveSettings()
     {
         Settings.Set("enableHints", _enableHintsBox.isChecked);
         Settings.Set("showBgGrid", _showBgBox.isChecked);

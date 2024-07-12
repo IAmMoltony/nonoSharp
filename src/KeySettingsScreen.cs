@@ -6,7 +6,7 @@ using Serilog;
 
 namespace NonoSharp;
 
-public class KeySettingsScreen
+public class KeySettingsScreen : IGameState
 {
     public Button BackButton { get; private set; }
 
@@ -23,11 +23,15 @@ public class KeySettingsScreen
         BackButton.Draw(sprBatch);
     }
 
-    public void Update(MouseState mouse, MouseState mouseOld, KeyboardState kb, KeyboardState kbOld)
+    public IGameState? Update(MouseState mouse, MouseState mouseOld, KeyboardState kb, KeyboardState kbOld, GraphicsDevice graphDev, ref LevelMetadata levelMetadata, bool hasFocus)
     {
         BackButton.Update(mouse, mouseOld, kb, kbOld);
+        if (BackButton.IsClicked)
+            return new SettingsScreen();
 
         if (kb.AnyKeyPressed() && !kbOld.AnyKeyPressed())
             Log.Logger.Information($"pressed {kb.GetPressedKeys()[0]} code {(int)kb.GetPressedKeys()[0]}");
+
+        return null;
     }
 }
