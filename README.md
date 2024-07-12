@@ -28,3 +28,12 @@ dotnet build # Build the project
 dotnet run
 ```
 
+## Contributing
+
+nonoSharp is open for contributions. Feel free to submit a pull request or
+create an issue.
+
+## License
+
+nonoSharp is licensed under the MIT license. See the [LICENSE](LICENSE) file
+for more details.
