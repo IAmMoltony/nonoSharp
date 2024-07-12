@@ -8,7 +8,8 @@
 
 ## Dependencies
 
-The only dependency that has to be installed is the .NET SDK. All libraries are installed during the build phase automatically.
+The only dependency that has to be installed is the .NET SDK. All libraries are
+downloaded and installed during the build phase automatically.
 
 ## Building and Running
 
@@ -16,7 +17,8 @@ The only dependency that has to be installed is the .NET SDK. All libraries are 
 
 ```bash
 git clone https://github.com/IAmMoltony/nonoSharp # Clone the repository
-cd nonoSharp # Go to the repository folder (or directory, whatever you want to call it)
+cd nonoSharp # Go to the repository folder (or directory, whatever
+             # you want to call it)
 dotnet build # Build the project
 ```
 
