@@ -1,10 +1,11 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System;
+using System.Diagnostics;
+using System.IO;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using NonoSharp.UI;
 using Serilog;
-using System;
-using System.IO;
-using System.Diagnostics;
 
 namespace NonoSharp;
 
@@ -21,7 +22,7 @@ public class NonoSharpGame : Game
     private readonly GraphicsDeviceManager _graphics;
     private SpriteBatch _spriteBatch;
 
-    private Process _gameProcess;
+    private readonly Process _gameProcess;
 
     private MouseState _mouse;
     private MouseState _mouseOld;
@@ -29,18 +30,16 @@ public class NonoSharpGame : Game
     private KeyboardState _kb;
     private KeyboardState _kbOld;
 
-    private FPSCounter _fpsCounter;
-    private bool _showFPS;
-
-    private IGameState _currentState;
+    private readonly FPSCounter _fpsCounter = new();
+    private bool _showFps;
     
-    private MainMenu _mainMenu;
-    private Editor.Editor _editor;
+    private IGameState? _currentState;
 
     public NonoSharpGame()
     {
         CrashHandler.Initialize(Exit);
 
+        _gameProcess = Process.GetCurrentProcess();
         // Initialize serilog
         Log.Logger = new LoggerConfiguration()
             .WriteTo.Console(
@@ -69,17 +68,12 @@ public class NonoSharpGame : Game
 
         Window.Title = $"nonoSharp {GameVersion.GetGameVersion()}";
 
-        _gameProcess = Process.GetCurrentProcess();
-
         Settings.Initialize();
         StringManager.Initialize();
+        
+        _spriteBatch = new(GraphicsDevice);
 
-        _fpsCounter = new();
-        _showFPS = false;
         IsMouseVisible = true;
-        _mainMenu = new();
-        _currentState = _mainMenu;
-        _editor = new();
 
         _graphics.HardwareModeSwitch = false;
 
@@ -117,7 +111,7 @@ public class NonoSharpGame : Game
 
         // load textures
         Tile.LoadTextures(Content);
-        UI.CheckBox.LoadTextures(Content);
+        CheckBox.LoadTextures(Content);
 
         // load sounds
         Tile.LoadSounds(Content);
@@ -136,12 +130,13 @@ public class NonoSharpGame : Game
         Cursor = MouseCursor.Arrow;
 
         LevelMetadata levelMetadata = new();
+        _currentState ??= new MainMenu();
         if (_currentState.Update(_mouse, _mouseOld, _kb, _kbOld, GraphicsDevice,
                 ref levelMetadata, IsActive) is { } newState)
         {
             _currentState = newState;
         }
-        if (_currentState == _mainMenu && _mainMenu.QuitButton.IsClicked)
+        if (_currentState is MainMenu { QuitButton.IsClicked: true })
         {
             Exit();
         }
@@ -165,10 +160,10 @@ public class NonoSharpGame : Game
 
         drawBackgroundGrid();
 
-        _currentState.Draw(_spriteBatch);
+        _currentState?.Draw(_spriteBatch);
 
         // draw some performance info
-        if (_showFPS)
+        if (_showFps)
         {
             TextRenderer.DrawText(_spriteBatch, "DefaultFont", 10, GraphicsDevice.Viewport.Bounds.Height - 26, 0.33f, $"{Math.Round(_fpsCounter.CurrentFPS)} fps, {Math.Round(_fpsCounter.AverageFPS)} avg", Color.LightGray); // FPS
             TextRenderer.DrawText(_spriteBatch, "DefaultFont", 10, GraphicsDevice.Viewport.Bounds.Height - 42, 0.33f, $"mem: {Math.Round(((float)_gameProcess.WorkingSet64 / 1024 / 1024), 2)}M (peak {Math.Round(((float)_gameProcess.PeakWorkingSet64 / 1024 / 1024), 2)}M)", Color.LightGray); // Memory usage (current and peak)
@@ -192,8 +187,8 @@ public class NonoSharpGame : Game
     private void doTextInput(object sender, TextInputEventArgs tiea)
     {
         // update editor input when in editor
-        if (_currentState == _editor)
-            _editor.UpdateInput(sender, tiea);
+        if (_currentState is Editor.Editor editor)
+            editor.UpdateInput(sender, tiea);
     }
 
     private void getInput()
@@ -207,12 +202,12 @@ public class NonoSharpGame : Game
     private void updateShowFPS()
     {
         if (_kb.IsKeyDown(Keys.F12) && !_kbOld.IsKeyDown(Keys.F12))
-            _showFPS = !_showFPS;
+            _showFps = !_showFps;
     }
 
     private void updatePerfInfo()
     {
-        if (_fpsCounter.TotalFrames % 50 == 0 && _showFPS)
+        if (_fpsCounter.TotalFrames % 50 == 0 && _showFps)
             _gameProcess.Refresh();
     }
 
