@@ -32,11 +32,11 @@ public class NumberTextBox : TextBox
         _hasMax = false;
     }
 
-    public override void UpdateInput(object sender, TextInputEventArgs tiea)
+    public override void UpdateInput(TextInputEventArgs tiea)
     {
         if (Hovered && (char.IsNumber(tiea.Character) || tiea.Key == Keys.Back))
         {
-            base.UpdateInput(sender, tiea);
+            base.UpdateInput(tiea);
             checkMax();
         }
     }

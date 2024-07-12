@@ -8,9 +8,9 @@ using System.Threading;
 
 namespace NonoSharp;
 
-public class PlayState
+public class PlayState : IGameState
 {
-    private static float _solveTime = 0;
+    private static float _solveTime;
     private static Thread _solveTimeThread;
     private static bool _solveTimeThreadRunning = true;
     private static bool _solveTimeTick = true;
@@ -48,10 +48,8 @@ public class PlayState
         _solveTimeThread.Start();
     }
 
-    public void Update(MouseState mouse, MouseState mouseOld, KeyboardState kb, KeyboardState kbOld, GraphicsDevice graphDev, out bool leave, bool hasFocus)
+    public IGameState? Update(MouseState mouse, MouseState mouseOld, KeyboardState kb, KeyboardState kbOld, GraphicsDevice graphDev, ref LevelMetadata levelMetadata, bool hasFocus)
     {
-        leave = false;
-
         _hintsTextRedness = Math.Min(255, _hintsTextRedness + 10);
 
         // continue button
@@ -61,9 +59,10 @@ public class PlayState
 
             if (_solvedContinueButton.IsClicked)
             {
-                leave = true;
                 leaveGame();
-                return;
+                var levelSelect = new LevelSelect();
+                levelSelect.FindLevels();
+                return levelSelect;
             }
         }
 
@@ -100,8 +99,10 @@ public class PlayState
             _pauseBackButton.Update(mouse, mouseOld, kb, kbOld);
             if (_pauseBackButton.IsClicked)
             {
-                leave = true;
                 leaveGame();
+                var levelSelect = new LevelSelect();
+                levelSelect.FindLevels();
+                return levelSelect;
             }
 
             _pauseRestartButton.Update(mouse, mouseOld, kb, kbOld);
@@ -118,6 +119,8 @@ public class PlayState
         // when window inactive, force pause
         if (!hasFocus && !_paused && !_board.IsSolved)
             pause(graphDev);
+
+        return null;
     }
 
     public void Load(string levelPath)
@@ -184,7 +187,7 @@ public class PlayState
     {
         Log.Logger.Information("Stopping solve time thread");
         _solveTimeThreadRunning = false;
-        _solveTimeThread.Join();
+        _solveTimeThread?.Join();
     }
 
     private void pause(GraphicsDevice graphDev)

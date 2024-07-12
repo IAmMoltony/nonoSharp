@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace NonoSharp;
 
-public class MainMenu
+public class MainMenu : IGameState
 {
     public Button PlayButton { get; private set; }
     public Button QuitButton { get; private set; }
@@ -21,7 +21,7 @@ public class MainMenu
         QuitButton = new(0, 0, 120, 60, StringManager.GetString("quitButton"), Settings.GetDarkAccentColor(), Settings.GetAccentColor(), new[] { Keys.Q, Keys.Escape });
     }
 
-    public void Update(MouseState mouse, MouseState mouseOld, KeyboardState kb, KeyboardState kbOld, GraphicsDevice graphDev)
+    public IGameState? Update(MouseState mouse, MouseState mouseOld, KeyboardState kb, KeyboardState kbOld, GraphicsDevice graphDev, ref LevelMetadata levelMetadata, bool hasFocus)
     {
         updateButtonWidths();
 
@@ -40,6 +40,18 @@ public class MainMenu
         QuitButton.x = PlayButton.x;
         QuitButton.y = PlayButton.y + 210;
         QuitButton.Update(mouse, mouseOld, kb, kbOld);
+
+        if (PlayButton.IsClicked)
+        {
+            var levelSelect = new LevelSelect();
+            levelSelect.FindLevels();
+            return levelSelect;
+        }
+        if (EditorButton.IsClicked)
+        {
+            return new Editor.Editor();
+        }
+        return SettingsButton.IsClicked ? new SettingsScreen() : null;
     }
 
     public void Draw(SpriteBatch sprBatch)

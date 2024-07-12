@@ -1,7 +1,6 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using Serilog;
 using System.IO;
 using System.Linq;
 
@@ -78,9 +77,9 @@ public class SaveLevelState
         }
     }
 
-    public void UpdateInput(object sender, TextInputEventArgs tiea)
+    public void UpdateInput(TextInputEventArgs tiea)
     {
-        _levelNameBox.UpdateInput(sender, tiea);
+        _levelNameBox.UpdateInput(tiea);
     }
 
     private void drawNameBox(SpriteBatch sprBatch)

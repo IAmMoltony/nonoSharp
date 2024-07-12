@@ -5,7 +5,7 @@ using NonoSharp.UI;
 
 namespace NonoSharp;
 
-public class Credits
+public class Credits : IGameState
 {
     public Button BackButton { get; private set; }
 
@@ -14,9 +14,15 @@ public class Credits
         BackButton = new(10, 10, 0, 40, StringManager.GetString("back"), Settings.GetDarkAccentColor(), Settings.GetAccentColor(), true);
     }
 
-    public void Update(MouseState mouse, MouseState mouseOld, KeyboardState kb, KeyboardState kbOld)
+    public IGameState? Update(MouseState mouse, MouseState mouseOld, KeyboardState kb, KeyboardState kbOld, GraphicsDevice graphDev, ref LevelMetadata levelMetadata, bool hasFocus)
     {
         BackButton.Update(mouse, mouseOld, kb, kbOld);
+        if (BackButton.IsClicked)
+        {
+            return new SettingsScreen();
+        }
+
+        return null;
     }
 
     public void Draw(SpriteBatch sprBatch)

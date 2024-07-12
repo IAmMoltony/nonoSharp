@@ -11,7 +11,7 @@ public enum EditorState
     SaveLevel,
 }
 
-public class Editor
+public class Editor : IGameState
 {
     private EditorState _state;
     private SetSizeState _setSize;
@@ -26,10 +26,8 @@ public class Editor
         _saveLevel = new();
     }
 
-    public void Update(MouseState mouse, MouseState mouseOld, KeyboardState kb, KeyboardState kbOld, GraphicsDevice graphDev,
-                       out GameState? newState)
+    public IGameState? Update(MouseState mouse, MouseState mouseOld, KeyboardState kb, KeyboardState kbOld, GraphicsDevice graphDev, ref LevelMetadata levelMetadata, bool hasFocus)
     {
-        newState = null;
         switch (_state)
         {
             case EditorState.SetSize:
@@ -43,7 +41,7 @@ public class Editor
                 {
                     _state = EditorState.SetSize;
                     _setSize = new();
-                    newState = GameState.MainMenu;
+                    return new MainMenu();
                 }
                 break;
             case EditorState.Editor:
@@ -53,7 +51,7 @@ public class Editor
                 if (_main.BackButton.IsClicked)
                 {
                     _state = EditorState.SetSize;
-                    newState = GameState.MainMenu;
+                    return new MainMenu();
                 }
                 break;
             case EditorState.SaveLevel:
@@ -62,12 +60,14 @@ public class Editor
                 {
                     _saveLevel = new();
                     _state = EditorState.SetSize;
-                    newState = GameState.MainMenu;
+                    return new MainMenu();
                 }
                 if (_saveLevel.BackButton.IsClicked)
                     _state = EditorState.Editor;
                 break;
         }
+
+        return null;
     }
 
     public void Draw(SpriteBatch sprBatch)
@@ -86,18 +86,18 @@ public class Editor
         }
     }
 
-    public void UpdateInput(object sender, TextInputEventArgs tiea)
+    public void UpdateInput(TextInputEventArgs tiea)
     {
         switch (_state)
         {
             case EditorState.SetSize:
-                _setSize.UpdateInput(sender, tiea);
+                _setSize.UpdateInput(tiea);
                 break;
             case EditorState.SaveLevel:
-                _saveLevel.UpdateInput(sender, tiea);
+                _saveLevel.UpdateInput(tiea);
                 break;
             case EditorState.Editor:
-                _main.UpdateInput(sender, tiea);
+                _main.UpdateInput(tiea);
                 break;
         }
     }
