@@ -41,7 +41,7 @@ public class SettingsScreen : IGameState
         _enableSoundBox.Draw(sprBatch);
     }
 
-    public void Update(MouseState mouse, MouseState mouseOld, KeyboardState kb, KeyboardState kbOld, GraphicsDevice graphDev)
+    public IGameState? Update(MouseState mouse, MouseState mouseOld, KeyboardState kb, KeyboardState kbOld, GraphicsDevice graphDev, ref LevelMetadata levelMetadata, bool hasFocus)
     {
         _enableHintsBox.Update(mouse, mouseOld, kb, kbOld);
         _showBgBox.Update(mouse, mouseOld, kb, kbOld);
@@ -49,7 +49,10 @@ public class SettingsScreen : IGameState
 
         BackButton.Update(mouse, mouseOld, kb, kbOld);
         if (BackButton.IsClicked)
+        {
             close();
+            return new MainMenu();
+        }
 
         CreditsButton.y = graphDev.Viewport.Bounds.Height - 50;
         CreditsButton.Update(mouse, mouseOld, kb, kbOld);
@@ -57,6 +60,8 @@ public class SettingsScreen : IGameState
         KeySettingsButton.y = CreditsButton.y;
         KeySettingsButton.x = CreditsButton.x + CreditsButton.width + 10;
         KeySettingsButton.Update(mouse, mouseOld, kb, kbOld);
+
+        return null;
     }
 
     public void close()
