@@ -8,20 +8,10 @@ using System.Diagnostics;
 
 namespace NonoSharp;
 
-public enum GameState
-{
-    Game,
-    MainMenu,
-    LevelSelect,
-    Editor,
-    Settings,
-    Credits
-}
-
 public interface IGameState
 {
     void Draw(SpriteBatch sprBatch);
-    IGameState? Update(MouseState mouse, MouseState mouseOld, KeyboardState kb, KeyboardState kbOld, GraphicsDevice graphDev, out GameState? newState, ref LevelMetadata levelMetadata, bool hasFocus);
+    IGameState? Update(MouseState mouse, MouseState mouseOld, KeyboardState kb, KeyboardState kbOld, GraphicsDevice graphDev, ref LevelMetadata levelMetadata, bool hasFocus);
 }
 
 public class NonoSharpGame : Game
@@ -42,7 +32,6 @@ public class NonoSharpGame : Game
     private FPSCounter _fpsCounter;
     private bool _showFPS;
 
-    private GameState _state;
     private IGameState _currentState;
     
     private MainMenu _mainMenu;
@@ -93,7 +82,6 @@ public class NonoSharpGame : Game
         StringManager.Initialize();
 
         _instance = this;
-        _state = GameState.MainMenu;
         _fpsCounter = new();
         _showFPS = false;
         IsMouseVisible = true;
@@ -156,7 +144,7 @@ public class NonoSharpGame : Game
         Cursor = MouseCursor.Arrow;
 
         LevelMetadata levelMetadata = new();
-        if (_currentState.Update(_mouse, _mouseOld, _kb, _kbOld, GraphicsDevice, out GameState? gameState,
+        if (_currentState.Update(_mouse, _mouseOld, _kb, _kbOld, GraphicsDevice,
                 ref levelMetadata, IsActive) is { } newState)
         {
             _currentState = newState;

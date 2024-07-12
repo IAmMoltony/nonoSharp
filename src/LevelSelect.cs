@@ -111,10 +111,8 @@ public class LevelSelect : IGameState
         }
     }
 
-    public IGameState? Update(MouseState mouse, MouseState mouseOld, KeyboardState kb, KeyboardState kbOld, GraphicsDevice graphDev, out GameState? newState, ref LevelMetadata levelMetadata, bool hasFocus)
+    public IGameState? Update(MouseState mouse, MouseState mouseOld, KeyboardState kb, KeyboardState kbOld, GraphicsDevice graphDev, ref LevelMetadata levelMetadata, bool hasFocus)
     {
-        newState = null;
-
         if (_deleteLevel)
         {
             _dialogRect = new(graphDev.Viewport.Bounds.Width / 2 - DeleteDialogWidth / 2, graphDev.Viewport.Bounds.Height / 2 - DeleteDialogHeight / 2, DeleteDialogWidth, DeleteDialogHeight);
@@ -145,7 +143,6 @@ public class LevelSelect : IGameState
                 if (level.Item2.playButton.IsClicked)
                 {
                     Log.Logger.Information($"Clicked on level {level.Item1}");
-                    newState = GameState.Game;
                     levelMetadata = level.Item1;
                     Mouse.SetPosition(graphDev.Viewport.Bounds.Width / 2, graphDev.Viewport.Bounds.Height / 2); // put mouse in middle of screen
                     var play = new PlayState();
@@ -168,7 +165,6 @@ public class LevelSelect : IGameState
             _backButton.Update(mouse, mouseOld, kb, kbOld);
             if (_backButton.IsClicked)
             {
-                newState = GameState.MainMenu;
                 return new MainMenu();
             }
         }

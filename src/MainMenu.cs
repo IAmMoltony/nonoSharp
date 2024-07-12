@@ -21,10 +21,8 @@ public class MainMenu : IGameState
         QuitButton = new(0, 0, 120, 60, StringManager.GetString("quitButton"), Settings.GetDarkAccentColor(), Settings.GetAccentColor(), new[] { Keys.Q, Keys.Escape });
     }
 
-    public IGameState? Update(MouseState mouse, MouseState mouseOld, KeyboardState kb, KeyboardState kbOld, GraphicsDevice graphDev,
-        out GameState? newState, ref LevelMetadata levelMetadata, bool hasFocus)
+    public IGameState? Update(MouseState mouse, MouseState mouseOld, KeyboardState kb, KeyboardState kbOld, GraphicsDevice graphDev, ref LevelMetadata levelMetadata, bool hasFocus)
     {
-        newState = null;
         updateButtonWidths();
 
         PlayButton.x = (graphDev.Viewport.Bounds.Width / 2) - (PlayButton.width / 2);

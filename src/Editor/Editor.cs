@@ -26,10 +26,8 @@ public class Editor : IGameState
         _saveLevel = new();
     }
 
-    public IGameState? Update(MouseState mouse, MouseState mouseOld, KeyboardState kb, KeyboardState kbOld, GraphicsDevice graphDev,
-                       out GameState? newState, ref LevelMetadata levelMetadata, bool hasFocus)
+    public IGameState? Update(MouseState mouse, MouseState mouseOld, KeyboardState kb, KeyboardState kbOld, GraphicsDevice graphDev, ref LevelMetadata levelMetadata, bool hasFocus)
     {
-        newState = null;
         switch (_state)
         {
             case EditorState.SetSize:
@@ -43,7 +41,6 @@ public class Editor : IGameState
                 {
                     _state = EditorState.SetSize;
                     _setSize = new();
-                    newState = GameState.MainMenu;
                     return new MainMenu();
                 }
                 break;
@@ -54,7 +51,6 @@ public class Editor : IGameState
                 if (_main.BackButton.IsClicked)
                 {
                     _state = EditorState.SetSize;
-                    newState = GameState.MainMenu;
                     return new MainMenu();
                 }
                 break;
@@ -64,7 +60,6 @@ public class Editor : IGameState
                 {
                     _saveLevel = new();
                     _state = EditorState.SetSize;
-                    newState = GameState.MainMenu;
                     return new MainMenu();
                 }
                 if (_saveLevel.BackButton.IsClicked)

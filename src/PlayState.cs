@@ -48,11 +48,8 @@ public class PlayState : IGameState
         _solveTimeThread.Start();
     }
 
-    public IGameState? Update(MouseState mouse, MouseState mouseOld, KeyboardState kb, KeyboardState kbOld, GraphicsDevice graphDev,
-        out GameState? newState, ref LevelMetadata levelMetadata, bool hasFocus)
+    public IGameState? Update(MouseState mouse, MouseState mouseOld, KeyboardState kb, KeyboardState kbOld, GraphicsDevice graphDev, ref LevelMetadata levelMetadata, bool hasFocus)
     {
-        newState = null;
-
         _hintsTextRedness = Math.Min(255, _hintsTextRedness + 10);
 
         // continue button
@@ -62,7 +59,6 @@ public class PlayState : IGameState
 
             if (_solvedContinueButton.IsClicked)
             {
-                newState = GameState.LevelSelect;
                 leaveGame();
                 var levelSelect = new LevelSelect();
                 levelSelect.FindLevels();
@@ -103,7 +99,6 @@ public class PlayState : IGameState
             _pauseBackButton.Update(mouse, mouseOld, kb, kbOld);
             if (_pauseBackButton.IsClicked)
             {
-                newState = GameState.LevelSelect;
                 leaveGame();
                 var levelSelect = new LevelSelect();
                 levelSelect.FindLevels();
