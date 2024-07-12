@@ -37,9 +37,9 @@ public class SetSizeState
         OKButton.disabled = _sizeBox.GetNumberValue() <= 0;
     }
 
-    public void UpdateInput(object sender, TextInputEventArgs tiea)
+    public void UpdateInput(TextInputEventArgs tiea)
     {
-        _sizeBox.UpdateInput(sender, tiea);
+        _sizeBox.UpdateInput(tiea);
     }
 
     public int GetSize()

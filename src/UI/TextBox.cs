@@ -80,7 +80,7 @@ public class TextBox : UIElement
             NonoSharpGame.Cursor = MouseCursor.IBeam;
     }
 
-    public virtual void UpdateInput(object sender, TextInputEventArgs tiea)
+    public virtual void UpdateInput(TextInputEventArgs tiea)
     {
         if (Hovered)
         {

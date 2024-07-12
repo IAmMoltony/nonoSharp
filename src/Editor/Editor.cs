@@ -86,18 +86,18 @@ public class Editor : IGameState
         }
     }
 
-    public void UpdateInput(object sender, TextInputEventArgs tiea)
+    public void UpdateInput(TextInputEventArgs tiea)
     {
         switch (_state)
         {
             case EditorState.SetSize:
-                _setSize.UpdateInput(sender, tiea);
+                _setSize.UpdateInput(tiea);
                 break;
             case EditorState.SaveLevel:
-                _saveLevel.UpdateInput(sender, tiea);
+                _saveLevel.UpdateInput(tiea);
                 break;
             case EditorState.Editor:
-                _main.UpdateInput(sender, tiea);
+                _main.UpdateInput(tiea);
                 break;
         }
     }

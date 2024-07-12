@@ -90,7 +90,7 @@ public class NonoSharpGame : Game
         // allow the window to be resized
         Window.AllowUserResizing = true;
 
-        Window.TextInput += doTextInput;
+        Window.TextInput += (_, args) => doTextInput(args);
 
         stopwatch.Stop();
         Log.Logger.Information($"nonoSharp initialized in {stopwatch.ElapsedMilliseconds} ms");
@@ -184,11 +184,11 @@ public class NonoSharpGame : Game
         base.OnExiting(sender, e);
     }
 
-    private void doTextInput(object sender, TextInputEventArgs tiea)
+    private void doTextInput(TextInputEventArgs tiea)
     {
         // update editor input when in editor
         if (_currentState is Editor.Editor editor)
-            editor.UpdateInput(sender, tiea);
+            editor.UpdateInput(tiea);
     }
 
     private void getInput()

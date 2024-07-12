@@ -77,9 +77,9 @@ public class SaveLevelState
         }
     }
 
-    public void UpdateInput(object sender, TextInputEventArgs tiea)
+    public void UpdateInput(TextInputEventArgs tiea)
     {
-        _levelNameBox.UpdateInput(sender, tiea);
+        _levelNameBox.UpdateInput(tiea);
     }
 
     private void drawNameBox(SpriteBatch sprBatch)

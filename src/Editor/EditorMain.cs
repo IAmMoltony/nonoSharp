@@ -44,9 +44,9 @@ public class EditorMain
             Board.Undo();
     }
 
-    public void UpdateInput(object sender, TextInputEventArgs tiea)
+    public void UpdateInput(TextInputEventArgs tiea)
     {
-        MaxHintsBox.UpdateInput(sender, tiea);
+        MaxHintsBox.UpdateInput(tiea);
     }
 
     public void Draw(SpriteBatch sprBatch)
