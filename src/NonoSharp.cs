@@ -225,10 +225,10 @@ public class NonoSharpGame : Game
             return;
         GridRenderer.DrawGrid(
                 _spriteBatch,
-                (int)((_mouse.X - GraphicsDevice.Viewport.Bounds.Width / 2.0f) * 0.03f) - 100,
-                (int)((_mouse.Y - GraphicsDevice.Viewport.Bounds.Height / 2.0f) * 0.03f) - 100,
-                GraphicsDevice.Viewport.Bounds.Height / 32 + 101,
-                GraphicsDevice.Viewport.Bounds.Width / 32 + 101,
+                (int)((_mouse.X - (GraphicsDevice.Viewport.Bounds.Width / 2.0f)) * 0.03f) - 100,
+                (int)((_mouse.Y - (GraphicsDevice.Viewport.Bounds.Height / 2.0f)) * 0.03f) - 100,
+                (GraphicsDevice.Viewport.Bounds.Height / 32) + 101,
+                (GraphicsDevice.Viewport.Bounds.Width / 32) + 101,
                 32,
                 Settings.GetDarkAccentColor(0.7f));
     }
