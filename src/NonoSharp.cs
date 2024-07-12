@@ -37,16 +37,9 @@ public class NonoSharpGame : Game
     private MainMenu _mainMenu;
     private Editor.Editor _editor;
 
-    private static NonoSharpGame _instance;
-
-    public static void Close()
-    {
-        _instance.Exit();
-    }
-
     public NonoSharpGame()
     {
-        CrashHandler.Initialize();
+        CrashHandler.Initialize(Exit);
 
         // Initialize serilog
         Log.Logger = new LoggerConfiguration()
@@ -81,7 +74,6 @@ public class NonoSharpGame : Game
         Settings.Initialize();
         StringManager.Initialize();
 
-        _instance = this;
         _fpsCounter = new();
         _showFPS = false;
         IsMouseVisible = true;
