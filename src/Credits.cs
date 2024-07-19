@@ -17,6 +17,7 @@ public class Credits : IGameState
     public Credits()
     {
         BackButton = new(10, 10, 0, 40, StringManager.GetString("back"), Settings.GetDarkAccentColor(), Settings.GetAccentColor(), true);
+        _creditsText = "";
         loadCreditsText();
     }
 
