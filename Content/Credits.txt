@@ -1,0 +1,12 @@
+nonoSharp {0}
+Created by Moltony, 2024
+Licensed under the MIT License
+Powered by MonoGame
+
+Tile place sound: Pop_5.aif by SunnySideSound -- https://freesound.org/s/67091/ -- License: Attribution 4.0
+Cross place sound: pencil.wav by zakkolar -- https://freesound.org/s/431438/ -- License: Creative Commons 0
+
+Font: Cascadia Mono, licensed under the Open Font License
+
+GitHub contributors:
+  FranklyDev

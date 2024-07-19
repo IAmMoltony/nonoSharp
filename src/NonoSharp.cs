@@ -40,6 +40,7 @@ public class NonoSharpGame : Game
         CrashHandler.Initialize(Exit);
 
         _gameProcess = Process.GetCurrentProcess();
+
         // Initialize serilog
         Log.Logger = new LoggerConfiguration()
             .WriteTo.Console(
