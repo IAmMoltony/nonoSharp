@@ -41,6 +41,7 @@ public class TextBox : UIElement
         _textColorHover = textColorHover;
         _illegalBlink = false;
         this.maxLength = maxLength;
+        _placeholder = "";
     }
 
     public TextBox(
