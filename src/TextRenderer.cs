@@ -2,8 +2,9 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Serilog;
-using System.Collections.Generic;
+using System;
 using System.Text;
+using System.Collections.Generic;
 
 namespace NonoSharp;
 
@@ -91,28 +92,34 @@ public static class TextRenderer
 
     private static string wrapText(SpriteFont spriteFont, string text, float maxLineWidth, float scale)
     {
-        // i stole this code from stackoverflow
-        string[] words = text.Split(' ');
+        string[] lines = text.Split(new[] { '\n' }, StringSplitOptions.None);
         StringBuilder sb = new();
-        float lineWidth = 0f;
         float spaceWidth = spriteFont.MeasureString(" ").X;
 
-        foreach (string word in words)
+        foreach (string line in lines)
         {
-            Vector2 size = spriteFont.MeasureString(word) * scale;
+            string[] words = line.Split(' ');
+            float lineWidth = 0f;
 
-            if (lineWidth + size.X < maxLineWidth)
+            foreach (string word in words)
             {
-                sb.Append(word + " ");
-                lineWidth += size.X + spaceWidth;
+                Vector2 size = spriteFont.MeasureString(word) * scale;
+
+                if (lineWidth + size.X < maxLineWidth)
+                {
+                    sb.Append(word + " ");
+                    lineWidth += size.X + spaceWidth;
+                }
+                else
+                {
+                    sb.Append("\n" + word + " ");
+                    lineWidth = size.X + spaceWidth;
+                }
             }
-            else
-            {
-                sb.Append("\n" + word + " ");
-                lineWidth = size.X + spaceWidth;
-            }
+
+            sb.Append("\n");
         }
 
-        return sb.ToString();
+        return sb.ToString().Trim();
     }
 }
