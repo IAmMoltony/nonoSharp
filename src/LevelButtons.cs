@@ -6,8 +6,8 @@ namespace NonoSharp;
 
 public struct LevelButtons
 {
-    public Button playButton;
-    public Button deleteButton;
+    public Button? playButton;
+    public Button? deleteButton;
 
     public readonly void SetY(int value)
     {
