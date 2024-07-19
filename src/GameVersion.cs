@@ -9,6 +9,6 @@ public static class GameVersion
     {
         Assembly asm = Assembly.GetExecutingAssembly();
         FileVersionInfo fvi = FileVersionInfo.GetVersionInfo(asm.Location);
-        return fvi.FileVersion;
+        return fvi.FileVersion ?? "0.0.0";
     }
 }
