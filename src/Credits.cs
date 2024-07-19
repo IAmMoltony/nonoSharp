@@ -37,7 +37,7 @@ public class Credits : IGameState
         TextRenderer.DrawTextCenter(sprBatch, "DefaultFont", 0.9f, StringManager.GetString("credits"), Color.White, headingRect);
 
         BackButton.Draw(sprBatch);
-        TextRenderer.DrawTextWrapped(sprBatch, "DefaultFont", 10, 120, 0.4f, _creditsText, sprBatch.GraphicsDevice.Viewport.Bounds.Width, Color.White);
+        TextRenderer.DrawTextWrapped(sprBatch, "DefaultFont", 10, 120, 0.4f, string.Format(_creditsText, GameVersion.GetGameVersion()), sprBatch.GraphicsDevice.Viewport.Bounds.Width, Color.White);
     }
 
     private void loadCreditsText()
