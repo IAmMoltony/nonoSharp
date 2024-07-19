@@ -117,7 +117,7 @@ public static class TextRenderer
                 }
             }
 
-            sb.Append("\n");
+            sb.Append('\n');
         }
 
         return sb.ToString().Trim();
