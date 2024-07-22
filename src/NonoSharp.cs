@@ -20,7 +20,7 @@ public class NonoSharpGame : Game
     public static MouseCursor Cursor { get; set; } = MouseCursor.Arrow;
 
     private readonly GraphicsDeviceManager _graphics;
-    private SpriteBatch _spriteBatch;
+    private SpriteBatch? _spriteBatch;
 
     private readonly Process _gameProcess;
 
@@ -157,20 +157,21 @@ public class NonoSharpGame : Game
     {
         GraphicsDevice.Clear(Color.Black);
 
-        _spriteBatch.Begin();
+        _spriteBatch?.Begin();
 
         drawBackgroundGrid();
 
-        _currentState?.Draw(_spriteBatch);
+        if (_spriteBatch != null)
+            _currentState?.Draw(_spriteBatch);
 
         // draw some performance info
-        if (_showFps)
+        if (_showFps && _spriteBatch != null)
         {
             TextRenderer.DrawText(_spriteBatch, "DefaultFont", 10, GraphicsDevice.Viewport.Bounds.Height - 26, 0.33f, $"{Math.Round(_fpsCounter.CurrentFPS)} fps, {Math.Round(_fpsCounter.AverageFPS)} avg", Color.LightGray); // FPS
             TextRenderer.DrawText(_spriteBatch, "DefaultFont", 10, GraphicsDevice.Viewport.Bounds.Height - 42, 0.33f, $"mem: {Math.Round(((float)_gameProcess.WorkingSet64 / 1024 / 1024), 2)}M (peak {Math.Round(((float)_gameProcess.PeakWorkingSet64 / 1024 / 1024), 2)}M)", Color.LightGray); // Memory usage (current and peak)
         }
 
-        _spriteBatch.End();
+        _spriteBatch?.End();
 
         _fpsCounter.Update((float)gameTime.ElapsedGameTime.TotalSeconds);
 
@@ -224,6 +225,9 @@ public class NonoSharpGame : Game
     {
         if (!Settings.GetBool("showBgGrid"))
             return;
+        if (_spriteBatch == null)
+            return;
+
         GridRenderer.DrawGrid(
                 _spriteBatch,
                 (int)((_mouse.X - (GraphicsDevice.Viewport.Bounds.Width / 2.0f)) * 0.03f) - 100,
