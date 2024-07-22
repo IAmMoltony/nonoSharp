@@ -14,12 +14,12 @@ public static class StringManager
     /// <summary>
     /// Dictionary of language strings
     /// </summary>
-    private static Dictionary<string, string> _strings;
+    private static Dictionary<string, string>? _strings;
 
     /// <summary>
     /// The current language
     /// </summary>
-    private static string _lang;
+    private static string? _lang;
 
     /// <summary>
     /// List of supported languages
@@ -62,7 +62,7 @@ public static class StringManager
     /// <returns>The string translated to the current language</returns>
     public static string GetString(string key)
     {
-        if (!_strings.ContainsKey(key))
+        if (!_strings?.ContainsKey(key) == true)
             return $"{{ {key} }}";
         return _strings[key];
     }
