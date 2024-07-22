@@ -62,13 +62,21 @@ public static class StringManager
     /// <returns>The string translated to the current language</returns>
     public static string GetString(string key)
     {
-        if (!_strings?.ContainsKey(key) == true)
-            return $"{{ {key} }}";
-        return _strings[key];
+        string placeholderValue = $"{{ {key} }}";
+
+        // Return placeholder if string dict is null
+        if (_strings == null)
+            return placeholderValue;
+
+        // If key found in dictionary, then return it, but if it's null, then return placeholder
+        // If key not found, return placeholder.
+        if (_strings?.TryGetValue(key, out string? str) == true)
+            return str ?? placeholderValue;
+        return placeholderValue;
     }
 
     /// <summary>
-    /// Parse a language file
+    /// Parse the language file
     /// </summary>
     private static void parseLanguage()
     {
