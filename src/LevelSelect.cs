@@ -151,11 +151,13 @@ public class LevelSelect : IGameState
                     return play;
                 }
                 _levels[i].Item2.SetY(110 + (120 * i) + 40 + (int)_scrollOffset);
-                if (_levels[i].Item2.deleteButton != null)
-                {
-                    _levels[i].Item2.deleteButton.x = _levels[i].Item2.playButton.x + _levels[i].Item2.playButton.width + 10;
 
-                    if (_levels[i].Item2.deleteButton.IsClicked)
+                if (level.Item2.deleteButton != null)
+                {
+                    if (level.Item2.playButton != null)
+                        level.Item2.deleteButton.x = level.Item2.playButton.x + level.Item2.playButton.width + 10;
+
+                    if (level.Item2.deleteButton.IsClicked)
                     {
                         _deleteLevelName = _levels[i].Item1.name;
                         _deleteLevel = true;
