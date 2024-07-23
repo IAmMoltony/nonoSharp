@@ -60,7 +60,7 @@ public class LevelSelect : IGameState
 
             int buttonY = 110 + (120 * i) + 40;
             Button playButton = new(15, buttonY, 0, 40, StringManager.GetString("playButton"), Settings.GetDarkAccentColor(), Settings.GetAccentColor(), true);
-            Button deleteButton = metadata.isCustomLevel ? new(15, buttonY, 0, 40, StringManager.GetString("deleteButton"), Settings.GetDarkAccentColor(), Settings.GetAccentColor(), true) : null;
+            Button? deleteButton = metadata.isCustomLevel ? new(15, buttonY, 0, 40, StringManager.GetString("deleteButton"), Settings.GetDarkAccentColor(), Settings.GetAccentColor(), true) : null;
             LevelButtons buttons = new()
             {
                 playButton = playButton,
@@ -221,7 +221,9 @@ public class LevelSelect : IGameState
     {
         _deleteLevel = false;
         File.Delete(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Content", "Levels", $"{_deleteLevelName}.nono"));
-        _levels.Remove(_levels.Find(x => x.Item1.name == _deleteLevelName));
+        var level = _levels.Find(x => x.Item1.name == _deleteLevelName);
+        if (level != null)
+            _levels.Remove(level);
     }
 
     private static void drawHeading(GraphicsDevice graphDev, SpriteBatch sprBatch)
