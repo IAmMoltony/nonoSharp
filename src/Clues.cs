@@ -6,8 +6,8 @@ namespace NonoSharp;
 
 public class Clues
 {
-    public List<int>[] RowClues { get; private set; }
-    public List<int>[] ColumnClues { get; private set; }
+    public List<int>[] RowClues { get; private set; } = null!;
+    public List<int>[] ColumnClues { get; private set; } = null!;
 
     public Clues(int size)
     {
