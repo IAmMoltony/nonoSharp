@@ -12,7 +12,10 @@ public static class BoardSaver
 
     public static void SaveBoard(Board board, string fileName, int maxHints)
     {
-        string saveData = board.Serialize();
+        string? saveData = board.Serialize();
+        if (saveData == null)
+            throw new InvalidOperationException("Board save data is null");
+
         string filePath = Path.Combine(GetLevelSavePath(), $"{fileName}.nono");
         string? levelDirPath = Path.GetDirectoryName(filePath);
         if (levelDirPath == null)

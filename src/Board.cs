@@ -11,13 +11,13 @@ namespace NonoSharp;
 
 public class Board
 {
-    protected Clues clues;
+    protected Clues? clues;
     protected Stack<Tile[,]> undoStack;
-    protected Tile[,] previousState;
+    protected Tile[,]? previousState;
     protected HashSet<(int, int)> hintedLines;
 
-    public Tile[,] tiles;
-    public Tile[,] solution;
+    public Tile[,]? tiles;
+    public Tile[,]? solution;
     public int size;
     public int maxHints;
     public bool IsSolved { get; private set; }
@@ -68,6 +68,7 @@ public class Board
         undoStack = new();
         previousState = null;
         hintedLines = new();
+        _replay = new();
         Load(fileName);
         _boardX = 0;
         _boardY = 0;
@@ -88,16 +89,19 @@ public class Board
         Log.Logger.Information($"Board size: {size}");
         MakeTilesAndSolution();
 
-        for (int i = solutionOffset; i < size + solutionOffset; i++)
+        if (solution != null)
         {
-            string row = boardData[i];
-            for (int j = 0; j < size; j++)
+            for (int i = solutionOffset; i < size + solutionOffset; i++)
             {
-                char ch = row[j];
-                if (ch == '#')
-                    solution[j, i - solutionOffset].state = TileState.Filled;
-                else
-                    solution[j, i - solutionOffset].state = TileState.Empty;
+                string row = boardData[i];
+                for (int j = 0; j < size; j++)
+                {
+                    char ch = row[j];
+                    if (ch == '#')
+                        solution[j, i - solutionOffset].state = TileState.Filled;
+                    else
+                        solution[j, i - solutionOffset].state = TileState.Empty;
+                }
             }
         }
 
@@ -109,9 +113,12 @@ public class Board
     {
         GraphicsDevice graphDev = batch.GraphicsDevice;
 
-        for (int i = 0; i < size; i++)
-            for (int j = 0; j < size; j++)
-                tiles[i, j].Draw(i, j, size, IsSolved, batch);
+        if (tiles != null)
+        {
+            for (int i = 0; i < size; i++)
+                for (int j = 0; j < size; j++)
+                    tiles[i, j].Draw(i, j, size, IsSolved, batch);
+        }
 
         int pxSize = size * 32;
         _boardX = (graphDev.Viewport.Bounds.Width / 2) - (pxSize / 2);
@@ -136,40 +143,43 @@ public class Board
         Point mousePoint = new(mouseState.X, mouseState.Y);
         bool canHover = getRect().Contains(mousePoint);
 
-        for (int i = 0; i < size; i++)
+        if (tiles != null)
         {
-            for (int j = 0; j < size; j++)
+            for (int i = 0; i < size; i++)
             {
-                ref Tile tile = ref tiles[i, j];
-                if (canHover)
-                    tile.Hover(i, j, mouseState.X, mouseState.Y, size, graphDev);
-                else
+                for (int j = 0; j < size; j++)
                 {
-                    tile.isHoveredX = false;
-                    tile.isHoveredY = false;
-                }
-                if (tile.isHoveredX && tile.isHoveredY)
-                {
-                    bool left = (mouseStateOld.LeftButton == ButtonState.Released && mouseState.LeftButton == ButtonState.Pressed) || (kb.IsKeyDown(Keys.X) && !kbOld.IsKeyDown(Keys.X));
-                    bool right = (mouseStateOld.RightButton == ButtonState.Released && mouseState.RightButton == ButtonState.Pressed) || (kb.IsKeyDown(Keys.C) && !kbOld.IsKeyDown(Keys.C));
-
-                    // Save state only if mouse is pressed
-                    if (left || right)
-                        SaveState();
-
-                    if (left)
+                    ref Tile tile = ref tiles[i, j];
+                    if (canHover)
+                        tile.Hover(i, j, mouseState.X, mouseState.Y, size, graphDev);
+                    else
                     {
-                        DoMouseInput(true, ref tile);
-                        _replay.AddMove(new(ReplayMoveType.LeftClick, i, j), _frameCounter);
+                        tile.isHoveredX = false;
+                        tile.isHoveredY = false;
                     }
-                    if (right)
+                    if (tile.isHoveredX && tile.isHoveredY)
                     {
-                        DoMouseInput(false, ref tile);
-                        _replay.AddMove(new(ReplayMoveType.RightClick, i, j), _frameCounter);
-                    }
+                        bool left = (mouseStateOld.LeftButton == ButtonState.Released && mouseState.LeftButton == ButtonState.Pressed) || (kb.IsKeyDown(Keys.X) && !kbOld.IsKeyDown(Keys.X));
+                        bool right = (mouseStateOld.RightButton == ButtonState.Released && mouseState.RightButton == ButtonState.Pressed) || (kb.IsKeyDown(Keys.C) && !kbOld.IsKeyDown(Keys.C));
 
-                    if (left || right)
-                        CheckSolution();
+                        // Save state only if mouse is pressed
+                        if (left || right)
+                            SaveState();
+
+                        if (left)
+                        {
+                            DoMouseInput(true, ref tile);
+                            _replay.AddMove(new(ReplayMoveType.LeftClick, i, j), _frameCounter);
+                        }
+                        if (right)
+                        {
+                            DoMouseInput(false, ref tile);
+                            _replay.AddMove(new(ReplayMoveType.RightClick, i, j), _frameCounter);
+                        }
+
+                        if (left || right)
+                            CheckSolution();
+                    }
                 }
             }
         }
@@ -180,6 +190,9 @@ public class Board
 
     public virtual void RestoreState()
     {
+        if (tiles == null)
+            return;
+
         if (undoStack.Count > 0)
         {
             previousState = undoStack.Pop();
@@ -190,8 +203,11 @@ public class Board
         }
     }
 
-    public string Serialize()
+    public string? Serialize()
     {
+        if (tiles == null)
+            return null;
+
         Stopwatch stopwatch = new();
         stopwatch.Start();
 
@@ -226,6 +242,9 @@ public class Board
 
     public void SolveLine(int column, int row)
     {
+        if (tiles == null || solution == null)
+            return;
+
         Log.Logger.Information($"Solving {column},{row}");
         for (int i = 0; i < size; i++)
         {
@@ -264,6 +283,9 @@ public class Board
 
     public void Clear()
     {
+        if (tiles == null)
+            return;
+
         for (int i = 0; i < size; i++)
             for (int j = 0; j < size; j++)
                 tiles[i, j].state = TileState.Empty;
@@ -271,6 +293,9 @@ public class Board
 
     public void DoReplayMove(ReplayMove move)
     {
+        if (tiles == null)
+            return;
+
         switch (move.type)
         {
             case ReplayMoveType.LeftClick:
@@ -294,6 +319,9 @@ public class Board
 
     protected virtual void DrawClues(int boardX, int boardY, SpriteBatch batch)
     {
+        if (clues == null)
+            return;
+
         int rowCluesX = boardX - 24;
         int rowCluesY = boardY;
 
@@ -310,6 +338,9 @@ public class Board
 
     protected virtual void CheckSolution()
     {
+        if (tiles == null || solution == null)
+            return;
+
         bool solved = true;
         for (int i = 0; i < size; i++)
             for (int j = 0; j < size; j++)
@@ -342,6 +373,9 @@ public class Board
 
     protected virtual void SaveState()
     {
+        if (tiles == null)
+            return;
+
         // Create a deep copy of the current board state
         Tile[,] currentState = new Tile[size, size];
         for (int i = 0; i < size; i++)
@@ -362,6 +396,10 @@ public class Board
     public void CrossZeroLines()
     {
         // Find all lines that have no tiles and cross them
+        // (if solution and tiles aren't null of course)
+
+        if (tiles == null || solution == null)
+            return;
 
         for (int i = 0; i < size; i++)
         {
