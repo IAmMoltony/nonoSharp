@@ -38,6 +38,7 @@ public class LevelSelect : IGameState
         _dialogRect = new();
         _deleteNoButton = new(0, 0, 0, 40, StringManager.GetString("no"), Settings.GetDarkAccentColor(), Settings.GetAccentColor(), true);
         _deleteYesButton = new(0, 0, 0, 40, StringManager.GetString("yes"), Settings.GetDarkAccentColor(), Settings.GetAccentColor(), true);
+        _levels = new();
     }
 
     public void FindLevels()
@@ -140,7 +141,7 @@ public class LevelSelect : IGameState
             {
                 var level = _levels[i];
                 level.Item2.Update(mouse, mouseOld, kb, kbOld);
-                if (level.Item2.playButton.IsClicked)
+                if (level.Item2.playButton?.IsClicked == true)
                 {
                     Log.Logger.Information($"Clicked on level {level.Item1}");
                     levelMetadata = level.Item1;
