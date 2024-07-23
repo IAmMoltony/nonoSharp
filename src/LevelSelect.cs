@@ -38,6 +38,7 @@ public class LevelSelect : IGameState
         _dialogRect = new();
         _deleteNoButton = new(0, 0, 0, 40, StringManager.GetString("no"), Settings.GetDarkAccentColor(), Settings.GetAccentColor(), true);
         _deleteYesButton = new(0, 0, 0, 40, StringManager.GetString("yes"), Settings.GetDarkAccentColor(), Settings.GetAccentColor(), true);
+        _levels = new();
     }
 
     public void FindLevels()
@@ -59,7 +60,7 @@ public class LevelSelect : IGameState
 
             int buttonY = 110 + (120 * i) + 40;
             Button playButton = new(15, buttonY, 0, 40, StringManager.GetString("playButton"), Settings.GetDarkAccentColor(), Settings.GetAccentColor(), true);
-            Button deleteButton = metadata.isCustomLevel ? new(15, buttonY, 0, 40, StringManager.GetString("deleteButton"), Settings.GetDarkAccentColor(), Settings.GetAccentColor(), true) : null;
+            Button? deleteButton = metadata.isCustomLevel ? new(15, buttonY, 0, 40, StringManager.GetString("deleteButton"), Settings.GetDarkAccentColor(), Settings.GetAccentColor(), true) : null;
             LevelButtons buttons = new()
             {
                 playButton = playButton,
@@ -140,7 +141,7 @@ public class LevelSelect : IGameState
             {
                 var level = _levels[i];
                 level.Item2.Update(mouse, mouseOld, kb, kbOld);
-                if (level.Item2.playButton.IsClicked)
+                if (level.Item2.playButton?.IsClicked == true)
                 {
                     Log.Logger.Information($"Clicked on level {level.Item1}");
                     levelMetadata = level.Item1;
@@ -150,11 +151,13 @@ public class LevelSelect : IGameState
                     return play;
                 }
                 _levels[i].Item2.SetY(110 + (120 * i) + 40 + (int)_scrollOffset);
-                if (_levels[i].Item2.deleteButton != null)
-                {
-                    _levels[i].Item2.deleteButton.x = _levels[i].Item2.playButton.x + _levels[i].Item2.playButton.width + 10;
 
-                    if (_levels[i].Item2.deleteButton.IsClicked)
+                if (level.Item2.deleteButton != null)
+                {
+                    if (level.Item2.playButton != null)
+                        level.Item2.deleteButton.x = level.Item2.playButton.x + level.Item2.playButton.width + 10;
+
+                    if (level.Item2.deleteButton.IsClicked)
                     {
                         _deleteLevelName = _levels[i].Item1.name;
                         _deleteLevel = true;
@@ -220,7 +223,9 @@ public class LevelSelect : IGameState
     {
         _deleteLevel = false;
         File.Delete(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Content", "Levels", $"{_deleteLevelName}.nono"));
-        _levels.Remove(_levels.Find(x => x.Item1.name == _deleteLevelName));
+        var level = _levels.Find(x => x.Item1.name == _deleteLevelName);
+        if (level != null)
+            _levels.Remove(level);
     }
 
     private static void drawHeading(GraphicsDevice graphDev, SpriteBatch sprBatch)

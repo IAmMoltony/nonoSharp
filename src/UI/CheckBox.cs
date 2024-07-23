@@ -10,7 +10,7 @@ public class CheckBox : UIElement
 {
     public static readonly int Size = 26;
 
-    public static Texture2D TextureCheck { get; private set; }
+    public static Texture2D? TextureCheck { get; private set; }
 
     public bool isChecked;
 
@@ -43,7 +43,7 @@ public class CheckBox : UIElement
 
         Color checkColor = fc.IsLight() ? Color.Black : Color.White;
 
-        if (isChecked)
+        if (isChecked && TextureCheck != null)
             sprBatch.Draw(TextureCheck, new Vector2(x, y), checkColor);
 
         drawText(sprBatch, rect);

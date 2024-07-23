@@ -9,8 +9,8 @@ namespace NonoSharp;
 
 public static class Settings
 {
-    private static Dictionary<string, string> _settings;
-    private static string _settingsFile;
+    private static Dictionary<string, string> _settings = null!;
+    private static string _settingsFile = null!;
 
     private static readonly Dictionary<string, string> _defaultSettings = new()
     {
@@ -63,7 +63,7 @@ public static class Settings
 
         try
         {
-            _settings = JsonSerializer.Deserialize<Dictionary<string, string>>(jsonString);
+            _settings = JsonSerializer.Deserialize<Dictionary<string, string>>(jsonString) ?? new(_defaultSettings);
         }
         catch (JsonException exception)
         {

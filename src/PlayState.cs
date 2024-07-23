@@ -11,7 +11,7 @@ namespace NonoSharp;
 public class PlayState : IGameState
 {
     private static float _solveTime;
-    private static Thread _solveTimeThread;
+    private static Thread? _solveTimeThread;
     private static bool _solveTimeThreadRunning = true;
     private static bool _solveTimeTick = true;
 

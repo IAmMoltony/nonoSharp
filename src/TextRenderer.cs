@@ -13,7 +13,7 @@ public static class TextRenderer
     /// <summary>
     /// Dictionary of loaded fonts
     /// </summary>
-    private static Dictionary<string, SpriteFont> _fonts;
+    private static Dictionary<string, SpriteFont>? _fonts;
 
     /// <summary>
     /// Load a font
@@ -39,6 +39,9 @@ public static class TextRenderer
     /// <param name="color">The color of the text</param>
     public static void DrawText(SpriteBatch batch, string font, int x, int y, string text, Color color)
     {
+        if (_fonts == null)
+            return;
+
         batch.DrawString(_fonts[font], text, new Vector2((float)x, (float)y), color);
     }
 
@@ -54,6 +57,9 @@ public static class TextRenderer
     /// <param name="color">The color of the text</param>
     public static void DrawText(SpriteBatch batch, string font, int x, int y, float scale, string text, Color color)
     {
+        if (_fonts == null)
+            return;
+
         batch.DrawString(_fonts[font], text, new Vector2((float)x, (float)y), color, 0, Vector2.Zero, scale, SpriteEffects.None, 1.0f);
     }
 
@@ -68,6 +74,9 @@ public static class TextRenderer
     /// <param name="rect">Rectangle to center the text in</param>
     public static void DrawTextCenter(SpriteBatch batch, string font, float scale, string text, Color color, Rectangle rect)
     {
+        if (_fonts == null)
+            return;
+
         Vector2 textSize = _fonts[font].MeasureString(text);
         float centerX = rect.X + ((rect.Width - (textSize.X * scale)) / 2);
         float centerY = rect.Y + ((rect.Height - (textSize.Y * scale)) / 2);
@@ -76,6 +85,9 @@ public static class TextRenderer
 
     public static void DrawTextWrapped(SpriteBatch batch, string font, int x, int y, float scale, string text, float maxWidth, Color color)
     {
+        if (_fonts == null)
+            return;
+
         batch.DrawString(_fonts[font], wrapText(_fonts[font], text, maxWidth, scale), new(x, y), color, 0, Vector2.Zero, scale, SpriteEffects.None, 1.0f);
     }
 
@@ -87,6 +99,9 @@ public static class TextRenderer
     /// <returns>The size of the text</returns>
     public static Vector2 MeasureString(string font, string text)
     {
+        if (_fonts == null)
+            return Vector2.Zero;
+
         return _fonts[font].MeasureString(text);
     }
 

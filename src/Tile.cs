@@ -20,9 +20,9 @@ public struct Tile
     public bool isHoveredX;
     public bool isHoveredY;
 
-    public static Texture2D TextureCross { get; private set; }
-    public static SoundEffect SoundPlace { get; private set; }
-    public static SoundEffect SoundCross { get; private set; }
+    public static Texture2D? TextureCross { get; private set; }
+    public static SoundEffect? SoundPlace { get; private set; }
+    public static SoundEffect? SoundCross { get; private set; }
 
     private readonly FadeRect _fr;
 
@@ -100,7 +100,7 @@ public struct Tile
         _fr.Update();
 
         _fr.Draw(batch);
-        if (state == TileState.Cross && !isBoardSolved)
+        if (state == TileState.Cross && !isBoardSolved && TextureCross != null)
             batch.Draw(TextureCross, posVec, Color.White);
     }
 
@@ -116,7 +116,7 @@ public struct Tile
     {
         if (state == TileState.Empty)
         {
-            if (Settings.GetBool("sound"))
+            if (Settings.GetBool("sound") && SoundPlace != null)
                 SoundPlace.Play(1.0f, (float)Random.Shared.Next(-50, 50) / 100, 0.0f);
             state = TileState.Filled;
         }
@@ -128,7 +128,7 @@ public struct Tile
     {
         if (state == TileState.Empty)
         {
-            if (Settings.GetBool("sound"))
+            if (Settings.GetBool("sound") && SoundCross != null)
                 SoundCross.Play(1.0f, (float)Random.Shared.Next(-10, 10) / 100, 0.0f);
             state = TileState.Cross;
         }

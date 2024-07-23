@@ -6,8 +6,8 @@ namespace NonoSharp;
 
 public class Clues
 {
-    public List<int>[] RowClues { get; private set; }
-    public List<int>[] ColumnClues { get; private set; }
+    public List<int>[] RowClues { get; private set; } = null!;
+    public List<int>[] ColumnClues { get; private set; } = null!;
 
     public Clues(int size)
     {
@@ -23,9 +23,15 @@ public class Clues
         Stopwatch stopwatch = new();
         stopwatch.Start();
 
-        ref Tile[,] tiles = ref board.solution;
+        ref Tile[,]? tiles = ref board.solution;
         if (!useSolution)
             tiles = ref board.tiles;
+
+        if (tiles == null)
+        {
+            Log.Logger.Warning("Unable to create cluse because tiles is null");
+            return;
+        }
 
         Log.Logger.Information("Finding row clues...");
 

@@ -42,7 +42,8 @@ public class Button : UIElement
         IsHovered = false;
         IsClicked = false;
 
-        createFadeRects();
+        _fr = new(new(x, y, width, height), fillColor, outlineColor, LerpTime);
+        _frOutline = new(new(x, y, width, height), outlineColor, fillColor, LerpTime, true, 2);
 
         if (this.width < 0 || this.height < 0)
             throw new ArgumentException("Button width and height must not be negative");
@@ -125,12 +126,6 @@ public class Button : UIElement
     public void UpdateDynamicWidth()
     {
         width = dynamicWidthPad + (int)(TextRenderer.MeasureString(font, text).X * fontScale);
-    }
-
-    private void createFadeRects()
-    {
-        _fr = new(new(x, y, width, height), fillColor, outlineColor, LerpTime);
-        _frOutline = new(new(x, y, width, height), outlineColor, fillColor, LerpTime, true, 2);
     }
 
     private bool shortcutKeyPressed(KeyboardState kb, KeyboardState kbOld)
