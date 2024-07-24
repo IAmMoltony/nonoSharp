@@ -6,27 +6,21 @@
     <a href="https://www.codefactor.io/repository/github/iammoltony/nonosharp"><img src="https://www.codefactor.io/repository/github/iammoltony/nonosharp/badge" alt="CodeFactor" /></a>
 </p>
 
-## Dependencies
+## Installation
 
-The only dependency that has to be installed is the .NET SDK. All libraries are
-downloaded and installed during the build phase automatically.
+You can get the latest release from [GitHub Releases](https://github.com/IAmMoltony/nonoSharp/releases).
 
-## Building and Running
+### Building from source
 
-### Build nonoSharp
+1. Install the [.NET SDK](https://dotnet.microsoft.com/en-us/download).
 
-```bash
-git clone https://github.com/IAmMoltony/nonoSharp # Clone the repository
-cd nonoSharp # Go to the repository folder (or directory, whatever
-             # you want to call it)
-dotnet build # Build the project
-```
+1. Clone the repo: `git clone https://github.com/IAmMoltony/nonoSharp`
 
-### Run nonoSharp
+1. Go into the repo folder: `cd nonoSharp`
 
-```bash
-dotnet run
-```
+1. Build: `dotnet build -v n`
+
+And that's it, the compiled build should now be somewhere in the `bin` directory.
 
 ## Contributing
 
