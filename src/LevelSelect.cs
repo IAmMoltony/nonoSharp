@@ -177,6 +177,14 @@ public class LevelSelect : IGameState
 
     private void updateScroll(MouseState mouse, MouseState mouseOld, KeyboardState keyboard, KeyboardState keyboardOld, GraphicsDevice graphDev)
     {
+        updateScrollKeyboard(keyboard, keyboardOld, graphDev);
+        clampScrollOffset();
+        updateScrollMouse(mouse, mouseOld);
+        updateScrollArrows(keyboard, keyboardOld);
+    }
+
+    private void updateScrollKeyboard(KeyboardState keyboard, KeyboardState keyboardOld, GraphicsDevice graphDev)
+    {
         // PageUp and PageDown scroll by the window height
         if (keyboard.IsKeyDown(Keys.PageUp) && !keyboardOld.IsKeyDown(Keys.PageUp))
             _scrollOffsetGoal += graphDev.Viewport.Bounds.Height;
@@ -188,21 +196,26 @@ public class LevelSelect : IGameState
             _scrollOffsetGoal = 0;
         else if (keyboard.IsKeyDown(Keys.End) && !keyboardOld.IsKeyDown(Keys.End))
             _scrollOffsetGoal = maxScrollOffset();
+    }
 
-        // clamping scroll offest
+    private void clampScrollOffset()
+    {
         if (_scrollOffsetGoal > 0)
             _scrollOffsetGoal = 0;
         if (_scrollOffsetGoal < maxScrollOffset())
             _scrollOffsetGoal = maxScrollOffset();
+    }
 
-        // Scrolling using mouse
+    private void updateScrollMouse(MouseState mouse, MouseState mouseOld)
+    {
         if (mouse.ScrollWheelValue > mouseOld.ScrollWheelValue)
             _scrollOffsetGoal += ScrollSpeed;
         else if (mouse.ScrollWheelValue < mouseOld.ScrollWheelValue)
             _scrollOffsetGoal -= ScrollSpeed;
+    }
 
-        // Scrolling using arrow keys
-
+    private void updateScrollArrows(KeyboardState keyboard, KeyboardState keyboardOld)
+    {
         int keyboardScrollSpeed = (int)(ScrollSpeed * KeyboardScrollSpeedMultiplier);
         if (keyboard.IsKeyDown(Keys.LeftShift) || keyboard.IsKeyDown(Keys.RightShift))
             // When shift is pressed make it go faster
@@ -212,11 +225,6 @@ public class LevelSelect : IGameState
             _scrollOffsetGoal += keyboardScrollSpeed;
         else if (keyboard.IsKeyDown(Keys.Down))
             _scrollOffsetGoal -= keyboardScrollSpeed;
-    }
-
-    private int maxScrollOffset()
-    {
-        return -((120 * _levels.Count) - 230);
     }
 
     private void doDelete()
@@ -235,4 +243,6 @@ public class LevelSelect : IGameState
         RectRenderer.DrawRect(nameBackgroundRect, new Color(Color.Black, 0.7f), sprBatch);
         TextRenderer.DrawTextCenter(sprBatch, "DefaultFont", 0.9f, StringManager.GetString("selectLevel"), Color.White, nameRect);
     }
+
+    private int maxScrollOffset() => -((120 * _levels.Count) - 230);
 }
