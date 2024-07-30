@@ -99,9 +99,14 @@ public struct Tile
         _fr.mode = (isHoveredX || isHoveredY) ? FadeRectMode.FadeIn : FadeRectMode.FadeOut;
         _fr.Update();
 
-        _fr.Draw(batch);
-        if (state == TileState.Cross && !isBoardSolved && TextureCross != null)
-            batch.Draw(TextureCross, posVec, Color.White);
+        if (isBoardSolved)
+            RectRenderer.DrawRect(_fr.rect, state == TileState.Filled ? Settings.GetAccentColor() : Color.Gray, batch);
+        else
+        {
+            _fr.Draw(batch);
+            if (state == TileState.Cross && TextureCross != null)
+                batch.Draw(TextureCross, posVec, Color.White);
+        }
     }
 
     public void Hover(int x, int y, int mx, int my, int boardSize, GraphicsDevice graphDev)
