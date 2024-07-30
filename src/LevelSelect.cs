@@ -116,7 +116,7 @@ public class LevelSelect : IGameState
     {
         if (_deleteLevel)
         {
-            _dialogRect = new(graphDev.Viewport.Bounds.Width / 2 - DeleteDialogWidth / 2, graphDev.Viewport.Bounds.Height / 2 - DeleteDialogHeight / 2, DeleteDialogWidth, DeleteDialogHeight);
+            _dialogRect = new((graphDev.Viewport.Bounds.Width / 2) - (DeleteDialogWidth / 2), (graphDev.Viewport.Bounds.Height / 2) - (DeleteDialogHeight / 2), DeleteDialogWidth, DeleteDialogHeight);
             _deleteNoButton.x = _dialogRect.X + 10;
             _deleteNoButton.y = _dialogRect.Y + _dialogRect.Height - 10 - _deleteNoButton.height;
             _deleteYesButton.x = _dialogRect.X + _dialogRect.Width - 10 - _deleteYesButton.width;
