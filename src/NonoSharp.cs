@@ -70,6 +70,7 @@ public class NonoSharpGame : Game
         Window.Title = $"nonoSharp {GameVersion.GetGameVersion()}";
 
         Settings.Initialize();
+        KeySettings.Initialize();
         StringManager.Initialize();
         
         _spriteBatch = new(GraphicsDevice);
@@ -80,6 +81,7 @@ public class NonoSharpGame : Game
 
         if (Settings.GetBool("fullScreen"))
         {
+            // if in fullscreen, set window size to the monitor size
             setWindowSize(GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width, GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height, true);
         }
         else
