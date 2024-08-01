@@ -145,13 +145,7 @@ public class Board
 
     public void Update(MouseState mouseState, MouseState mouseStateOld, KeyboardState kb, KeyboardState kbOld, GraphicsDevice graphDev)
     {
-        if (mouseState.MiddleButton == ButtonState.Pressed)
-        {
-            int deltaX = mouseState.X - mouseStateOld.X;
-            int deltaY = mouseState.Y - mouseStateOld.Y;
-            _offsetX += deltaX;
-            _offsetY += deltaY;
-        }
+        updateMouseDrag(mouseState, mouseStateOld);
 
         if (IsSolved)
             return;
@@ -461,5 +455,16 @@ public class Board
     {
         int pxSize = size * 32;
         return new(_boardX, _boardY, pxSize, pxSize);
+    }
+
+    private void updateMouseDrag(MouseState mouseState, MouseState mouseStateOld)
+    {
+        if (mouseState.MiddleButton == ButtonState.Pressed)
+        {
+            int deltaX = mouseState.X - mouseStateOld.X;
+            int deltaY = mouseState.Y - mouseStateOld.Y;
+            _offsetX += deltaX;
+            _offsetY += deltaY;
+        }
     }
 }
