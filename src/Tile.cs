@@ -76,12 +76,12 @@ public struct Tile
         isHoveredY = other.isHoveredY;
     }
 
-    public readonly void Draw(int x, int y, int boardSize, bool isBoardSolved, SpriteBatch batch)
+    public readonly void Draw(int x, int y, int offsetX, int offsetY, int boardSize, bool isBoardSolved, SpriteBatch batch)
     {
         GraphicsDevice graphDev = batch.GraphicsDevice;
 
-        Vector2 posVec = getScreenPos(x, y, boardSize, graphDev);
-        Rectangle rect = new((int)posVec.X, (int)posVec.Y, 32, 32);
+        Vector2 posVec = getScreenPos(x, y, boardSize, graphDev); // TODO offsetX and offsetY in getScreenPos
+        Rectangle rect = new((int)posVec.X + offsetX, (int)posVec.Y + offsetY, 32, 32);
         _fr.rect = rect;
 
         switch (state)
@@ -105,14 +105,14 @@ public struct Tile
         {
             _fr.Draw(batch);
             if (state == TileState.Cross && TextureCross != null)
-                batch.Draw(TextureCross, posVec, Color.White);
+                batch.Draw(TextureCross, new Vector2(rect.X, rect.Y), Color.White);
         }
     }
 
-    public void Hover(int x, int y, int mx, int my, int boardSize, GraphicsDevice graphDev)
+    public void Hover(int x, int y, int offsetX, int offsetY, int mx, int my, int boardSize, GraphicsDevice graphDev)
     {
         Vector2 screenPos = getScreenPos(x, y, boardSize, graphDev);
-        Rectangle rect = new((int)screenPos.X, (int)screenPos.Y, 32, 32);
+        Rectangle rect = new((int)screenPos.X + offsetX, (int)screenPos.Y + offsetY, 32, 32);
         isHoveredX = mx > rect.X && mx < rect.X + rect.Width;
         isHoveredY = my > rect.Y && my < rect.Y + rect.Height;
     }
