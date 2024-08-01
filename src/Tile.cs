@@ -80,8 +80,8 @@ public struct Tile
     {
         GraphicsDevice graphDev = batch.GraphicsDevice;
 
-        Vector2 posVec = getScreenPos(x, y, boardSize, graphDev); // TODO offsetX and offsetY in getScreenPos
-        Rectangle rect = new((int)posVec.X + offsetX, (int)posVec.Y + offsetY, 32, 32);
+        Vector2 posVec = getScreenPos(x, y, offsetX, offsetY, boardSize, graphDev);
+        Rectangle rect = new((int)posVec.X, (int)posVec.Y, 32, 32);
         _fr.rect = rect;
 
         switch (state)
@@ -105,14 +105,14 @@ public struct Tile
         {
             _fr.Draw(batch);
             if (state == TileState.Cross && TextureCross != null)
-                batch.Draw(TextureCross, new Vector2(rect.X, rect.Y), Color.White);
+                batch.Draw(TextureCross, posVec, Color.White);
         }
     }
 
     public void Hover(int x, int y, int offsetX, int offsetY, int mx, int my, int boardSize, GraphicsDevice graphDev)
     {
-        Vector2 screenPos = getScreenPos(x, y, boardSize, graphDev);
-        Rectangle rect = new((int)screenPos.X + offsetX, (int)screenPos.Y + offsetY, 32, 32);
+        Vector2 screenPos = getScreenPos(x, y, offsetX, offsetY, boardSize, graphDev);
+        Rectangle rect = new((int)screenPos.X, (int)screenPos.Y, 32, 32);
         isHoveredX = mx > rect.X && mx < rect.X + rect.Width;
         isHoveredY = my > rect.Y && my < rect.Y + rect.Height;
     }
@@ -148,9 +148,11 @@ public struct Tile
         _fr.SetColor(flashColor);
     }
 
-    private static Vector2 getScreenPos(int x, int y, int boardSize, GraphicsDevice graphDev)
+    private static Vector2 getScreenPos(int x, int y, int offsetX, int offsetY, int boardSize, GraphicsDevice graphDev)
     {
         int boardPx = boardSize * 32;
-        return new Vector2((x * 32) + ((graphDev.Viewport.Bounds.Width / 2) - (boardPx / 2)), (y * 32) + ((graphDev.Viewport.Bounds.Height / 2) - (boardPx / 2)));
+        return new Vector2(
+            (x * 32) + ((graphDev.Viewport.Bounds.Width / 2) - (boardPx / 2)) + offsetX,
+            (y * 32) + ((graphDev.Viewport.Bounds.Height / 2) - (boardPx / 2)) + offsetY);
     }
 }
