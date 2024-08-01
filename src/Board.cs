@@ -145,12 +145,6 @@ public class Board
 
     public void Update(MouseState mouseState, MouseState mouseStateOld, KeyboardState kb, KeyboardState kbOld, GraphicsDevice graphDev)
     {
-        if (IsSolved)
-            return;
-
-        Point mousePoint = new(mouseState.X, mouseState.Y);
-        bool canHover = getRect().Contains(mousePoint);
-
         if (mouseState.MiddleButton == ButtonState.Pressed)
         {
             int deltaX = mouseState.X - mouseStateOld.X;
@@ -158,6 +152,12 @@ public class Board
             _offsetX += deltaX;
             _offsetY += deltaY;
         }
+
+        if (IsSolved)
+            return;
+
+        Point mousePoint = new(mouseState.X, mouseState.Y);
+        bool canHover = getRect().Contains(mousePoint);
 
         if (tiles != null)
         {
