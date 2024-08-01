@@ -24,6 +24,8 @@ public class Board
 
     private int _boardX;
     private int _boardY;
+    private int _offsetX;
+    private int _offsetY;
     private Replay _replay;
     private uint _frameCounter;
 
@@ -45,6 +47,8 @@ public class Board
         hintedLines = new();
         _boardX = 0;
         _boardY = 0;
+        _offsetX = 0;
+        _offsetY = 0;
         _replay = new();
         _frameCounter = 0;
     }
@@ -59,6 +63,8 @@ public class Board
         MakeTilesAndSolution();
         _boardX = 0;
         _boardY = 0;
+        _offsetX = 0;
+        _offsetY = 0;
         _replay = new();
         _frameCounter = 0;
     }
@@ -72,6 +78,8 @@ public class Board
         Load(fileName);
         _boardX = 0;
         _boardY = 0;
+        _offsetX = 0;
+        _offsetY = 0;
         _frameCounter = 0;
     }
 
@@ -117,12 +125,12 @@ public class Board
         {
             for (int i = 0; i < size; i++)
                 for (int j = 0; j < size; j++)
-                    tiles[i, j].Draw(i, j, size, IsSolved, batch);
+                    tiles[i, j].Draw(i, j, _offsetX, _offsetY, size, IsSolved, batch);
         }
 
         int pxSize = size * 32;
-        _boardX = (graphDev.Viewport.Bounds.Width / 2) - (pxSize / 2);
-        _boardY = (graphDev.Viewport.Bounds.Height / 2) - (pxSize / 2);
+        _boardX = (graphDev.Viewport.Bounds.Width / 2) - (pxSize / 2) + _offsetX;
+        _boardY = (graphDev.Viewport.Bounds.Height / 2) - (pxSize / 2) + _offsetY;
 
         if (IsSolved)
         {
@@ -137,6 +145,14 @@ public class Board
 
     public void Update(MouseState mouseState, MouseState mouseStateOld, KeyboardState kb, KeyboardState kbOld, GraphicsDevice graphDev)
     {
+        if (mouseState.MiddleButton == ButtonState.Pressed)
+        {
+            int deltaX = mouseState.X - mouseStateOld.X;
+            int deltaY = mouseState.Y - mouseStateOld.Y;
+            _offsetX += deltaX;
+            _offsetY += deltaY;
+        }
+
         if (IsSolved)
             return;
 
@@ -151,7 +167,7 @@ public class Board
                 {
                     ref Tile tile = ref tiles[i, j];
                     if (canHover)
-                        tile.Hover(i, j, mouseState.X, mouseState.Y, size, graphDev);
+                        tile.Hover(i, j, _offsetX, _offsetY, mouseState.X, mouseState.Y, size, graphDev);
                     else
                     {
                         tile.isHoveredX = false;
@@ -358,8 +374,9 @@ public class Board
 
         if (IsSolved)
         {
-            // TODO maybe extract this code into function
             Log.Logger.Information("Board is solved");
+            _offsetX = 0;
+            _offsetY = 0;
             for (int i = 0; i < size; i++)
                 for (int j = 0; j < size; j++)
                 {
