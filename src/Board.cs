@@ -374,8 +374,9 @@ public class Board
 
         if (IsSolved)
         {
-            // TODO maybe extract this code into function
             Log.Logger.Information("Board is solved");
+            _offsetX = 0;
+            _offsetY = 0;
             for (int i = 0; i < size; i++)
                 for (int j = 0; j < size; j++)
                 {
