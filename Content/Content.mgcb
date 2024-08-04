@@ -53,6 +53,12 @@
 #begin lang/ru.json
 /copy:lang/ru.json
 
+#begin lang/keys/en.json
+/copy:lang/keys/en.json
+
+#begin lang/keys/ru.json
+/copy:lang/keys/ru.json
+
 #begin Levels/Crown.nono
 /copy:Levels/Crown.nono
 
