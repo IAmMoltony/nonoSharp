@@ -139,13 +139,18 @@ public class PlayState : IGameState
         {
             _board.Draw(sprBatch);
             TextRenderer.DrawText(sprBatch, "DefaultFont", 10, 10, 0.5f, string.Format(StringManager.GetString("solveTime"), Math.Round(_solveTime / 1000, 2)), Color.White);
-            if (_board.maxHints > -1)
+
+            // only draw hints if they're enabled
+            if (Settings.GetBool("enableHints"))
             {
-                TextRenderer.DrawText(sprBatch, "DefaultFont", 10, 40, 0.5f, string.Format(StringManager.GetString("hintsOutOf"), _usedHints, _board.maxHints), hintsTextColor);
-            }
-            else
-            {
-                TextRenderer.DrawText(sprBatch, "DefaultFont", 10, 40, 0.5f, string.Format(StringManager.GetString("hints"), _usedHints), hintsTextColor);
+                if (_board.maxHints > -1)
+                {
+                    TextRenderer.DrawText(sprBatch, "DefaultFont", 10, 40, 0.5f, string.Format(StringManager.GetString("hintsOutOf"), _usedHints, _board.maxHints), hintsTextColor);
+                }
+                else
+                {
+                    TextRenderer.DrawText(sprBatch, "DefaultFont", 10, 40, 0.5f, string.Format(StringManager.GetString("hints"), _usedHints), hintsTextColor);
+                }
             }
         }
 
