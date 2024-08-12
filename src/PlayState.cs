@@ -17,6 +17,7 @@ public class PlayState : IGameState
 
     private readonly Board _board;
     private bool _paused;
+    private bool _timerCheckInput; // if this is set to true, then keyboard and mouse will be checked for input to start the timer
     private readonly Button _solvedContinueButton;
     private readonly Button _pauseBackButton;
     private readonly Button _pauseRestartButton;
@@ -37,6 +38,7 @@ public class PlayState : IGameState
     {
         _board = new();
         _paused = false;
+        _timerCheckInput = false;
         _solvedContinueButton = new(30, 194, 0, 50, StringManager.GetString("continue"), Settings.GetDarkAccentColor(), Settings.GetAccentColor(), true);
         _pauseBackButton = new(10, 130, 0, 50, StringManager.GetString("back"), Settings.GetDarkAccentColor(), Settings.GetAccentColor(), true);
         _pauseRestartButton = new(10, 190, 0, 50, StringManager.GetString("restart"), Settings.GetDarkAccentColor(), Settings.GetAccentColor(), true);
@@ -73,6 +75,13 @@ public class PlayState : IGameState
                 _solveTimeTick = false;
             else
             {
+                // if user presses something or moves the mouse, start timer
+                if (_timerCheckInput && (mouse.X != mouseOld.X || mouse.Y != mouseOld.Y || kb.GetPressedKeys() != kbOld.GetPressedKeys()))
+                    _solveTimeTick = true;
+                
+                if (!_timerCheckInput)
+                    _timerCheckInput = true;
+
                 // undo button
                 if (kb.IsKeyDown(Keys.Z) && !kbOld.IsKeyDown(Keys.Z))
                     _board.RestoreState();
@@ -127,7 +136,6 @@ public class PlayState : IGameState
     {
         Log.Logger.Information($"Loading level {levelPath}");
         _board.Load(levelPath);
-        _solveTimeTick = true;
     }
 
     public void Draw(SpriteBatch sprBatch)
@@ -197,6 +205,7 @@ public class PlayState : IGameState
         {
             _paused = false;
             _solveTimeTick = true;
+            _timerCheckInput = false;
             Mouse.SetPosition(graphDev.Viewport.Bounds.Width / 2, graphDev.Viewport.Bounds.Height / 2);
         }
         else
@@ -219,9 +228,9 @@ public class PlayState : IGameState
     {
         _board.Clear();
         _solveTime = 0f;
-        _solveTimeTick = true;
         _usedHints = 0;
         _paused = false;
+        _timerCheckInput = false;
         Mouse.SetPosition(graphDev.Viewport.Bounds.Width / 2, graphDev.Viewport.Bounds.Height / 2);
     }
 }
