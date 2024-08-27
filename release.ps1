@@ -23,13 +23,21 @@ $ErrorActionPreference = "Stop"
 
 # check pwsh version
 if ($PSVersionTable.PSVersion.Major -lt 7) {
-    Write-Host "Warning: you are using a version of PowerShell older than 7.0. This script is currently designed to run on PowerShell 7 and above."
+    Write-Host "Warning: you are using a version of PowerShell older than 7.0. This script is currently designed to run on PowerShell 7 and above, expect problems!"
 }
 
 if (!$NoBuild) {
-    # cleanupping
     Write-Host "  *** `e[0;32mCleaning up`e[0m ***"
-    Remove-Item "./linux-build", "./windows-build", "./Content/bin", "./Content/obj" -Recurse -Force
+
+    # remove all these folders (if they exist)
+    $PathsToRemove = "./linux-build", "./windows-build", "./Content/bin", "./Content/obj"
+    foreach ($Path in $PathsToRemove) {
+        if (Test-Path $Path) {
+            Remove-Item $Path -Recurse -Force
+        }
+    }
+
+    # clean project
     dotnet clean -v m
 
     # build for linux
