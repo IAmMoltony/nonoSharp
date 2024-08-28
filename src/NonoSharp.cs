@@ -180,12 +180,12 @@ public class NonoSharpGame : Game
         base.Draw(gameTime);
     }
 
-    protected override void OnExiting(object sender, EventArgs e)
+    protected override void OnExiting(object sender, ExitingEventArgs eea)
     {
         PlayState.StopSolveTimeThread();
         Settings.Save();
 
-        base.OnExiting(sender, e);
+        base.OnExiting(sender, eea);
     }
 
     private void doTextInput(TextInputEventArgs tiea)
