@@ -9,13 +9,16 @@
     Specify the version of the game. This only affects the file name of the zip files generated.
 .PARAMETER NoBuild
     Don't build the game solution.
+.PARAMETER Verbosity
+    The verbosity of .NET commands. Allowed values: q, m, n, d, diag. Default is 'm'.
 .EXAMPLE
     PS /home/moltony/dev/nonoSharp> ./release.ps1 0.11.1
 #>
 
 param (
     [Parameter(Mandatory=$true, ParameterSetName="GameVersion", Position=0)][string]$GameVersion,
-    [switch]$NoBuild
+    [switch]$NoBuild,
+    [Parameter(Mandatory=$false)][ValidateSet("q", "m", "n", "d", "diag")][string]$Verbosity = "m"
 )
 
 # stop on error
@@ -38,19 +41,19 @@ if (!$NoBuild) {
     }
 
     # clean project
-    dotnet clean -v m
+    dotnet clean -v $Verbosity
 
     # build for linux
     Write-Host "  *** `e[0;32mBuilding for `e[0;33mLinux x64`e[0m ***"
-    dotnet publish -v m --configuration Release --runtime linux-x64 --self-contained
-    Remove-Item ./bin/Release/net6.0/linux-x64/publish -Recurse -Force
-    Move-Item ./bin/Release/net6.0/linux-x64 ./linux-build
+    dotnet publish -v $Verbosity --configuration Release --runtime linux-x64 --self-contained
+    Remove-Item ./bin/Release/net8.0/linux-x64/publish -Recurse -Force
+    Move-Item ./bin/Release/net8.0/linux-x64 ./linux-build
 
     # build for windows
     Write-Host "  *** `e[0;32mBuilding for `e[0;33mWindows 7 x64`e[0m ***"
-    dotnet publish -v m --configuration Release --runtime win7-x64 --self-contained
-    Remove-Item ./bin/Release/net6.0/win7-x64/publish -Recurse -Force
-    Move-Item ./bin/Release/net6.0/win7-x64 ./windows-build
+    dotnet publish -v $Verbosity --configuration Release --runtime win7-x64 --self-contained
+    Remove-Item ./bin/Release/net8.0/win-x64/publish -Recurse -Force
+    Move-Item ./bin/Release/net8.0/win-x64 ./windows-build
 }
 
 # zip linux build
