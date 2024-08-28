@@ -50,8 +50,8 @@ if (!$NoBuild) {
     Move-Item ./bin/Release/net8.0/linux-x64 ./linux-build
 
     # build for windows
-    Write-Host "  *** `e[0;32mBuilding for `e[0;33mWindows 7 x64`e[0m ***"
-    dotnet publish -v $Verbosity --configuration Release --runtime win7-x64 --self-contained
+    Write-Host "  *** `e[0;32mBuilding for `e[0;33mWindows x64`e[0m ***"
+    dotnet publish -v $Verbosity --configuration Release --runtime win-x64 --self-contained
     Remove-Item ./bin/Release/net8.0/win-x64/publish -Recurse -Force
     Move-Item ./bin/Release/net8.0/win-x64 ./windows-build
 }
