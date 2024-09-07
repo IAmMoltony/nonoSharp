@@ -303,7 +303,7 @@ public class LevelSelect : IGameState
     private void doDelete()
     {
         _deleteLevel = false;
-        File.Delete(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Content", "Levels", $"{_modifyLevelName}.nono"));
+        File.Delete(Path.Combine(BoardSaver.GetLevelSavePath(), $"{_modifyLevelName}.nono"));
         var level = _levels.Find(x => x.Item1.name == _modifyLevelName);
         FindLevels();
     }
