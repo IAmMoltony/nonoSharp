@@ -495,3 +495,6 @@ windows-build/
 
 # Vim session files
 Session.vim
+
+# nonoInstaller
+nonoInstaller.exe
