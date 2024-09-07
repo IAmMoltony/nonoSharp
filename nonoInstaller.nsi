@@ -8,6 +8,12 @@ Caption "nonoInstaller"
 Icon "InstallerIcon.ico"
 OutFile "nonoInstaller.exe"
 
+VIProductVersion "0.13.0.0"
+VIFileVersion "0.13.0.0"
+VIAddVersionKey "FileVersion" "0.13.0.0"
+VIAddVersionKey "LegalCopyright" "(c) moltony"
+VIAddVersionKey "FileDescription" "nonoSharp"
+
 InstallDir "$PROGRAMFILES64\nonoSharp"
 RequestExecutionLevel admin
 
