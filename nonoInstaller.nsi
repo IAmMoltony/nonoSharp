@@ -57,7 +57,7 @@ Section "Copy Game Files"
 SectionEnd
 
 UninstallText "Click 'Next' to uninstall nonoSharp."
-UninstallIcon "InstallerIcon.ico"
+UninstallIcon "UninstallerIcon.ico"
 
 Section "Uninstall"
     DeleteRegKey HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\nonoSharp"
