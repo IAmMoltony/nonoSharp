@@ -5,7 +5,7 @@
 
 Name "nonoSharp"
 Caption "nonoInstaller"
-Icon "Icon.ico"
+Icon "InstallerIcon.ico"
 OutFile "nonoInstaller.exe"
 
 InstallDir "$PROGRAMFILES64\nonoSharp"
@@ -13,6 +13,7 @@ RequestExecutionLevel admin
 
 !define MUI_ABORTWARNING
 !define MUI_FINISHPAGE_RUN "$INSTDIR\nonoSharp.exe"
+!define MUI_ICON "InstallerIcon.ico"
 
 !insertmacro MUI_PAGE_WELCOME
 !insertmacro MUI_PAGE_LICENSE "LICENSE"
@@ -39,7 +40,7 @@ Section "CopyFiles"
 SectionEnd
 
 UninstallText "Click 'Next' to uninstall nonoSharp."
-UninstallIcon "Icon.ico"
+UninstallIcon "InstallerIcon.ico"
 
 Section "Uninstall"
     DeleteRegKey HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\nonoSharp"
