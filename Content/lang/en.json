@@ -34,5 +34,7 @@
   "yes": "Yes",
   "no": "No",
   "keySettings": "Key settings",
-  "renameButton": "Rename"
+  "renameButton": "Rename",
+  "renameLevel": "Rename level",
+  "cancel": "Cancel"
 }

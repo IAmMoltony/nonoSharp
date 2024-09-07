@@ -34,5 +34,7 @@
   "yes": "Да",
   "no": "Нет",
   "keySettings": "Настройка клавиш",
-  "renameButton": "Переименовать"
+  "renameButton": "Переименовать",
+  "renameLevel": "Переименовать уровень",
+  "cancel": "Отмена"
 }
