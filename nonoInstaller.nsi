@@ -56,6 +56,10 @@ Section "Copy Game Files"
     File /r "bin\Release\net8.0\win-x64\publish"
 SectionEnd
 
+Section "Add Desktop Shortcut"
+    CreateShortCut "$DESKTOP\nonoSharp.lnk" "$INSTDIR\nonoSharp.exe" "" "$INSTDIR/Icon.ico"
+SectionEnd
+
 UninstallText "Click 'Next' to uninstall nonoSharp."
 UninstallIcon "UninstallerIcon.ico"
 
