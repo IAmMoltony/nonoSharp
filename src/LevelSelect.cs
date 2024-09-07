@@ -61,10 +61,12 @@ public class LevelSelect : IGameState
             int buttonY = 110 + (120 * i) + 40;
             Button playButton = new(15, buttonY, 0, 40, StringManager.GetString("playButton"), Settings.GetDarkAccentColor(), Settings.GetAccentColor(), true);
             Button? deleteButton = metadata.isCustomLevel ? new(15, buttonY, 0, 40, StringManager.GetString("deleteButton"), Settings.GetDarkAccentColor(), Settings.GetAccentColor(), true) : null;
+            Button? renameButton = metadata.isCustomLevel ? new(15, buttonY, 0, 40, StringManager.GetString("renameButton"), Settings.GetDarkAccentColor(), Settings.GetAccentColor(), true) : null;
             LevelButtons buttons = new()
             {
                 playButton = playButton,
-                deleteButton = deleteButton
+                deleteButton = deleteButton,
+                renameButton = renameButton
             };
             
             _levels.Add(new(metadata, buttons));
@@ -161,6 +163,19 @@ public class LevelSelect : IGameState
                     {
                         _deleteLevelName = _levels[i].Item1.name;
                         _deleteLevel = true;
+                    }
+                }
+
+                if (level.Item2.renameButton != null)
+                {
+                    if (level.Item2.deleteButton != null)
+                        level.Item2.renameButton.x = level.Item2.deleteButton.x + level.Item2.deleteButton.width + 10;
+                    else if (level.Item2.playButton != null)
+                        level.Item2.renameButton.x = level.Item2.playButton.x + level.Item2.playButton.width + 10;
+
+                    if (level.Item2.renameButton.IsClicked)
+                    {
+                        // TODO
                     }
                 }
             }

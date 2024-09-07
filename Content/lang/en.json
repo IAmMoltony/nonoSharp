@@ -33,5 +33,6 @@
   "deleteDialogText": "Really delete \"{0}\"? You cannot undo this action.",
   "yes": "Yes",
   "no": "No",
-  "keySettings": "Key settings"
+  "keySettings": "Key settings",
+  "renameButton": "Rename"
 }
