@@ -25,7 +25,8 @@ public class TextBox : UIElement
     private readonly string _placeholder;
     private bool _blinkCursor;
     private int _blinkCursorTimer;
-    private bool _illegalBlink;
+
+    protected bool illegalBlink;
 
     public TextBox(
         int x, int y, int width, Color fillColor, Color outlineColor, Color textColor,
@@ -39,7 +40,7 @@ public class TextBox : UIElement
         _outlineColor = outlineColor;
         _textColor = textColor;
         _textColorHover = textColorHover;
-        _illegalBlink = false;
+        illegalBlink = false;
         this.maxLength = maxLength;
         _placeholder = "";
     }
@@ -58,7 +59,7 @@ public class TextBox : UIElement
     {
         Color fc = Hovered ? _outlineColor : _fillColor;
         Color oc = Hovered ? _fillColor : _outlineColor;
-        if (_illegalBlink)
+        if (illegalBlink)
         {
             (fc, oc) = (oc, fc); // Python moment
             fc = fc.Lighter(0.5f);
@@ -69,7 +70,7 @@ public class TextBox : UIElement
 
         drawText(sprBatch);
 
-        _illegalBlink = false;
+        illegalBlink = false;
     }
 
     public override void Update(MouseState mouse, MouseState mouseOld, KeyboardState keyboard, KeyboardState keyboardOld)
@@ -89,23 +90,30 @@ public class TextBox : UIElement
             {
                 // Backspace: remove char
                 case Keys.Back:
-                    BackSpace();
+                    if (!BackSpace())
+                        illegalBlink = true;
                     break;
                 default:
                     if (checkLength())
                         if (illegalChars.Contains(tiea.Character))
-                            _illegalBlink = true;
+                            illegalBlink = true;
                         else
                             Text += tiea.Character;
+                    else
+                        illegalBlink = true;
                     break;
             }
         }
     }
 
-    public void BackSpace()
+    public bool BackSpace()
     {
         if (Text.Length > 0)
+        {
             Text = Text[..^1];
+            return true;
+        }
+        return false;
     }
 
     public void Clear()
