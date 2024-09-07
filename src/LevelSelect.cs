@@ -22,10 +22,14 @@ public class LevelSelect : IGameState
     private int _scrollOffsetGoal;
     private float _scrollOffset;
     private readonly Button _backButton;
-    private string _deleteLevelName;
+    private string _modifyLevelName;
     private bool _deleteLevel;
-    private readonly Button _deleteYesButton;
+    private bool _renameLevel;
     private readonly Button _deleteNoButton;
+    private readonly Button _deleteYesButton;
+    private readonly Button _renameCancelButton;
+    private readonly Button _renameOKButton;
+    private readonly TextBox _renameBox;
     private Rectangle _dialogRect;
 
     public LevelSelect()
@@ -33,12 +37,19 @@ public class LevelSelect : IGameState
         _scrollOffsetGoal = 0;
         _scrollOffset = 0;
         _backButton = new(10, 10, 0, 40, StringManager.GetString("back"), Settings.GetDarkAccentColor(), Settings.GetAccentColor(), Keys.Escape, true);
-        _deleteLevelName = "";
+        _modifyLevelName = "";
         _deleteLevel = false;
         _dialogRect = new();
-        _deleteNoButton = new(0, 0, 0, 40, StringManager.GetString("no"), Settings.GetDarkAccentColor(), Settings.GetAccentColor(), true);
-        _deleteYesButton = new(0, 0, 0, 40, StringManager.GetString("yes"), Settings.GetDarkAccentColor(), Settings.GetAccentColor(), true);
+        _deleteNoButton = new(0, 0, 0, 40, StringManager.GetString("no"), Settings.GetDarkAccentColor(), Settings.GetAccentColor(), true, 16);
+        _deleteYesButton = new(0, 0, 0, 40, StringManager.GetString("yes"), Settings.GetDarkAccentColor(), Settings.GetAccentColor(), true, 16);
+        _renameCancelButton = new(0, 0, 0, 40, StringManager.GetString("cancel"), Settings.GetDarkAccentColor(), Settings.GetAccentColor(), true);
+        _renameOKButton = new(0, 0, 0, 40, StringManager.GetString("ok"), Settings.GetDarkAccentColor(), Settings.GetAccentColor(), true);
         _levels = new();
+
+        _renameBox = new(0, 0, 0, Color.DarkGray, Color.Gray, Color.White, Color.White, 230);
+        char[] invalidPathChars = Path.GetInvalidPathChars();
+        char[] invalidFileNameChars = Path.GetInvalidFileNameChars();
+        _renameBox.illegalChars = invalidPathChars.Union(invalidFileNameChars).ToList();
     }
 
     public void FindLevels()
@@ -61,10 +72,12 @@ public class LevelSelect : IGameState
             int buttonY = 110 + (120 * i) + 40;
             Button playButton = new(15, buttonY, 0, 40, StringManager.GetString("playButton"), Settings.GetDarkAccentColor(), Settings.GetAccentColor(), true);
             Button? deleteButton = metadata.isCustomLevel ? new(15, buttonY, 0, 40, StringManager.GetString("deleteButton"), Settings.GetDarkAccentColor(), Settings.GetAccentColor(), true) : null;
+            Button? renameButton = metadata.isCustomLevel ? new(15, buttonY, 0, 40, StringManager.GetString("renameButton"), Settings.GetDarkAccentColor(), Settings.GetAccentColor(), true) : null;
             LevelButtons buttons = new()
             {
                 playButton = playButton,
-                deleteButton = deleteButton
+                deleteButton = deleteButton,
+                renameButton = renameButton
             };
             
             _levels.Add(new(metadata, buttons));
@@ -95,28 +108,43 @@ public class LevelSelect : IGameState
         drawHeading(graphDev, sprBatch);
         _backButton.Draw(sprBatch);
 
-        if (_deleteLevel)
+        Rectangle dialogTextRect = new Rectangle(0, 0, 0, 0);
+
+        if (_deleteLevel || _renameLevel)
         {
             RectRenderer.DrawRect(new(0, 0, graphDev.Viewport.Bounds.Width, graphDev.Viewport.Bounds.Height), new(Color.Black, 0.5f), sprBatch);
-
-            Rectangle dialogTextRect = _dialogRect;
+            dialogTextRect = _dialogRect;
             dialogTextRect.Y -= 100;
             RectRenderer.DrawRect(_dialogRect, Settings.GetDarkAccentColor(), sprBatch);
             RectRenderer.DrawRectOutline(_dialogRect, Settings.GetAccentColor(), 2, sprBatch);
-            TextRenderer.DrawTextCenter(sprBatch, "DefaultFont", 0.8f, StringManager.GetString("deleteSure"), Color.White, dialogTextRect);
+        }
 
-            TextRenderer.DrawTextWrapped(sprBatch, "DefaultFont", _dialogRect.X + 10, _dialogRect.Y + 60, 0.5f, string.Format(StringManager.GetString("deleteDialogText"), _deleteLevelName), _dialogRect.Width, Color.White);
+        if (_deleteLevel)
+        {
+            TextRenderer.DrawTextCenter(sprBatch, "DefaultFont", 0.8f, StringManager.GetString("deleteSure"), Color.White, dialogTextRect);
+            TextRenderer.DrawTextWrapped(sprBatch, "DefaultFont", _dialogRect.X + 10, _dialogRect.Y + 60, 0.5f, string.Format(StringManager.GetString("deleteDialogText"), _modifyLevelName), _dialogRect.Width, Color.White);
 
             _deleteNoButton.Draw(sprBatch);
             _deleteYesButton.Draw(sprBatch);
+        }
+        else if (_renameLevel)
+        {
+            TextRenderer.DrawTextCenter(sprBatch, "DefaultFont", 0.8f, StringManager.GetString("renameLevel"), Color.White, dialogTextRect);
+            _renameBox.Draw(sprBatch);
+            _renameCancelButton.Draw(sprBatch);
+            _renameOKButton.Draw(sprBatch);
         }
     }
 
     public IGameState? Update(MouseState mouse, MouseState mouseOld, KeyboardState kb, KeyboardState kbOld, GraphicsDevice graphDev, ref LevelMetadata levelMetadata, bool hasFocus)
     {
-        if (_deleteLevel)
+        if (_deleteLevel || _renameLevel)
         {
             _dialogRect = new((graphDev.Viewport.Bounds.Width / 2) - (DeleteDialogWidth / 2), (graphDev.Viewport.Bounds.Height / 2) - (DeleteDialogHeight / 2), DeleteDialogWidth, DeleteDialogHeight);
+        }
+
+        if (_deleteLevel)
+        {
             _deleteNoButton.x = _dialogRect.X + 10;
             _deleteNoButton.y = _dialogRect.Y + _dialogRect.Height - 10 - _deleteNoButton.height;
             _deleteYesButton.x = _dialogRect.X + _dialogRect.Width - 10 - _deleteYesButton.width;
@@ -127,8 +155,31 @@ public class LevelSelect : IGameState
 
             if (_deleteNoButton.IsClicked)
                 _deleteLevel = false;
-            if (_deleteYesButton.IsClicked)
+            else if (_deleteYesButton.IsClicked)
                 doDelete();
+        }
+        else if (_renameLevel)
+        {
+            _renameBox.x = _dialogRect.X + 10;
+            _renameBox.width = _dialogRect.Width - 30;
+            _renameBox.y = _dialogRect.Y + 32 + TextBox.Height;
+
+            _renameCancelButton.x = _dialogRect.X + 10;
+            _renameCancelButton.y = _dialogRect.Y + _dialogRect.Height - 10 - _renameCancelButton.height;
+            _renameOKButton.x = _dialogRect.X + _dialogRect.Width - 10 - _renameOKButton.width;
+            _renameOKButton.y = _renameCancelButton.y;
+
+            _renameBox.Update(mouse, mouseOld, kb, kbOld);
+            _renameCancelButton.Update(mouse, mouseOld, kb, kbOld);
+            _renameOKButton.Update(mouse, mouseOld, kb, kbOld);
+
+            if (_renameCancelButton.IsClicked)
+            {
+                _renameLevel = false;
+                _renameBox.Clear();
+            }
+            else if (_renameOKButton.IsClicked)
+                doRename();
         }
         else
         {
@@ -159,8 +210,22 @@ public class LevelSelect : IGameState
 
                     if (level.Item2.deleteButton.IsClicked)
                     {
-                        _deleteLevelName = _levels[i].Item1.name;
+                        _modifyLevelName = _levels[i].Item1.name;
                         _deleteLevel = true;
+                    }
+                }
+
+                if (level.Item2.renameButton != null)
+                {
+                    if (level.Item2.deleteButton != null)
+                        level.Item2.renameButton.x = level.Item2.deleteButton.x + level.Item2.deleteButton.width + 10;
+                    else if (level.Item2.playButton != null)
+                        level.Item2.renameButton.x = level.Item2.playButton.x + level.Item2.playButton.width + 10;
+
+                    if (level.Item2.renameButton.IsClicked)
+                    {
+                        _modifyLevelName = _levels[i].Item1.name;
+                        _renameLevel = true;
                     }
                 }
             }
@@ -173,6 +238,14 @@ public class LevelSelect : IGameState
         }
 
         return null;
+    }
+
+    public void UpdateInput(TextInputEventArgs tiea)
+    {
+        if (_renameLevel)
+        {
+            _renameBox.UpdateInput(tiea);
+        }
     }
 
     private void updateScroll(MouseState mouse, MouseState mouseOld, KeyboardState keyboard, KeyboardState keyboardOld, GraphicsDevice graphDev)
@@ -230,10 +303,16 @@ public class LevelSelect : IGameState
     private void doDelete()
     {
         _deleteLevel = false;
-        File.Delete(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Content", "Levels", $"{_deleteLevelName}.nono"));
-        var level = _levels.Find(x => x.Item1.name == _deleteLevelName);
-        if (level != null)
-            _levels.Remove(level);
+        File.Delete(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Content", "Levels", $"{_modifyLevelName}.nono"));
+        var level = _levels.Find(x => x.Item1.name == _modifyLevelName);
+        FindLevels();
+    }
+
+    private void doRename()
+    {
+        _renameLevel = false;
+        File.Move(Path.Combine(BoardSaver.GetLevelSavePath(), $"{_modifyLevelName}.nono"), Path.Combine(BoardSaver.GetLevelSavePath(), $"{_renameBox.Text}.nono"));
+        FindLevels();
     }
 
     private static void drawHeading(GraphicsDevice graphDev, SpriteBatch sprBatch)

@@ -49,7 +49,7 @@ public class SetSizeState
 
     private void drawSizeBox(SpriteBatch sprBatch)
     {
-        _sizeBox.x = (sprBatch.GraphicsDevice.Viewport.Bounds.Width / 2) - (_sizeBox.Width / 2);
+        _sizeBox.x = (sprBatch.GraphicsDevice.Viewport.Bounds.Width / 2) - (_sizeBox.width / 2);
         _sizeBox.y = (sprBatch.GraphicsDevice.Viewport.Bounds.Height / 2) - (TextBox.Height / 2);
         _sizeBox.Draw(sprBatch);
     }
