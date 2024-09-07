@@ -57,6 +57,9 @@ public class NumberTextBox : TextBox
     private void checkMax()
     {
         if (_hasMax && GetNumberValue() > _max)
+        {
             BackSpace();
+            illegalBlink = true;
+        }
     }
 }
