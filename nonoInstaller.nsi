@@ -17,12 +17,12 @@ VIAddVersionKey "FileDescription" "nonoSharp"
 InstallDir "$PROGRAMFILES64\nonoSharp"
 RequestExecutionLevel admin
 
-!define MUI_ABORTWARNING
-!define MUI_ABORTWARNING_CANCEL_DEFAULT
-!define MUI_FINISHPAGE_NOAUTOCLOSE
-!define MUI_FINISHPAGE_RUN "$INSTDIR\nonoSharp.exe"
-!define MUI_FINISHPAGE_RUN_NOTCHECKED
-!define MUI_FINISHPAGE_NOREBOOTSUPPORT
+!define MUI_ABORTWARNING # Enable the abort warning
+!define MUI_ABORTWARNING_CANCEL_DEFAULT # Make "cancel" the default button in the abort warning dialog
+!define MUI_FINISHPAGE_NOAUTOCLOSE # Don't automatically skip to finish page after completing installation
+!define MUI_FINISHPAGE_RUN "$INSTDIR\nonoSharp.exe" # The executable to run if the "Run nonoSharp" checkbox is enabled
+!define MUI_FINISHPAGE_RUN_NOTCHECKED # Don't check the "Run nonoSharp" checkbox by default
+!define MUI_FINISHPAGE_NOREBOOTSUPPORT # Disable support for the page where you can reboot the system
 !define MUI_ICON "InstallerIcon.ico"
 
 !define MUI_WELCOMEPAGE_TITLE "Welcome to nonoInstaller!"
@@ -48,6 +48,7 @@ RequestExecutionLevel admin
 ShowInstDetails show
 
 Section ""
+    # Write the display name and the uninstaller to the registry
     WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\nonoSharp" "DisplayName" "nonoSharp"
     WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\nonoSharp" "UninstallString" "$INSTDIR\nonoUninstall.exe"
 
@@ -55,8 +56,8 @@ Section ""
     WriteUninstaller "$INSTDIR\nonoUninstall.exe"
 SectionEnd
 
-Section "nonoSharp" GameFiles
-    SectionIn RO
+Section "nonoSharp" InstallGame
+    SectionIn RO # Make it so that this section is mandatory: cannot be disabled in the components page
     File /r "bin\Release\net8.0\win-x64\publish"
 SectionEnd
 
@@ -75,6 +76,6 @@ SectionEnd
 !insertmacro MUI_LANGUAGE "English"
 
 !insertmacro MUI_FUNCTION_DESCRIPTION_BEGIN
-    !insertmacro MUI_DESCRIPTION_TEXT ${GameFiles} "Installs nonoSharp (cannot be disabled!)"
+    !insertmacro MUI_DESCRIPTION_TEXT ${InstallGame} "Installs nonoSharp (cannot be disabled!)"
     !insertmacro MUI_DESCRIPTION_TEXT ${DesktopShortcut} "Adds a shortcut to start nonoSharp on the desktop"
 !insertmacro MUI_FUNCTION_DESCRIPTION_END
