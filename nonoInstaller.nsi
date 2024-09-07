@@ -18,6 +18,7 @@ InstallDir "$PROGRAMFILES64\nonoSharp"
 RequestExecutionLevel admin
 
 !define MUI_ABORTWARNING
+!define MUI_ABORTWARNING_CANCEL_DEFAULT
 !define MUI_FINISHPAGE_NOAUTOCLOSE
 !define MUI_FINISHPAGE_RUN "$INSTDIR\nonoSharp.exe"
 !define MUI_FINISHPAGE_RUN_NOTCHECKED
@@ -31,9 +32,11 @@ RequestExecutionLevel admin
 !define MUI_DIRECTORYPAGE_TEXT_TOP "nonoInstaller will install nonoSharp in this folder. If you want to install in a different folder, click the 'Browse' button and select a folder. When you're ready, click 'Install'."
 !define MUI_FINISHPAGE_TITLE "nonoSharp is now installed!"
 !define MUI_FINISHPAGE_TEXT "nonoSharp has been installed on your computer. Click on the 'Finish' button to exit nonoInstaller."
+!define MUI_ABORTWARNING_TEXT "Are you sure you want to cancel nonoSharp installation?"
 
 !insertmacro MUI_PAGE_WELCOME
 !insertmacro MUI_PAGE_LICENSE "LICENSE"
+!insertmacro MUI_PAGE_COMPONENTS
 !insertmacro MUI_PAGE_DIRECTORY
 !insertmacro MUI_PAGE_INSTFILES
 !insertmacro MUI_PAGE_FINISH
@@ -52,11 +55,12 @@ Section ""
     WriteUninstaller "$INSTDIR\nonoUninstall.exe"
 SectionEnd
 
-Section "Copy Game Files"
+Section "nonoSharp" GameFiles
+    SectionIn RO
     File /r "bin\Release\net8.0\win-x64\publish"
 SectionEnd
 
-Section "Add Desktop Shortcut"
+Section "Desktop shortcut" DesktopShortcut
     CreateShortCut "$DESKTOP\nonoSharp.lnk" "$INSTDIR\nonoSharp.exe" "" "$INSTDIR/Icon.ico"
 SectionEnd
 
@@ -69,3 +73,8 @@ Section "Uninstall"
 SectionEnd
 
 !insertmacro MUI_LANGUAGE "English"
+
+!insertmacro MUI_FUNCTION_DESCRIPTION_BEGIN
+    !insertmacro MUI_DESCRIPTION_TEXT ${GameFiles} "Installs nonoSharp (cannot be disabled!)"
+    !insertmacro MUI_DESCRIPTION_TEXT ${DesktopShortcut} "Adds a shortcut to start nonoSharp on the desktop"
+!insertmacro MUI_FUNCTION_DESCRIPTION_END
