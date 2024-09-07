@@ -1,5 +1,6 @@
 # nonoInstaller: The nonoSharp Windows installer
 
+!include "x64.nsh"
 !include "MUI2.nsh"
 
 Name "nonoSharp"
@@ -7,8 +8,7 @@ Caption "nonoInstaller"
 Icon "Icon.ico"
 OutFile "nonoInstaller.exe"
 
-InstallDir "$PROGRAMFILES\nonoSharp"
-
+InstallDir "$PROGRAMFILES64\nonoSharp"
 RequestExecutionLevel admin
 
 !define MUI_ABORTWARNING
