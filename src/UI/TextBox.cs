@@ -9,10 +9,10 @@ public class TextBox : UIElement
 {
     public static readonly int Height = 30;
 
-    public int Width { get; private set; }
     public string Text { get; private set; }
     public bool Hovered { get; private set; }
 
+    public int width;
     public List<char> illegalChars;
     public int maxLength;
 
@@ -31,7 +31,7 @@ public class TextBox : UIElement
         int x, int y, int width, Color fillColor, Color outlineColor, Color textColor,
         Color textColorHover, int maxLength = 0) : base(x, y)
     {
-        Width = width;
+        this.width = width;
         Text = "";
         Hovered = false;
         illegalChars = new();
@@ -115,7 +115,7 @@ public class TextBox : UIElement
 
     private Rectangle getRect()
     {
-        return new(x, y, Width, Height);
+        return new(x, y, width, Height);
     }
 
     private void drawText(SpriteBatch sprBatch)
@@ -124,7 +124,7 @@ public class TextBox : UIElement
         Color placeholderColor = Hovered ? _placeholderColorHover : _placeholderColor;
         Vector2 textSize = TextRenderer.MeasureString("DefaultFont", Text);
         float textWidth = textSize.X * 0.5f;
-        float maxTextWidth = Width - 17;
+        float maxTextWidth = width - 17;
         float offset = 0;
 
         if (textWidth > maxTextWidth)

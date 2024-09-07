@@ -193,6 +193,10 @@ public class NonoSharpGame : Game
         // update editor input when in editor
         if (_currentState is Editor.Editor editor)
             editor.UpdateInput(tiea);
+
+        // update level select input when in level select
+        if (_currentState is LevelSelect levelSelect)
+            levelSelect.UpdateInput(tiea);
     }
 
     private void getInput()
