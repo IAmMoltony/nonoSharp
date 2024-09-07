@@ -15,8 +15,8 @@ public class LevelSelect : IGameState
 {
     public const int ScrollSpeed = 50;
     public const float KeyboardScrollSpeedMultiplier = 0.3f;
-    public const int DeleteDialogWidth = 350;
-    public const int DeleteDialogHeight = 270;
+    public const int DialogWidth = 350;
+    public const int DialogHeight = 270;
 
     private List<Tuple<LevelMetadata, LevelButtons>> _levels;
     private int _scrollOffsetGoal;
@@ -140,11 +140,16 @@ public class LevelSelect : IGameState
     {
         if (_deleteLevel || _renameLevel)
         {
-            _dialogRect = new((graphDev.Viewport.Bounds.Width / 2) - (DeleteDialogWidth / 2), (graphDev.Viewport.Bounds.Height / 2) - (DeleteDialogHeight / 2), DeleteDialogWidth, DeleteDialogHeight);
+            _dialogRect.X = (graphDev.Viewport.Bounds.Width / 2) - (_dialogRect.Width / 2);
+            _dialogRect.Y = (graphDev.Viewport.Bounds.Height / 2) - (DialogHeight / 2);
+            _dialogRect.Width = 0;
+            _dialogRect.Height = DialogHeight;
         }
 
         if (_deleteLevel)
         {
+            _dialogRect.Width = Math.Max(DialogWidth, (int)TextRenderer.MeasureString("DefaultFont", StringManager.GetString("deleteSure")).X + 12);
+
             _deleteNoButton.x = _dialogRect.X + 10;
             _deleteNoButton.y = _dialogRect.Y + _dialogRect.Height - 10 - _deleteNoButton.height;
             _deleteYesButton.x = _dialogRect.X + _dialogRect.Width - 10 - _deleteYesButton.width;
@@ -160,6 +165,8 @@ public class LevelSelect : IGameState
         }
         else if (_renameLevel)
         {
+            _dialogRect.Width = Math.Max(DialogWidth, (int)TextRenderer.MeasureString("DefaultFont", StringManager.GetString("renameLevel")).X + 12);
+
             _renameBox.x = _dialogRect.X + 10;
             _renameBox.width = _dialogRect.Width - 30;
             _renameBox.y = _dialogRect.Y + 32 + TextBox.Height;

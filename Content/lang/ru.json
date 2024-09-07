@@ -29,7 +29,7 @@
   "maxHints": "Максимум подсказок",
   "maxHintsPlaceholder": "(бесконечно)",
   "deleteButton": "Удалить",
-  "deleteSure": "Удалить?",
+  "deleteSure": "Удалить уровень?",
   "deleteDialogText": "Точно удалить «{0}»? Это нельзя будет отменить.",
   "yes": "Да",
   "no": "Нет",

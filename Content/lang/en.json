@@ -29,7 +29,7 @@
   "maxHints": "Max hints",
   "maxHintsPlaceholder": "(infinite)",
   "deleteButton": "Delete",
-  "deleteSure": "Delete?",
+  "deleteSure": "Delete level?",
   "deleteDialogText": "Really delete \"{0}\"? You cannot undo this action.",
   "yes": "Yes",
   "no": "No",
