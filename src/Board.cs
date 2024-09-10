@@ -26,7 +26,6 @@ public class Board
     private int _boardY;
     private int _offsetX;
     private int _offsetY;
-    private Replay _replay;
     private uint _frameCounter;
 
     public static bool CompareSolutionTile(TileState a, TileState b)
@@ -49,7 +48,6 @@ public class Board
         _boardY = 0;
         _offsetX = 0;
         _offsetY = 0;
-        _replay = new();
         _frameCounter = 0;
     }
 
@@ -65,7 +63,6 @@ public class Board
         _boardY = 0;
         _offsetX = 0;
         _offsetY = 0;
-        _replay = new();
         _frameCounter = 0;
     }
 
@@ -74,7 +71,6 @@ public class Board
         undoStack = new();
         previousState = null;
         hintedLines = new();
-        _replay = new();
         Load(fileName);
         _boardX = 0;
         _boardY = 0;
@@ -174,21 +170,10 @@ public class Board
 
                         // Save state only if mouse is pressed
                         if (left || right)
+                        {
                             SaveState();
-
-                        if (left)
-                        {
-                            DoMouseInput(true, ref tile);
-                            _replay.AddMove(new(ReplayMoveType.LeftClick, i, j), _frameCounter);
-                        }
-                        if (right)
-                        {
-                            DoMouseInput(false, ref tile);
-                            _replay.AddMove(new(ReplayMoveType.RightClick, i, j), _frameCounter);
-                        }
-
-                        if (left || right)
                             CheckSolution();
+                        }
                     }
                 }
             }
@@ -301,22 +286,6 @@ public class Board
                 tiles[i, j].state = TileState.Empty;
     }
 
-    public void DoReplayMove(ReplayMove move)
-    {
-        if (tiles == null)
-            return;
-
-        switch (move.type)
-        {
-            case ReplayMoveType.LeftClick:
-                DoMouseInput(true, ref tiles[move.tileX, move.tileY]);
-                break;
-            case ReplayMoveType.RightClick:
-                DoMouseInput(false, ref tiles[move.tileX, move.tileY]);
-                break;
-        }
-    }
-
     protected void MakeTilesAndSolution()
     {
         tiles = new Tile[size, size];
@@ -377,8 +346,6 @@ public class Board
                     tiles[i, j].isHoveredX = false;
                     tiles[i, j].isHoveredY = false;
                 }
-
-            _replay.Save("replay test");
         }
     }
 
