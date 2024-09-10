@@ -46,14 +46,12 @@ if (!$NoBuild) {
     # build for linux
     Write-Host "  *** `e[0;32mBuilding for `e[0;33mLinux x64`e[0m ***"
     dotnet publish -v $Verbosity --configuration Release --runtime linux-x64 --self-contained
-    Remove-Item ./bin/Release/net8.0/linux-x64/publish -Recurse -Force
-    Move-Item ./bin/Release/net8.0/linux-x64 ./linux-build
+    Move-Item ./bin/Release/net8.0/linux-x64/publish ./linux-build
 
     # build for windows
     Write-Host "  *** `e[0;32mBuilding for `e[0;33mWindows x64`e[0m ***"
     dotnet publish -v $Verbosity --configuration Release --runtime win-x64 --self-contained
-    Remove-Item ./bin/Release/net8.0/win-x64/publish -Recurse -Force
-    Move-Item ./bin/Release/net8.0/win-x64 ./windows-build
+    Move-Item ./bin/Release/net8.0/win-x64/publish ./windows-build
 }
 
 # zip linux build
