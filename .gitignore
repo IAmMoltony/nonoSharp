@@ -489,7 +489,8 @@ $RECYCLE.BIN/
 # All zip files
 *.zip
 
-# Release build folders
+# Release builds
+ReleaseBuilds/
 linux-build/
 windows-build/
 
