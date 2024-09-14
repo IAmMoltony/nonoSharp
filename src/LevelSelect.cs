@@ -233,6 +233,7 @@ public class LevelSelect : IGameState
                     {
                         _modifyLevelName = _levels[i].Item1.name;
                         _renameLevel = true;
+                        _renameBox.text = _modifyLevelName;
                     }
                 }
             }
