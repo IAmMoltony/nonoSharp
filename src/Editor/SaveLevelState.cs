@@ -84,7 +84,7 @@ public class SaveLevelState
 
     private void drawNameBox(SpriteBatch sprBatch)
     {
-        _levelNameBox.x = (sprBatch.GraphicsDevice.Viewport.Bounds.Width / 2) - (_levelNameBox.Width / 2);
+        _levelNameBox.x = (sprBatch.GraphicsDevice.Viewport.Bounds.Width / 2) - (_levelNameBox.width / 2);
         _levelNameBox.y = (sprBatch.GraphicsDevice.Viewport.Bounds.Height / 2) - (UI.TextBox.Height / 2);
         _levelNameBox.Draw(sprBatch);
     }
