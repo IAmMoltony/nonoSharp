@@ -171,8 +171,8 @@ public class Board
                         if (left || right)
                         {
                             SaveState();
-                            CheckSolution();
                             DoMouseInput(left, ref tiles[i, j]);
+                            CheckSolution();
                         }
                     }
                 }
