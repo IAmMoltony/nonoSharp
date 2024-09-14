@@ -168,11 +168,11 @@ public class Board
                         bool left = (mouseStateOld.LeftButton == ButtonState.Released && mouseState.LeftButton == ButtonState.Pressed) || (kb.IsKeyDown(KeySettings.Get("placeTile")) && !kbOld.IsKeyDown(KeySettings.Get("placeTile")));
                         bool right = (mouseStateOld.RightButton == ButtonState.Released && mouseState.RightButton == ButtonState.Pressed) || (kb.IsKeyDown(Keys.C) && !kbOld.IsKeyDown(Keys.C));
 
-                        // Save state only if mouse is pressed
                         if (left || right)
                         {
                             SaveState();
                             CheckSolution();
+                            DoMouseInput(left, ref tiles[i, j]);
                         }
                     }
                 }
