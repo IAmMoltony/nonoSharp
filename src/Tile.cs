@@ -35,8 +35,15 @@ public struct Tile
     public static void LoadSounds(ContentManager content)
     {
         Log.Logger.Information("Loading tile sounds");
-        SoundPlace = content.Load<SoundEffect>("sound/tilePlace");
-        SoundCross = content.Load<SoundEffect>("sound/cross");
+        try
+        {
+            SoundPlace = content.Load<SoundEffect>("sound/tilePlace");
+            SoundCross = content.Load<SoundEffect>("sound/cross");
+        }
+        catch (NoAudioHardwareException e)
+        {
+            Log.Logger.Error(e, "No audio hardware found, can't load tile sounds");
+        }
     }
 
     public static void PrintTileArray(Tile[,] ta, int size)
