@@ -57,7 +57,7 @@ if (!$NoBuild) {
         Write-Host "  *** `e[0;32mBuilding for `e[0;33mLinux x64`e[0m ***"
     }
     dotnet publish -v $Verbosity --configuration Release --runtime linux-x64 --self-contained
-    Move-Item ./bin/Release/net8.0/linux-x64/publish ./linux-build
+    Copy-Item ./bin/Release/net8.0/linux-x64/publish ./linux-build
 
     # build for windows
     if ($NoColor) {
@@ -66,7 +66,7 @@ if (!$NoBuild) {
         Write-Host "  *** `e[0;32mBuilding for `e[0;33mWindows x64`e[0m ***"
     }
     dotnet publish -v $Verbosity --configuration Release --runtime win-x64 --self-contained
-    Move-Item ./bin/Release/net8.0/win-x64/publish ./windows-build
+    Copy-Item ./bin/Release/net8.0/win-x64/publish ./windows-build
 }
 
 # zip linux build
