@@ -11,6 +11,8 @@
     Don't build the game solution.
 .PARAMETER NoColor
     Disable colored output.
+.PARAMETER NoZip
+    Don't zip the builds, don't move them to ReleaseBuilds.
 .PARAMETER Verbosity
     The verbosity of .NET commands. Allowed values: q, m, n, d, diag. Default is 'm'.
 .EXAMPLE
@@ -21,6 +23,7 @@ param (
     [Parameter(Mandatory=$true, ParameterSetName="GameVersion", Position=0)][string]$GameVersion,
     [switch]$NoBuild,
     [switch]$NoColor,
+	[switch]$NoZip,
     [Parameter(Mandatory=$false)][ValidateSet("q", "m", "n", "d", "diag")][string]$Verbosity = "m"
 )
 
@@ -69,26 +72,29 @@ if (!$NoBuild) {
     Copy-Item ./bin/Release/net8.0/win-x64/publish ./windows-build
 }
 
-# zip linux build
-if ($NoColor) {
-    Write-Host "  *** Zipping Linux build ***"
-} else {
-    Write-Host "  *** `e[0;32mZipping `e[0;33mLinux`e[0;32m build`e[0m ***"
-}
-Compress-Archive -Path ./linux-build -DestinationPath ./nonoSharpLinux$GameVersion.zip -Force
+if (!$NoZip) {
+    # zip linux build
+    if ($NoColor) {
+        Write-Host "  *** Zipping Linux build ***"
+    } else {
+        Write-Host "  *** `e[0;32mZipping `e[0;33mLinux`e[0;32m build`e[0m ***"
+    }
+    # TODO Compress-Archive is weird af, use 7zip instead if possible
+    Compress-Archive -Path ./linux-build/* -DestinationPath ./nonoSharpLinux$GameVersion.zip
 
-# zip windows build
-if ($NoColor) {
-    Write-Host "  *** Zipping Windows build ***"
-} else {
-    Write-Host "  *** `e[0;32mZipping `e[0;33mWindows`e[0;32m build`e[0m ***"
-}
-Compress-Archive -Path ./windows-build -DestinationPath ./nonoSharpWindows$GameVersion.zip -Force
+    # zip windows build
+    if ($NoColor) {
+        Write-Host "  *** Zipping Windows build ***"
+    } else {
+        Write-Host "  *** `e[0;32mZipping `e[0;33mWindows`e[0;32m build`e[0m ***"
+    }
+    Compress-Archive -Path ./windows-build/* -DestinationPath ./nonoSharpWindows$GameVersion.zip
 
-# move builds to ReleaseBuilds/
-New-Item -Path ./ReleaseBuilds -ItemType Directory -Force
-Move-Item nonoSharpLinux$GameVersion.zip ./ReleaseBuilds -Force
-Move-Item nonoSharpWindows$GameVersion.zip ./ReleaseBuilds -Force
+    # move builds to ReleaseBuilds/
+    New-Item -Path ./ReleaseBuilds -ItemType Directory -Force
+    Move-Item nonoSharpLinux$GameVersion.zip ./ReleaseBuilds -Force
+    Move-Item nonoSharpWindows$GameVersion.zip ./ReleaseBuilds -Force
+}
 
 if ($NoColor) {
     Write-Host "  *** Done! ***"
