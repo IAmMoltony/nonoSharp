@@ -13,7 +13,7 @@ public static class CrashHandler
     {
         if (ueea.IsTerminating)
         {
-            string crashFile = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "CrashLog.txt");
+            string crashFile = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "nonoSharp", "CrashLog.txt");
             Exception exception = (Exception)ueea.ExceptionObject;
             using StreamWriter writer = new(crashFile);
             DateTime dateTime = DateTime.Now;
