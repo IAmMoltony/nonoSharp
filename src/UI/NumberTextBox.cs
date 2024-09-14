@@ -43,7 +43,7 @@ public class NumberTextBox : TextBox
 
     public int GetNumberValue()
     {
-        if (!int.TryParse(Text, out int number))
+        if (!int.TryParse(text, out int number))
             return -1;
         return number;
     }
@@ -57,9 +57,6 @@ public class NumberTextBox : TextBox
     private void checkMax()
     {
         if (_hasMax && GetNumberValue() > _max)
-        {
             BackSpace();
-            illegalBlink = true;
-        }
     }
 }
