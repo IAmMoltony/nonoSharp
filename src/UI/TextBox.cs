@@ -9,7 +9,7 @@ public class TextBox : UIElement
 {
     public static readonly int Height = 30;
 
-    public string text { get; private set; }
+    public string text;
     public bool Hovered { get; private set; }
 
     public int width;
