@@ -20,6 +20,8 @@ public static class CrashHandler
             writer.WriteLine($"--- nonoSharp Crash Log: {dateTime}");
             writer.WriteLine("nonoSharp has crashed. Here's some information about the crash:\n");
             writer.WriteLine(exception.ToString());
+            writer.Close();
+            writer.Dispose();
 
             exit();
 
