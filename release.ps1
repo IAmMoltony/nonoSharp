@@ -29,7 +29,7 @@ $ErrorActionPreference = "Stop"
 
 # check pwsh version
 if ($PSVersionTable.PSVersion.Major -lt 5 -and $PSVersionTable.PSVersion.Minor -lt 1) {
-    Write-Host "Warning: you are using a version of PowerShell older than 5.1. This script is currently designed to run on PowerShell 7 and above, expect problems!"
+    Write-Host "Warning: you are using a version of PowerShell older than 5.1. This script is currently designed to run on PowerShell 5.1 and above, expect problems!"
 }
 
 if (!$NoBuild) {
