@@ -62,7 +62,7 @@ Section "nonoSharp" InstallGame
 SectionEnd
 
 Section "Desktop shortcut" DesktopShortcut
-    CreateShortCut "$DESKTOP\nonoSharp.lnk" "$INSTDIR\nonoSharp.exe" "" "$INSTDIR/Icon.ico"
+    CreateShortCut "$DESKTOP\nonoSharp.lnk" "$INSTDIR\nonoSharp.exe"
 SectionEnd
 
 UninstallText "Click 'Next' to uninstall nonoSharp."
