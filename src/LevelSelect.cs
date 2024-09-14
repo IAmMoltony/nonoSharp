@@ -234,6 +234,7 @@ public class LevelSelect : IGameState
                         _modifyLevelName = _levels[i].Item1.name;
                         _renameLevel = true;
                         _renameBox.text = _modifyLevelName;
+                        _renameOKButton.disabled = true;
                     }
                 }
             }
@@ -253,6 +254,9 @@ public class LevelSelect : IGameState
         if (_renameLevel)
         {
             _renameBox.UpdateInput(tiea);
+
+            // disable if new name either same as old name or empty
+            _renameOKButton.disabled = _renameBox.text == _modifyLevelName || string.IsNullOrWhiteSpace(_renameBox.text);
         }
     }
 
