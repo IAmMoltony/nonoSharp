@@ -58,7 +58,7 @@ SectionEnd
 
 Section "nonoSharp" InstallGame
     SectionIn RO # Make it so that this section is mandatory: cannot be disabled in the components page
-    File /r "bin\Release\net8.0\win-x64\publish"
+    File /r "bin\Release\net8.0\win-x64\publish\*"
 SectionEnd
 
 Section "Desktop shortcut" DesktopShortcut
