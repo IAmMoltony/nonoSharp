@@ -323,7 +323,8 @@ public class LevelSelect : IGameState
     private void doRename()
     {
         _renameLevel = false;
-        File.Move(Path.Combine(BoardSaver.GetLevelSavePath(), $"{_modifyLevelName}.nono"), Path.Combine(BoardSaver.GetLevelSavePath(), $"{_renameBox.text}.nono"));
+        string trimmedNewName = _renameBox.text.Trim();
+        File.Move(Path.Combine(BoardSaver.GetLevelSavePath(), $"{_modifyLevelName}.nono"), Path.Combine(BoardSaver.GetLevelSavePath(), $"{trimmedNewName}.nono"));
         FindLevels();
     }
 
