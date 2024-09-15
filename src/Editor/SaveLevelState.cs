@@ -60,12 +60,12 @@ public class SaveLevelState
 
         if (!_saved)
         {
-            _saveButton.disabled = _levelNameBox.Text == "";
+            _saveButton.disabled = _levelNameBox.text == "";
             _saveButton.Update(mouse, mouseOld, kb, kbOld);
 
             if (_saveButton.IsClicked)
             {
-                BoardSaver.SaveBoard(board, _levelNameBox.Text, maxHints);
+                BoardSaver.SaveBoard(board, _levelNameBox.text, maxHints);
                 _saved = true;
             }
 

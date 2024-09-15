@@ -9,7 +9,7 @@ public class TextBox : UIElement
 {
     public static readonly int Height = 30;
 
-    public string Text { get; private set; }
+    public string text;
     public bool Hovered { get; private set; }
 
     public int width;
@@ -33,7 +33,7 @@ public class TextBox : UIElement
         Color textColorHover, int maxLength = 0) : base(x, y)
     {
         this.width = width;
-        Text = "";
+        text = "";
         Hovered = false;
         illegalChars = new();
         _fillColor = fillColor;
@@ -98,7 +98,7 @@ public class TextBox : UIElement
                         if (illegalChars.Contains(tiea.Character))
                             illegalBlink = true;
                         else
-                            Text += tiea.Character;
+                            text += tiea.Character;
                     else
                         illegalBlink = true;
                     break;
@@ -108,9 +108,9 @@ public class TextBox : UIElement
 
     public bool BackSpace()
     {
-        if (Text.Length > 0)
+        if (text.Length > 0)
         {
-            Text = Text[..^1];
+            text = text[..^1];
             return true;
         }
         return false;
@@ -118,7 +118,7 @@ public class TextBox : UIElement
 
     public void Clear()
     {
-        Text = "";
+        text = "";
     }
 
     private Rectangle getRect()
@@ -130,7 +130,7 @@ public class TextBox : UIElement
     {
         Color textColor = Hovered ? _textColorHover : _textColor;
         Color placeholderColor = Hovered ? _placeholderColorHover : _placeholderColor;
-        Vector2 textSize = TextRenderer.MeasureString("DefaultFont", Text);
+        Vector2 textSize = TextRenderer.MeasureString("DefaultFont", text);
         float textWidth = textSize.X * 0.5f;
         float maxTextWidth = width - 17;
         float offset = 0;
@@ -146,10 +146,10 @@ public class TextBox : UIElement
         };
         sprBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, null, null, rs);
         sprBatch.GraphicsDevice.ScissorRectangle = getRect();
-        if (string.IsNullOrEmpty(Text) && !string.IsNullOrEmpty(_placeholder))
+        if (string.IsNullOrEmpty(text) && !string.IsNullOrEmpty(_placeholder))
             TextRenderer.DrawText(sprBatch, "DefaultFont", x + 4 - (int)offset, y, 0.5f, _placeholder, placeholderColor);
         else
-            TextRenderer.DrawText(sprBatch, "DefaultFont", x + 4 - (int)offset, y, 0.5f, Text + ((_blinkCursor && Hovered) ? "_" : ""), textColor);
+            TextRenderer.DrawText(sprBatch, "DefaultFont", x + 4 - (int)offset, y, 0.5f, text + ((_blinkCursor && Hovered) ? "_" : ""), textColor);
         sprBatch.End();
 
         sprBatch.Begin();
@@ -170,6 +170,6 @@ public class TextBox : UIElement
 
     private bool checkLength()
     {
-        return maxLength == 0 || (Text.Length + 1) < maxLength;
+        return maxLength == 0 || (text.Length + 1) < maxLength;
     }
 }

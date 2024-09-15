@@ -233,6 +233,8 @@ public class LevelSelect : IGameState
                     {
                         _modifyLevelName = _levels[i].Item1.name;
                         _renameLevel = true;
+                        _renameBox.text = _modifyLevelName;
+                        _renameOKButton.disabled = true;
                     }
                 }
             }
@@ -252,6 +254,9 @@ public class LevelSelect : IGameState
         if (_renameLevel)
         {
             _renameBox.UpdateInput(tiea);
+
+            // disable if new name either same as old name or empty
+            _renameOKButton.disabled = _renameBox.text == _modifyLevelName || string.IsNullOrWhiteSpace(_renameBox.text);
         }
     }
 
@@ -318,7 +323,8 @@ public class LevelSelect : IGameState
     private void doRename()
     {
         _renameLevel = false;
-        File.Move(Path.Combine(BoardSaver.GetLevelSavePath(), $"{_modifyLevelName}.nono"), Path.Combine(BoardSaver.GetLevelSavePath(), $"{_renameBox.Text}.nono"));
+        string trimmedNewName = _renameBox.text.Trim();
+        File.Move(Path.Combine(BoardSaver.GetLevelSavePath(), $"{_modifyLevelName}.nono"), Path.Combine(BoardSaver.GetLevelSavePath(), $"{trimmedNewName}.nono"));
         FindLevels();
     }
 
