@@ -12,6 +12,7 @@ public class EditorMain
     public Button BackButton { get; private set; }
     public Button TestButton { get; private set; }
     public Button TestBackButton { get; private set; }
+    public Button TestResetButton { get; private set; }
     public NumberTextBox MaxHintsBox { get; private set; }
     public EditorBoard Board { get; private set; }
 
@@ -23,6 +24,7 @@ public class EditorMain
         BackButton = new(10, 120, 0, 45, StringManager.GetString("back"), Settings.GetDarkAccentColor(), Settings.GetAccentColor(), Keys.Escape, true);
         TestButton = new(10, 0, 0, 45, StringManager.GetString("test"), Settings.GetDarkAccentColor(), Settings.GetAccentColor(), Keys.T, true);
         TestBackButton = new(10, 10, 0, 45, StringManager.GetString("back"), Settings.GetDarkAccentColor(), Settings.GetAccentColor(), Keys.Escape, true);
+        TestResetButton = new(0, 0, 0, 45, StringManager.GetString("retry"), Settings.GetDarkAccentColor(), Settings.GetAccentColor(), Keys.R, true);
         MaxHintsBox = new(10, 0, 195, Color.Gray, Color.DarkGray, Color.White, Color.White, Color.DarkGray, Color.LightGray, StringManager.GetString("maxHintsPlaceholder"));
     }
 
@@ -35,8 +37,15 @@ public class EditorMain
             TestBackButton.Update(mouse, mouseOld, kb, kbOld);
 
             if (TestBackButton.IsClicked)
-            {
                 Board.ExitTestMode();
+
+            if (Board.TestModeSolved)
+            {
+                TestResetButton.x = graphDev.Viewport.Bounds.Width / 2 - TestResetButton.width / 2;
+                TestResetButton.y = graphDev.Viewport.Bounds.Height - graphDev.Viewport.Bounds.Height / 6;
+                TestResetButton.Update(mouse, mouseOld, kb, kbOld);
+                if (TestResetButton.IsClicked)
+                    Board.EnterTestMode();
             }
         }
         else
@@ -61,7 +70,6 @@ public class EditorMain
             }
         }
 
-
         // undo button
         if (kb.IsKeyDown(Keys.Z) && !kbOld.IsKeyDown(Keys.Z))
             Board.Undo();
@@ -83,6 +91,7 @@ public class EditorMain
             if (Board.TestModeSolved)
             {
                 TextRenderer.DrawTextCenter(sprBatch, "DefaultFont", 1.0f, StringManager.GetString("solved"), Color.White, new(0, 0, sprBatch.GraphicsDevice.Viewport.Bounds.Width, sprBatch.GraphicsDevice.Viewport.Bounds.Height / 6));
+                TestResetButton.Draw(sprBatch);
             }
         }
         else
