@@ -123,15 +123,15 @@ public class Board
         CrossZeroLines();
     }
 
-    public virtual void Draw(SpriteBatch batch)
+    public virtual void Draw(SpriteBatch sprBatch)
     {
-        GraphicsDevice graphDev = batch.GraphicsDevice;
+        GraphicsDevice graphDev = sprBatch.GraphicsDevice;
 
         if (tiles != null)
         {
             for (int i = 0; i < size; i++)
                 for (int j = 0; j < size; j++)
-                    tiles[i, j].Draw(i, j, _offsetX, _offsetY, size, IsSolved, batch);
+                    tiles[i, j].Draw(i, j, _offsetX, _offsetY, size, IsSolved, sprBatch);
         }
 
         int pxSize = size * 32;
@@ -140,12 +140,12 @@ public class Board
 
         if (IsSolved)
         {
-            RectRenderer.DrawRectOutline(getRect(), Color.Black, 1, batch);
+            RectRenderer.DrawRectOutline(getRect(), Color.Black, 1, sprBatch);
         }
         else
         {
-            GridRenderer.DrawGrid(batch, _boardX, _boardY, size, size, 32, Color.Black);
-            DrawClues(_boardX, _boardY, batch);
+            GridRenderer.DrawGrid(sprBatch, _boardX, _boardY, size, size, 32, Color.Black);
+            DrawClues(_boardX, _boardY, sprBatch);
         }
     }
 
@@ -310,7 +310,7 @@ public class Board
                 tiles[i, j] = new();
     }
 
-    protected virtual void DrawClues(int boardX, int boardY, SpriteBatch batch)
+    protected virtual void DrawClues(int boardX, int boardY, SpriteBatch sprBatch)
     {
         if (clues == null)
             return;
@@ -320,13 +320,13 @@ public class Board
 
         for (int i = 0; i < size; i++)
             for (int j = 0; j < clues.RowClues[i].Count; j++)
-                TextRenderer.DrawText(batch, "DefaultFont", rowCluesX - (j * 24), rowCluesY + (i * 32), 0.5f, clues.RowClues[i][j].ToString(), Color.White);
+                TextRenderer.DrawText(sprBatch, "DefaultFont", rowCluesX - (j * 24), rowCluesY + (i * 32), 0.5f, clues.RowClues[i][j].ToString(), Color.White);
 
         int colCluesX = boardX + 12;
         int colCluesY = boardY - 32;
         for (int i = 0; i < size; i++)
             for (int j = 0; j < clues.ColumnClues[i].Count; j++)
-                TextRenderer.DrawText(batch, "DefaultFont", colCluesX + (i * 32), colCluesY - (j * 32), 0.5f, clues.ColumnClues[i][j].ToString(), Color.White);
+                TextRenderer.DrawText(sprBatch, "DefaultFont", colCluesX + (i * 32), colCluesY - (j * 32), 0.5f, clues.ColumnClues[i][j].ToString(), Color.White);
     }
 
     protected virtual void CheckSolution()

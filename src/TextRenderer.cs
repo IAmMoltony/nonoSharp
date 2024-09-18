@@ -31,48 +31,48 @@ public static class TextRenderer
     /// <summary>
     /// Draw some text
     /// </summary>
-    /// <param name="batch">Sprite batch to use</param>
+    /// <param name="sprBatch">Sprite batch to use</param>
     /// <param name="font">Name of the font to use</param>
     /// <param name="x">X position of the text</param>
     /// <param name="y">Y position of the text</param>
     /// <param name="text">Text to draw</param>
     /// <param name="color">The color of the text</param>
-    public static void DrawText(SpriteBatch batch, string font, int x, int y, string text, Color color)
+    public static void DrawText(SpriteBatch sprBatch, string font, int x, int y, string text, Color color)
     {
         if (_fonts == null)
             return;
 
-        batch.DrawString(_fonts[font], text, new Vector2((float)x, (float)y), color);
+        sprBatch.DrawString(_fonts[font], text, new Vector2((float)x, (float)y), color);
     }
 
     /// <summary>
     /// Draw some text (with scale)
     /// </summary>
-    /// <param name="batch">Sprite batch to use</param>
+    /// <param name="sprBatch">Sprite batch to use</param>
     /// <param name="font">Name of the font to use</param>
     /// <param name="x">X position of the text</param>
     /// <param name="y">Y position of the text</param>
     /// <param name="scale">Text scale</param>
     /// <param name="text">Text to draw</param>
     /// <param name="color">The color of the text</param>
-    public static void DrawText(SpriteBatch batch, string font, int x, int y, float scale, string text, Color color)
+    public static void DrawText(SpriteBatch sprBatch, string font, int x, int y, float scale, string text, Color color)
     {
         if (_fonts == null)
             return;
 
-        batch.DrawString(_fonts[font], text, new Vector2((float)x, (float)y), color, 0, Vector2.Zero, scale, SpriteEffects.None, 1.0f);
+        sprBatch.DrawString(_fonts[font], text, new Vector2((float)x, (float)y), color, 0, Vector2.Zero, scale, SpriteEffects.None, 1.0f);
     }
 
     /// <summary>
     /// Draw some centered text
     /// </summary>
-    /// <param name="batch">Sprite batch to use</param>
+    /// <param name="sprBatch">Sprite batch to use</param>
     /// <param name="font">Name of the font to use</param>
     /// <param name="scale">Text scale</param>
     /// <param name="text">Text to draw</param>
     /// <param name="color">The color of the text</param>
     /// <param name="rect">Rectangle to center the text in</param>
-    public static void DrawTextCenter(SpriteBatch batch, string font, float scale, string text, Color color, Rectangle rect)
+    public static void DrawTextCenter(SpriteBatch sprBatch, string font, float scale, string text, Color color, Rectangle rect)
     {
         if (_fonts == null)
             return;
@@ -80,15 +80,15 @@ public static class TextRenderer
         Vector2 textSize = _fonts[font].MeasureString(text);
         float centerX = rect.X + ((rect.Width - (textSize.X * scale)) / 2);
         float centerY = rect.Y + ((rect.Height - (textSize.Y * scale)) / 2);
-        batch.DrawString(_fonts[font], text, new Vector2(centerX, centerY), color, 0, Vector2.Zero, scale, SpriteEffects.None, 1.0f);
+        sprBatch.DrawString(_fonts[font], text, new Vector2(centerX, centerY), color, 0, Vector2.Zero, scale, SpriteEffects.None, 1.0f);
     }
 
-    public static void DrawTextWrapped(SpriteBatch batch, string font, int x, int y, float scale, string text, float maxWidth, Color color)
+    public static void DrawTextWrapped(SpriteBatch sprBatch, string font, int x, int y, float scale, string text, float maxWidth, Color color)
     {
         if (_fonts == null)
             return;
 
-        batch.DrawString(_fonts[font], wrapText(_fonts[font], text, maxWidth, scale), new(x, y), color, 0, Vector2.Zero, scale, SpriteEffects.None, 1.0f);
+        sprBatch.DrawString(_fonts[font], wrapText(_fonts[font], text, maxWidth, scale), new(x, y), color, 0, Vector2.Zero, scale, SpriteEffects.None, 1.0f);
     }
 
     /// <summary>

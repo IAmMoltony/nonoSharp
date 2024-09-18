@@ -48,16 +48,16 @@ public class FadeRect
         }
     }
 
-    public void Draw(SpriteBatch batch)
+    public void Draw(SpriteBatch sprBatch)
     {
         Color color = new((int)r, (int)g, (int)b);
         if (isOutline)
         {
-            RectRenderer.DrawRectOutline(rect, color, thickness, batch);
+            RectRenderer.DrawRectOutline(rect, color, thickness, sprBatch);
         }
         else
         {
-            RectRenderer.DrawRect(rect, color, batch);
+            RectRenderer.DrawRect(rect, color, sprBatch);
         }
     }
 

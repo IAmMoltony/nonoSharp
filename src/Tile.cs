@@ -83,9 +83,9 @@ public struct Tile
         isHoveredY = other.isHoveredY;
     }
 
-    public readonly void Draw(int x, int y, int offsetX, int offsetY, int boardSize, bool isBoardSolved, SpriteBatch batch)
+    public readonly void Draw(int x, int y, int offsetX, int offsetY, int boardSize, bool isBoardSolved, SpriteBatch sprBatch)
     {
-        GraphicsDevice graphDev = batch.GraphicsDevice;
+        GraphicsDevice graphDev = sprBatch.GraphicsDevice;
 
         Vector2 posVec = getScreenPos(x, y, offsetX, offsetY, boardSize, graphDev);
         Rectangle rect = new((int)posVec.X, (int)posVec.Y, 32, 32);
@@ -107,12 +107,12 @@ public struct Tile
         _fr.Update();
 
         if (isBoardSolved)
-            RectRenderer.DrawRect(_fr.rect, state == TileState.Filled ? Settings.GetAccentColor() : Color.Gray, batch);
+            RectRenderer.DrawRect(_fr.rect, state == TileState.Filled ? Settings.GetAccentColor() : Color.Gray, sprBatch);
         else
         {
-            _fr.Draw(batch);
+            _fr.Draw(sprBatch);
             if (state == TileState.Cross && TextureCross != null)
-                batch.Draw(TextureCross, posVec, Color.White);
+                sprBatch.Draw(TextureCross, posVec, Color.White);
         }
     }
 
