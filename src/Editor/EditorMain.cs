@@ -1,4 +1,4 @@
-﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using NonoSharp.UI;
@@ -41,8 +41,8 @@ public class EditorMain
 
             if (Board.TestModeSolved)
             {
-                TestResetButton.x = graphDev.Viewport.Bounds.Width / 2 - TestResetButton.width / 2;
-                TestResetButton.y = graphDev.Viewport.Bounds.Height - graphDev.Viewport.Bounds.Height / 6;
+                TestResetButton.x = (graphDev.Viewport.Bounds.Width / 2) - (TestResetButton.width / 2);
+                TestResetButton.y = graphDev.Viewport.Bounds.Height - (graphDev.Viewport.Bounds.Height / 6);
                 TestResetButton.Update(mouse, mouseOld, kb, kbOld);
                 if (TestResetButton.IsClicked)
                     Board.EnterTestMode();
