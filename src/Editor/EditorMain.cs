@@ -79,6 +79,11 @@ public class EditorMain
         if (Board.TestMode)
         {
             TestBackButton.Draw(sprBatch);
+
+            if (Board.TestModeSolved)
+            {
+                TextRenderer.DrawTextCenter(sprBatch, "DefaultFont", 1.0f, StringManager.GetString("solved"), Color.White, new(0, 0, sprBatch.GraphicsDevice.Viewport.Bounds.Width, sprBatch.GraphicsDevice.Viewport.Bounds.Height / 6));
+            }
         }
         else
         {
