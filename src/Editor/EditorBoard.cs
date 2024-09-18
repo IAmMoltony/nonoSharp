@@ -43,7 +43,14 @@ public class EditorBoard : Board
     {
         Log.Logger.Information("Entering level test mode");
         TestMode = true;
-        _testBoard = new(tiles);
+        if (tiles == null)
+        {
+            Log.Logger.Error("tiles is null when entering test mode");
+        }
+        else
+        {
+            _testBoard = new(tiles);
+        }
     }
 
     public void ExitTestMode()
