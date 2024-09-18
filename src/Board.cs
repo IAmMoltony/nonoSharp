@@ -41,7 +41,7 @@ public class Board
     {
         size = 0;
         maxHints = -1;
-        undoStack = new Stack<Tile[,]>();
+        undoStack = new();
         previousState = null;
         hintedLines = new();
         _boardX = 0;
@@ -58,7 +58,8 @@ public class Board
         undoStack = new();
         previousState = null;
         hintedLines = new();
-        MakeTilesAndSolution();
+        MakeTiles();
+        MakeSolution();
         _boardX = 0;
         _boardY = 0;
         _offsetX = 0;
@@ -79,6 +80,14 @@ public class Board
         _frameCounter = 0;
     }
 
+    public Board(Tile[,] solution) : this()
+    {
+        size = solution.GetLength(0);
+        this.solution = solution;
+        MakeTiles();
+        clues = new(this);
+    }
+
     public void Load(string fileName)
     {
         Log.Logger.Information($"Loading board from file {fileName}");
@@ -91,7 +100,8 @@ public class Board
             solutionOffset = 1;
         }
         Log.Logger.Information($"Board size: {size}");
-        MakeTilesAndSolution();
+        MakeTiles();
+        MakeSolution();
 
         if (solution != null)
         {
@@ -113,7 +123,7 @@ public class Board
         CrossZeroLines();
     }
 
-    public void Draw(SpriteBatch batch)
+    public virtual void Draw(SpriteBatch batch)
     {
         GraphicsDevice graphDev = batch.GraphicsDevice;
 
@@ -139,7 +149,7 @@ public class Board
         }
     }
 
-    public void Update(MouseState mouseState, MouseState mouseStateOld, KeyboardState kb, KeyboardState kbOld, GraphicsDevice graphDev)
+    public virtual void Update(MouseState mouseState, MouseState mouseStateOld, KeyboardState kb, KeyboardState kbOld, GraphicsDevice graphDev)
     {
         updateMouseDrag(mouseState, mouseStateOld);
 
@@ -286,10 +296,14 @@ public class Board
                 tiles[i, j].state = TileState.Empty;
     }
 
-    protected void MakeTilesAndSolution()
+    protected void MakeSolution()
+    {
+        solution = new Tile[size, size];
+    }
+
+    protected void MakeTiles()
     {
         tiles = new Tile[size, size];
-        solution = new Tile[size, size];
 
         for (int i = 0; i < size; i++)
             for (int j = 0; j < size; j++)
