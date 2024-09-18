@@ -10,7 +10,7 @@ OutFile "nonoInstaller.exe"
 
 VIProductVersion "0.14.0.0"
 VIFileVersion "0.14.0.0"
-VIAddVersionKey "FileVersion" "0.13.1.0"
+VIAddVersionKey "FileVersion" "0.14.0.0"
 VIAddVersionKey "LegalCopyright" "(c) moltony"
 VIAddVersionKey "FileDescription" "nonoSharp"
 
