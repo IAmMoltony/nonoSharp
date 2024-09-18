@@ -24,7 +24,7 @@ public class EditorMain
         BackButton = new(10, 120, 0, 45, StringManager.GetString("back"), Settings.GetDarkAccentColor(), Settings.GetAccentColor(), Keys.Escape, true);
         TestButton = new(10, 0, 0, 45, StringManager.GetString("test"), Settings.GetDarkAccentColor(), Settings.GetAccentColor(), Keys.T, true);
         TestBackButton = new(10, 10, 0, 45, StringManager.GetString("back"), Settings.GetDarkAccentColor(), Settings.GetAccentColor(), Keys.Escape, true);
-        TestResetButton = new(0, 0, 0, 45, StringManager.GetString("retry"), Settings.GetDarkAccentColor(), Settings.GetAccentColor(), Keys.R, true);
+        TestResetButton = new(0, 0, 0, 45, StringManager.GetString("restart"), Settings.GetDarkAccentColor(), Settings.GetAccentColor(), Keys.R, true);
         MaxHintsBox = new(10, 0, 195, Color.Gray, Color.DarkGray, Color.White, Color.White, Color.DarkGray, Color.LightGray, StringManager.GetString("maxHintsPlaceholder"));
     }
 
