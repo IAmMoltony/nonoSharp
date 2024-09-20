@@ -190,6 +190,12 @@ public class LevelSelect : IGameState
         }
         else
         {
+            _backButton.Update(mouse, mouseOld, kb, kbOld);
+            if (_backButton.IsClicked)
+            {
+                return new MainMenu();
+            }
+
             updateScroll(mouse, mouseOld, kb, kbOld, graphDev);
 
             // lerp scroll offset
@@ -237,12 +243,6 @@ public class LevelSelect : IGameState
                         _renameOKButton.disabled = true;
                     }
                 }
-            }
-
-            _backButton.Update(mouse, mouseOld, kb, kbOld);
-            if (_backButton.IsClicked)
-            {
-                return new MainMenu();
             }
         }
 
