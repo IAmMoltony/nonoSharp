@@ -32,14 +32,14 @@ $ErrorActionPreference = "Stop"
 
 # check pwsh version
 if ($PSVersionTable.PSVersion.Major -lt 5 -and $PSVersionTable.PSVersion.Minor -lt 1) {
-    Write-Host "Warning: you are using a version of PowerShell older than 5.1. This script is currently designed to run on PowerShell 5.1 and above, expect problems!"
+    Write-Output "Warning: you are using a version of PowerShell older than 5.1. This script is currently designed to run on PowerShell 5.1 and above, expect problems!"
 }
 
 if (!$NoBuild) {
     if ($NoColor) {
-        Write-Host "  *** Cleaning up ***"
+        Write-Output "  *** Cleaning up ***"
     } else {
-        Write-Host "  *** `e[0;32mCleaning up`e[0m ***"
+        Write-Output "  *** `e[0;32mCleaning up`e[0m ***"
     }
 
     # remove all these folders (if they exist)
@@ -55,18 +55,18 @@ if (!$NoBuild) {
 
     # build for linux
     if ($NoColor) {
-        Write-Host "  *** Building for Linux x64 ***"
+        Write-Output "  *** Building for Linux x64 ***"
     } else {
-        Write-Host "  *** `e[0;32mBuilding for `e[0;33mLinux x64`e[0m ***"
+        Write-Output "  *** `e[0;32mBuilding for `e[0;33mLinux x64`e[0m ***"
     }
     dotnet publish -v $Verbosity --configuration Release --runtime linux-x64 --self-contained
     Copy-Item ./bin/Release/net8.0/linux-x64/publish/* ./linux-build
 
     # build for windows
     if ($NoColor) {
-        Write-Host "  *** Building for Windows x64 ***"
+        Write-Output "  *** Building for Windows x64 ***"
     } else {
-        Write-Host "  *** `e[0;32mBuilding for `e[0;33mWindows x64`e[0m ***"
+        Write-Output "  *** `e[0;32mBuilding for `e[0;33mWindows x64`e[0m ***"
     }
     dotnet publish -v $Verbosity --configuration Release --runtime win-x64 --self-contained
     Copy-Item ./bin/Release/net8.0/win-x64/publish/* ./windows-build
@@ -75,18 +75,18 @@ if (!$NoBuild) {
 if (!$NoZip) {
     # zip linux build
     if ($NoColor) {
-        Write-Host "  *** Zipping Linux build ***"
+        Write-Output "  *** Zipping Linux build ***"
     } else {
-        Write-Host "  *** `e[0;32mZipping `e[0;33mLinux`e[0;32m build`e[0m ***"
+        Write-Output "  *** `e[0;32mZipping `e[0;33mLinux`e[0;32m build`e[0m ***"
     }
     # TODO Compress-Archive is weird af, use 7zip instead if possible
     Compress-Archive -Path ./linux-build/* -DestinationPath ./nonoSharpLinux$GameVersion.zip
 
     # zip windows build
     if ($NoColor) {
-        Write-Host "  *** Zipping Windows build ***"
+        Write-Output "  *** Zipping Windows build ***"
     } else {
-        Write-Host "  *** `e[0;32mZipping `e[0;33mWindows`e[0;32m build`e[0m ***"
+        Write-Output "  *** `e[0;32mZipping `e[0;33mWindows`e[0;32m build`e[0m ***"
     }
     Compress-Archive -Path ./windows-build/* -DestinationPath ./nonoSharpWindows$GameVersion.zip
 
@@ -97,7 +97,7 @@ if (!$NoZip) {
 }
 
 if ($NoColor) {
-    Write-Host "  *** Done! ***"
+    Write-Output "  *** Done! ***"
 } else {
-    Write-Host "  *** `e[0;32mDone!`e[0m ***"
+    Write-Output "  *** `e[0;32mDone!`e[0m ***"
 }
