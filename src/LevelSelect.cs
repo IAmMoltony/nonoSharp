@@ -73,11 +73,13 @@ public class LevelSelect : IGameState
             Button playButton = new(15, buttonY, 0, 40, StringManager.GetString("playButton"), Settings.GetDarkAccentColor(), Settings.GetAccentColor(), true);
             Button? deleteButton = metadata.isCustomLevel ? new(15, buttonY, 0, 40, StringManager.GetString("deleteButton"), Settings.GetDarkAccentColor(), Settings.GetAccentColor(), true) : null;
             Button? renameButton = metadata.isCustomLevel ? new(15, buttonY, 0, 40, StringManager.GetString("renameButton"), Settings.GetDarkAccentColor(), Settings.GetAccentColor(), true) : null;
+            Button? editButton = metadata.isCustomLevel ? new(15, buttonY, 0, 40, StringManager.GetString("editButton"), Settings.GetDarkAccentColor(), Settings.GetAccentColor(), true) : null;
             LevelButtons buttons = new()
             {
                 playButton = playButton,
                 deleteButton = deleteButton,
-                renameButton = renameButton
+                renameButton = renameButton,
+                editButton = editButton
             };
             
             _levels.Add(new(metadata, buttons));
@@ -241,6 +243,21 @@ public class LevelSelect : IGameState
                         _renameLevel = true;
                         _renameBox.text = _modifyLevelName;
                         _renameOKButton.disabled = true;
+                    }
+                }
+
+                if (level.Item2.editButton != null)
+                {
+                    if (level.Item2.renameButton != null)
+                        level.Item2.editButton.x = level.Item2.renameButton.x + level.Item2.renameButton.width + 10;
+                    else if (level.Item2.deleteButton != null)
+                        level.Item2.editButton.x = level.Item2.deleteButton.x + level.Item2.deleteButton.width + 10;
+                    else if (level.Item2.playButton != null)
+                        level.Item2.editButton.x = level.Item2.playButton.x + level.Item2.playButton.width + 10;
+
+                    if (level.Item2.editButton.IsClicked)
+                    {
+                        // do something about it
                     }
                 }
             }
