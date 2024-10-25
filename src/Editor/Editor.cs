@@ -14,6 +14,7 @@ public enum EditorState
 public class Editor : IGameState
 {
     private EditorState _state;
+    // TODO do the same thing as done with regular game states but for editor
     private SetSizeState _setSize;
     private readonly EditorMain _main;
     private SaveLevelState _saveLevel;
@@ -23,6 +24,14 @@ public class Editor : IGameState
         _state = EditorState.SetSize;
         _setSize = new();
         _main = new();
+        _saveLevel = new();
+    }
+
+    public Editor(string levelName)
+    {
+        _state = EditorState.Editor;
+        _setSize = new();
+        _main = new(levelName);
         _saveLevel = new();
     }
 

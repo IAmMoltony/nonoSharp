@@ -1,6 +1,7 @@
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Graphics;
 using Serilog;
+using System.IO;
 
 namespace NonoSharp.Editor;
 
@@ -22,8 +23,17 @@ public class EditorBoard : Board
         _testBoard = new();
     }
 
+    public EditorBoard(string levelName) : base(Path.Combine(BoardSaver.GetLevelSavePath(), $"{levelName}.nono")
+    {
+        _testBoard = new(size);
+    }
+
     public void Make(int size)
     {
+        // if already made then skip
+        if (tiles != null)
+            return;
+
         this.size = size;
         clues = new(size);
         MakeTiles();

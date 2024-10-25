@@ -257,7 +257,7 @@ public class LevelSelect : IGameState
 
                     if (level.Item2.editButton.IsClicked)
                     {
-                        // do something about it
+                        return new Editor.Editor(level.Item1.name);
                     }
                 }
             }
