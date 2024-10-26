@@ -24,7 +24,8 @@ public class EditorMain
 
     public EditorMain(string levelName)
     {
-        Board = new(levelName);
+        Board = new();
+        Board.Make(levelName);
         makeButtons();
     }
 

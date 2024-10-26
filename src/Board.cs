@@ -72,7 +72,7 @@ public class Board
         undoStack = new();
         previousState = null;
         hintedLines = new();
-        Load(fileName);
+        solution = Load(fileName);
         _boardX = 0;
         _boardY = 0;
         _offsetX = 0;
@@ -88,7 +88,7 @@ public class Board
         clues = new(this);
     }
 
-    public void Load(string fileName)
+    public Tile[,] Load(string fileName)
     {
         Log.Logger.Information($"Loading board from file {fileName}");
         string[] boardData = File.ReadAllLines(fileName);
@@ -103,6 +103,11 @@ public class Board
         MakeTiles();
         MakeSolution();
 
+        Tile[,] levelSolution = new Tile[size, size];
+        for (int i = 0; i < size; i++)
+            for (int j = 0; j < size; j++)
+                levelSolution[i, j] = new();
+
         if (solution != null)
         {
             for (int i = solutionOffset; i < size + solutionOffset; i++)
@@ -112,15 +117,17 @@ public class Board
                 {
                     char ch = row[j];
                     if (ch == '#')
-                        solution[j, i - solutionOffset].state = TileState.Filled;
+                        levelSolution[j, i - solutionOffset].state = TileState.Filled;
                     else
-                        solution[j, i - solutionOffset].state = TileState.Empty;
+                        levelSolution[j, i - solutionOffset].state = TileState.Empty;
                 }
             }
         }
 
         clues = new(this);
         CrossZeroLines();
+
+        return levelSolution;
     }
 
     public virtual void Draw(SpriteBatch sprBatch)
