@@ -19,10 +19,12 @@ public class Editor : IGameState
     private readonly EditorMain _main;
     private SaveLevelState _saveLevel;
     private bool _editingExistingLevel;
+    private string _levelName; // when editing existing level
 
     public Editor()
     {
         _editingExistingLevel = false;
+        _levelName = "";
         _state = EditorState.SetSize;
         _setSize = new();
         _main = new();
@@ -32,6 +34,7 @@ public class Editor : IGameState
     public Editor(string levelName)
     {
         _editingExistingLevel = true;
+        _levelName = levelName;
         _state = EditorState.Editor;
         _setSize = new();
         _main = new(levelName);
@@ -59,7 +62,17 @@ public class Editor : IGameState
             case EditorState.Editor:
                 _main.Update(mouse, mouseOld, kb, kbOld, graphDev);
                 if (_main.SaveButton.IsClicked)
-                    _state = EditorState.SaveLevel;
+                {
+                    if (_editingExistingLevel)
+                    {
+                        BoardSaver.SaveBoard(_main.Board, _levelName, _main.MaxHintsBox.GetNumberValue());
+                        LevelSelect levelSelect = new();
+                        levelSelect.FindLevels();
+                        return levelSelect; // TODO just find the levels in the constructor???
+                    }
+                    else
+                        _state = EditorState.SaveLevel;
+                }
                 if (_main.BackButton.IsClicked)
                 {
                     if (_editingExistingLevel)
@@ -75,10 +88,7 @@ public class Editor : IGameState
             case EditorState.SaveLevel:
                 _saveLevel.Update(mouse, mouseOld, kb, kbOld, _main.Board, _main.MaxHintsBox.GetNumberValue());
                 if (_saveLevel.OKButton.IsClicked)
-                {
-                    _saveLevel = new();
                     return new MainMenu();
-                }
                 if (_saveLevel.BackButton.IsClicked)
                     _state = EditorState.Editor;
                 break;
