@@ -43,7 +43,7 @@ public class MainMenu : IGameState
 
         if (PlayButton.IsClicked)
         {
-            var levelSelect = new LevelSelect();
+            LevelSelect levelSelect = new();
             levelSelect.FindLevels();
             return levelSelect;
         }

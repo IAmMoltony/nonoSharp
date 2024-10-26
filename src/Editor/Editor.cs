@@ -18,9 +18,11 @@ public class Editor : IGameState
     private SetSizeState _setSize;
     private readonly EditorMain _main;
     private SaveLevelState _saveLevel;
+    private bool _editingExistingLevel;
 
     public Editor()
     {
+        _editingExistingLevel = false;
         _state = EditorState.SetSize;
         _setSize = new();
         _main = new();
@@ -29,6 +31,7 @@ public class Editor : IGameState
 
     public Editor(string levelName)
     {
+        _editingExistingLevel = true;
         _state = EditorState.Editor;
         _setSize = new();
         _main = new(levelName);
@@ -59,8 +62,14 @@ public class Editor : IGameState
                     _state = EditorState.SaveLevel;
                 if (_main.BackButton.IsClicked)
                 {
-                    _state = EditorState.SetSize;
-                    return new MainMenu();
+                    if (_editingExistingLevel)
+                    {
+                        LevelSelect levelSelect = new();
+                        levelSelect.FindLevels();
+                        return levelSelect;
+                    }
+                    else
+                        return new MainMenu();
                 }
                 break;
             case EditorState.SaveLevel:
@@ -68,7 +77,6 @@ public class Editor : IGameState
                 if (_saveLevel.OKButton.IsClicked)
                 {
                     _saveLevel = new();
-                    _state = EditorState.SetSize;
                     return new MainMenu();
                 }
                 if (_saveLevel.BackButton.IsClicked)
