@@ -47,7 +47,7 @@ public class NonoSharpGame : Game
                     outputTemplate: "{Timestamp:HH:mm:ss} {Level:u4} {Message:lj}{NewLine}"
                 )
             .WriteTo.File(
-                    Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Logs", "nonoSharp.log"),
+                    Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "nonoSharp", "Logs", "nonoSharp.log"),
                     rollingInterval: RollingInterval.Minute,
                     retainedFileCountLimit: 15
                 )
