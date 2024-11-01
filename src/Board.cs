@@ -57,7 +57,7 @@ public class Board
         maxHints = -1;
         undoStack = new();
         previousState = null;
-        hintedLines = new();
+        hintedLines = [];
         MakeTiles();
         MakeSolution();
         _boardX = 0;
@@ -71,7 +71,7 @@ public class Board
     {
         undoStack = new();
         previousState = null;
-        hintedLines = new();
+        hintedLines = [];
         solution = Load(fileName);
         _boardX = 0;
         _boardY = 0;
