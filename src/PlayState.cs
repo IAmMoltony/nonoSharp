@@ -135,7 +135,9 @@ public class PlayState : IGameState
     public void Load(string levelPath)
     {
         Log.Logger.Information($"Loading level {levelPath}");
-        _board.Load(levelPath);
+        _board.solution = _board.Load(levelPath);
+        _board.MakeClues();
+        _board.CrossZeroLines();
     }
 
     public void Draw(SpriteBatch sprBatch)

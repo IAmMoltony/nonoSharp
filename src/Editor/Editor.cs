@@ -14,15 +14,30 @@ public enum EditorState
 public class Editor : IGameState
 {
     private EditorState _state;
+    // TODO do the same thing as done with regular game states but for editor
     private SetSizeState _setSize;
     private readonly EditorMain _main;
     private SaveLevelState _saveLevel;
+    private bool _editingExistingLevel;
+    private string _levelName; // when editing existing level
 
     public Editor()
     {
+        _editingExistingLevel = false;
+        _levelName = "";
         _state = EditorState.SetSize;
         _setSize = new();
         _main = new();
+        _saveLevel = new();
+    }
+
+    public Editor(string levelName)
+    {
+        _editingExistingLevel = true;
+        _levelName = levelName;
+        _state = EditorState.Editor;
+        _setSize = new();
+        _main = new(levelName);
         _saveLevel = new();
     }
 
@@ -47,21 +62,33 @@ public class Editor : IGameState
             case EditorState.Editor:
                 _main.Update(mouse, mouseOld, kb, kbOld, graphDev);
                 if (_main.SaveButton.IsClicked)
-                    _state = EditorState.SaveLevel;
+                {
+                    if (_editingExistingLevel)
+                    {
+                        BoardSaver.SaveBoard(_main.Board, _levelName, _main.MaxHintsBox.GetNumberValue());
+                        LevelSelect levelSelect = new();
+                        levelSelect.FindLevels();
+                        return levelSelect; // TODO just find the levels in the constructor???
+                    }
+                    else
+                        _state = EditorState.SaveLevel;
+                }
                 if (_main.BackButton.IsClicked)
                 {
-                    _state = EditorState.SetSize;
-                    return new MainMenu();
+                    if (_editingExistingLevel)
+                    {
+                        LevelSelect levelSelect = new();
+                        levelSelect.FindLevels();
+                        return levelSelect;
+                    }
+                    else
+                        return new MainMenu();
                 }
                 break;
             case EditorState.SaveLevel:
                 _saveLevel.Update(mouse, mouseOld, kb, kbOld, _main.Board, _main.MaxHintsBox.GetNumberValue());
                 if (_saveLevel.OKButton.IsClicked)
-                {
-                    _saveLevel = new();
-                    _state = EditorState.SetSize;
                     return new MainMenu();
-                }
                 if (_saveLevel.BackButton.IsClicked)
                     _state = EditorState.Editor;
                 break;

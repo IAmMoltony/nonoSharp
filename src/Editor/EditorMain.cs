@@ -7,25 +7,26 @@ namespace NonoSharp.Editor;
 
 public class EditorMain
 {
-    public Button SaveButton { get; private set; }
-    public Button ResetButton { get; private set; }
-    public Button BackButton { get; private set; }
-    public Button TestButton { get; private set; }
-    public Button TestBackButton { get; private set; }
-    public Button TestResetButton { get; private set; }
-    public NumberTextBox MaxHintsBox { get; private set; }
+    public Button SaveButton { get; private set; } = null!;
+    public Button ResetButton { get; private set; } = null!;
+    public Button BackButton { get; private set; } = null!;
+    public Button TestButton { get; private set; } = null!;
+    public Button TestBackButton { get; private set; } = null!;
+    public Button TestResetButton { get; private set; } = null!;
+    public NumberTextBox MaxHintsBox { get; private set; } = null!;
     public EditorBoard Board { get; private set; }
 
     public EditorMain()
     {
         Board = new();
-        SaveButton = new(10, 10, 0, 45, StringManager.GetString("save"), Settings.GetDarkAccentColor(), Settings.GetAccentColor(), Keys.S, true);
-        ResetButton = new(10, 65, 0, 45, StringManager.GetString("reset"), Settings.GetDarkAccentColor(), Settings.GetAccentColor(), Keys.R, true);
-        BackButton = new(10, 120, 0, 45, StringManager.GetString("back"), Settings.GetDarkAccentColor(), Settings.GetAccentColor(), Keys.Escape, true);
-        TestButton = new(10, 0, 0, 45, StringManager.GetString("test"), Settings.GetDarkAccentColor(), Settings.GetAccentColor(), Keys.T, true);
-        TestBackButton = new(10, 10, 0, 45, StringManager.GetString("back"), Settings.GetDarkAccentColor(), Settings.GetAccentColor(), Keys.Escape, true);
-        TestResetButton = new(0, 0, 0, 45, StringManager.GetString("restart"), Settings.GetDarkAccentColor(), Settings.GetAccentColor(), Keys.R, true);
-        MaxHintsBox = new(10, 0, 195, Color.Gray, Color.DarkGray, Color.White, Color.White, Color.DarkGray, Color.LightGray, StringManager.GetString("maxHintsPlaceholder"));
+        makeButtons();
+    }
+
+    public EditorMain(string levelName)
+    {
+        Board = new();
+        Board.Make(levelName);
+        makeButtons();
     }
 
     public void Update(MouseState mouse, MouseState mouseOld, KeyboardState kb, KeyboardState kbOld, GraphicsDevice graphDev)
@@ -103,5 +104,16 @@ public class EditorMain
             MaxHintsBox.Draw(sprBatch);
             TextRenderer.DrawText(sprBatch, "DefaultFont", 10, MaxHintsBox.y - TextBox.Height - 4, 0.5f, StringManager.GetString("maxHints"), Color.White);
         }
+    }
+
+    private void makeButtons()
+    {
+        SaveButton = new(10, 10, 0, 45, StringManager.GetString("save"), Settings.GetDarkAccentColor(), Settings.GetAccentColor(), Keys.S, true);
+        ResetButton = new(10, 65, 0, 45, StringManager.GetString("reset"), Settings.GetDarkAccentColor(), Settings.GetAccentColor(), Keys.R, true);
+        BackButton = new(10, 120, 0, 45, StringManager.GetString("back"), Settings.GetDarkAccentColor(), Settings.GetAccentColor(), Keys.Escape, true);
+        TestButton = new(10, 0, 0, 45, StringManager.GetString("test"), Settings.GetDarkAccentColor(), Settings.GetAccentColor(), Keys.T, true);
+        TestBackButton = new(10, 10, 0, 45, StringManager.GetString("back"), Settings.GetDarkAccentColor(), Settings.GetAccentColor(), Keys.Escape, true);
+        TestResetButton = new(0, 0, 0, 45, StringManager.GetString("restart"), Settings.GetDarkAccentColor(), Settings.GetAccentColor(), Keys.R, true);
+        MaxHintsBox = new(10, 0, 195, Color.Gray, Color.DarkGray, Color.White, Color.White, Color.DarkGray, Color.LightGray, StringManager.GetString("maxHintsPlaceholder"));
     }
 }

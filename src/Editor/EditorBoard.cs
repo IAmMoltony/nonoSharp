@@ -1,6 +1,8 @@
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Graphics;
 using Serilog;
+using System.IO;
+using System.Collections.Generic;
 
 namespace NonoSharp.Editor;
 
@@ -28,6 +30,12 @@ public class EditorBoard : Board
         clues = new(size);
         MakeTiles();
         MakeSolution();
+    }
+
+    public void Make(string levelName)
+    {
+        tiles = Load(Path.Combine(BoardSaver.GetLevelSavePath(), $"{levelName}.nono"));
+        makeClues();
     }
 
     public void Undo()
