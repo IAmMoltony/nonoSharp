@@ -72,7 +72,10 @@ public class Board
         undoStack = new();
         previousState = null;
         hintedLines = [];
+        MakeSolution();
         solution = Load(fileName);
+        MakeClues();
+        CrossZeroLines();
         _boardX = 0;
         _boardY = 0;
         _offsetX = 0;
@@ -85,6 +88,11 @@ public class Board
         size = solution.GetLength(0);
         this.solution = solution;
         MakeTiles();
+        MakeClues();
+    }
+
+    public void MakeClues()
+    {
         clues = new(this);
     }
 
@@ -101,33 +109,26 @@ public class Board
         }
         Log.Logger.Information($"Board size: {size}");
         MakeTiles();
-        MakeSolution();
 
         Tile[,] levelSolution = new Tile[size, size];
         for (int i = 0; i < size; i++)
             for (int j = 0; j < size; j++)
                 levelSolution[i, j] = new();
 
-        if (solution != null)
+        for (int i = solutionOffset; i < size + solutionOffset; i++)
         {
-            for (int i = solutionOffset; i < size + solutionOffset; i++)
+            string row = boardData[i];
+            for (int j = 0; j < size; j++)
             {
-                string row = boardData[i];
-                for (int j = 0; j < size; j++)
-                {
-                    char ch = row[j];
-                    if (ch == '#')
-                        levelSolution[j, i - solutionOffset].state = TileState.Filled;
-                    else
-                        levelSolution[j, i - solutionOffset].state = TileState.Empty;
-                }
+                char ch = row[j];
+                if (ch == '#')
+                    levelSolution[j, i - solutionOffset].state = TileState.Filled;
+                else
+                    levelSolution[j, i - solutionOffset].state = TileState.Empty;
             }
         }
 
-        clues = new(this);
-        CrossZeroLines();
-
-        return levelSolution;
+        return (Tile[,])levelSolution.Clone();
     }
 
     public virtual void Draw(SpriteBatch sprBatch)
