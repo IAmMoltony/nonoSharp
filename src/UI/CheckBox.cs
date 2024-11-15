@@ -9,14 +9,18 @@ namespace NonoSharp.UI;
 public class CheckBox : UIElement
 {
     public static readonly int Size = 26;
+    public static readonly float LerpTime = 0.16f;
 
     public static Texture2D? TextureCheck { get; private set; }
 
     public bool isChecked;
 
-    private Color _fillColor, _outlineColor;
+    private Color _fillColor;
+    private Color _outlineColor;
     private bool _isHovered;
     private readonly string _text;
+    private FadeRect _fr;
+    private FadeRect _frOutline;
 
     public static void LoadTextures(ContentManager content)
     {
@@ -31,6 +35,8 @@ public class CheckBox : UIElement
         _outlineColor = outlineColor;
         _isHovered = false;
         _text = text;
+        _fr = new(getRect(), fillColor, outlineColor, LerpTime);
+        _frOutline = new(getRect(), outlineColor, fillColor, LerpTime, true, 2);
     }
 
     public override void Draw(SpriteBatch sprBatch)
@@ -38,8 +44,8 @@ public class CheckBox : UIElement
         Rectangle rect = getRect();
         Color fc = _isHovered ? _outlineColor : _fillColor;
         Color oc = _isHovered ? _fillColor : _outlineColor;
-        RectRenderer.DrawRect(rect, fc, sprBatch);
-        RectRenderer.DrawRectOutline(rect, oc, 2, sprBatch);
+        _fr.Draw(sprBatch);
+        _frOutline.Draw(sprBatch);
 
         Color checkColor = fc.IsLight() ? Color.Black : Color.White;
 
@@ -55,6 +61,19 @@ public class CheckBox : UIElement
 
         if (_isHovered && mouse.LeftButton == ButtonState.Pressed && mouseOld.LeftButton == ButtonState.Released)
             isChecked = !isChecked;
+
+        if (_isHovered)
+        {
+            _fr.mode = FadeRectMode.FadeIn;
+            _frOutline.mode = FadeRectMode.FadeIn;
+        }
+        else
+        {
+            _fr.mode = FadeRectMode.FadeOut;
+            _frOutline.mode = FadeRectMode.FadeOut;
+        }
+        _fr.Update();
+        _frOutline.Update();
     }
 
     private Rectangle getRect()
