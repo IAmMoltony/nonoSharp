@@ -10,6 +10,7 @@ public class SettingsScreen : IGameState
     public Button BackButton { get; private set; }
     public Button CreditsButton { get; private set; }
     public Button KeySettingsButton { get; private set; }
+    public Button AccentColorButton { get; private set; }
 
     private readonly CheckBox _enableHintsBox;
     private readonly CheckBox _showBgBox;
@@ -21,9 +22,11 @@ public class SettingsScreen : IGameState
         CreditsButton = new(10, 0, 0, 40, StringManager.GetString("credits"), Settings.GetDarkAccentColor(), Settings.GetAccentColor(), Keys.C, true);
         KeySettingsButton = new(10, 0, 0, 40, StringManager.GetString("keySettings"), Settings.GetDarkAccentColor(), Settings.GetAccentColor(), Keys.K, true);
 
+        // Settings controls:
         _enableHintsBox = new(40, 110, StringManager.GetString("enableHints"), Color.Gray, Color.DarkGray, Settings.GetBool("enableHints"));
         _showBgBox = new(40, 140, StringManager.GetString("showBgGrid"), Color.Gray, Color.DarkGray, Settings.GetBool("showBgGrid"));
         _enableSoundBox = new(40, 170, StringManager.GetString("enableSound"), Color.Gray, Color.DarkGray, Settings.GetBool("sound"));
+        AccentColorButton = new(40, 215, 0, 40, StringManager.GetString("changeAccentColor"), Settings.GetDarkAccentColor(), Settings.GetAccentColor(), true);
     }
 
     public void Draw(SpriteBatch sprBatch)
@@ -39,6 +42,7 @@ public class SettingsScreen : IGameState
         _enableHintsBox.Draw(sprBatch);
         _showBgBox.Draw(sprBatch);
         _enableSoundBox.Draw(sprBatch);
+        AccentColorButton.Draw(sprBatch);
     }
 
     public IGameState? Update(MouseState mouse, MouseState mouseOld, KeyboardState kb, KeyboardState kbOld, GraphicsDevice graphDev, ref LevelMetadata levelMetadata, bool hasFocus)
@@ -46,6 +50,7 @@ public class SettingsScreen : IGameState
         _enableHintsBox.Update(mouse, mouseOld, kb, kbOld);
         _showBgBox.Update(mouse, mouseOld, kb, kbOld);
         _enableSoundBox.Update(mouse, mouseOld, kb, kbOld);
+        AccentColorButton.Update(mouse, mouseOld, kb, kbOld);
 
         BackButton.Update(mouse, mouseOld, kb, kbOld);
         if (BackButton.IsClicked)
