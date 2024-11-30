@@ -18,6 +18,9 @@ public class SettingsScreen : IGameState
     private readonly CheckBox _enableHintsBox;
     private readonly CheckBox _showBgBox;
     private readonly CheckBox _enableSoundBox;
+    private readonly NumberTextBox _accentColorRedBox;
+    private readonly NumberTextBox _accentColorGreenBox;
+    private readonly NumberTextBox _accentColorBlueBox;
 
     // TODO reusable dialog code
     private Rectangle _dialogRect;
@@ -34,6 +37,9 @@ public class SettingsScreen : IGameState
         _showBgBox = new(40, 140, StringManager.GetString("showBgGrid"), Color.Gray, Color.DarkGray, Settings.GetBool("showBgGrid"));
         _enableSoundBox = new(40, 170, StringManager.GetString("enableSound"), Color.Gray, Color.DarkGray, Settings.GetBool("sound"));
         AccentColorButton = new(40, 215, 0, 40, StringManager.GetString("changeAccentColor"), Settings.GetDarkAccentColor(), Settings.GetAccentColor(), true);
+        _accentColorRedBox = new(0, 0, 200, Color.DarkGray, Color.Gray, Color.White, Color.White, Color.LightGray, Color.DarkGray, StringManager.GetString("accentColorRedPlaceholder"), 255);
+        _accentColorGreenBox = new(0, 0, 200, Color.DarkGray, Color.Gray, Color.White, Color.White, Color.LightGray, Color.DarkGray, StringManager.GetString("accentColorGreenPlaceholder"), 255);
+        _accentColorBlueBox = new(0, 0, 200, Color.DarkGray, Color.Gray, Color.White, Color.White, Color.LightGray, Color.DarkGray, StringManager.GetString("accentColorBluePlaceholder"), 255);
 
         _dialogRect = new();
         _setAccentColor = false;
@@ -65,6 +71,10 @@ public class SettingsScreen : IGameState
             RectRenderer.DrawRectOutline(_dialogRect, Settings.GetAccentColor(), 2, sprBatch);
 
             TextRenderer.DrawTextCenter(sprBatch, "DefaultFont", 0.8f, StringManager.GetString("changeAccentColor"), Color.White, dialogTextRect);
+
+            _accentColorRedBox.Draw(sprBatch);
+            _accentColorGreenBox.Draw(sprBatch);
+            _accentColorBlueBox.Draw(sprBatch);
         }
     }
 
@@ -72,16 +82,30 @@ public class SettingsScreen : IGameState
     {
         if (_setAccentColor)
         {
-            _dialogRect.X = (graphDev.Viewport.Bounds.Width / 2) - (_dialogRect.Width / 2);
-            _dialogRect.Y = (graphDev.Viewport.Bounds.Height / 2) - (DialogHeight / 2);
             _dialogRect.Width = DialogWidth;
             _dialogRect.Height = DialogHeight;
+            _dialogRect.X = (graphDev.Viewport.Bounds.Width / 2) - (_dialogRect.Width / 2);
+            _dialogRect.Y = (graphDev.Viewport.Bounds.Height / 2) - (DialogHeight / 2);
+
+            int colorBoxX = _dialogRect.X + 15;
+
+            _accentColorRedBox.x = colorBoxX;
+            _accentColorRedBox.y = _dialogRect.Y + 100;
+            _accentColorRedBox.Update(mouse, mouseOld, kb, kbOld);
+
+            _accentColorGreenBox.x = colorBoxX;
+            _accentColorGreenBox.y = _accentColorRedBox.y + 50;
+            _accentColorGreenBox.Update(mouse, mouseOld, kb, kbOld);
+
+            _accentColorBlueBox.x = colorBoxX;
+            _accentColorBlueBox.y = _accentColorGreenBox.y + 50;
+            _accentColorBlueBox.Update(mouse, mouseOld, kb, kbOld);
         }
         else
         {
             _enableHintsBox.Update(mouse, mouseOld, kb, kbOld);
             _showBgBox.Update(mouse, mouseOld, kb, kbOld);
-_enableSoundBox.Update(mouse, mouseOld, kb, kbOld);
+            _enableSoundBox.Update(mouse, mouseOld, kb, kbOld);
             AccentColorButton.Update(mouse, mouseOld, kb, kbOld);
 
             if (AccentColorButton.IsClicked)
@@ -111,7 +135,17 @@ _enableSoundBox.Update(mouse, mouseOld, kb, kbOld);
         return null;
     }
 
-    public void saveSettings()
+    public void UpdateInput(TextInputEventArgs tiea)
+    {
+        if (_setAccentColor)
+        {
+            _accentColorRedBox.UpdateInput(tiea);
+            _accentColorGreenBox.UpdateInput(tiea);
+            _accentColorBlueBox.UpdateInput(tiea);
+        }
+    }
+
+    private void saveSettings()
     {
         Settings.Set("enableHints", _enableHintsBox.isChecked);
         Settings.Set("showBgGrid", _showBgBox.isChecked);
