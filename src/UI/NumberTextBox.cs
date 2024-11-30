@@ -49,6 +49,19 @@ public class NumberTextBox : TextBox
         }
     }
 
+    public override void Update(MouseState mouse, MouseState mouseOld, KeyboardState keyboard, KeyboardState keyboardOld)
+    {
+        base.Update(mouse, mouseOld, keyboard, keyboardOld);
+
+        if (Hovered)
+        {
+            if (mouse.ScrollWheelValue > mouseOld.ScrollWheelValue)
+                text = (GetNumberValue() + 1).ToString();
+            else if (mouse.ScrollWheelValue < mouseOld.ScrollWheelValue)
+                text = (GetNumberValue() - 1).ToString(); // TODO SetNumberValue
+        }
+    }
+
     public int GetNumberValue()
     {
         if (!int.TryParse(text, out int number))
