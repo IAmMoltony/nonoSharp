@@ -37,9 +37,14 @@ public class SettingsScreen : IGameState
         _showBgBox = new(40, 140, StringManager.GetString("showBgGrid"), Color.Gray, Color.DarkGray, Settings.GetBool("showBgGrid"));
         _enableSoundBox = new(40, 170, StringManager.GetString("enableSound"), Color.Gray, Color.DarkGray, Settings.GetBool("sound"));
         AccentColorButton = new(40, 215, 0, 40, StringManager.GetString("changeAccentColor"), Settings.GetDarkAccentColor(), Settings.GetAccentColor(), true);
-        _accentColorRedBox = new(0, 0, 200, Color.DarkGray, Color.Gray, Color.White, Color.White, Color.LightGray, Color.DarkGray, StringManager.GetString("accentColorRedPlaceholder"), 255);
-        _accentColorGreenBox = new(0, 0, 200, Color.DarkGray, Color.Gray, Color.White, Color.White, Color.LightGray, Color.DarkGray, StringManager.GetString("accentColorGreenPlaceholder"), 255);
-        _accentColorBlueBox = new(0, 0, 200, Color.DarkGray, Color.Gray, Color.White, Color.White, Color.LightGray, Color.DarkGray, StringManager.GetString("accentColorBluePlaceholder"), 255);
+        _accentColorRedBox = new(0, 0, 200, Color.DarkGray, Color.Gray, Color.White, Color.White, 255);
+        _accentColorGreenBox = new(0, 0, 200, Color.DarkGray, Color.Gray, Color.White, Color.White, 255);
+        _accentColorBlueBox = new(0, 0, 200, Color.DarkGray, Color.Gray, Color.White, Color.White, 255);
+
+        Color accentColor = Settings.GetAccentColor();
+        _accentColorRedBox.text = accentColor.R.ToString();
+        _accentColorGreenBox.text = accentColor.G.ToString();
+        _accentColorBlueBox.text = accentColor.B.ToString();
 
         _dialogRect = new();
         _setAccentColor = false;
@@ -75,6 +80,12 @@ public class SettingsScreen : IGameState
             _accentColorRedBox.Draw(sprBatch);
             _accentColorGreenBox.Draw(sprBatch);
             _accentColorBlueBox.Draw(sprBatch);
+
+            Color newAccentColor = new(_accentColorRedBox.GetNumberValue(), _accentColorGreenBox.GetNumberValue(), _accentColorBlueBox.GetNumberValue());
+            Rectangle accentColorBackgroundRect = new(_accentColorRedBox.x + _accentColorRedBox.width + 60, _accentColorRedBox.y, 100, 100);
+            Rectangle accentColorRect = new(accentColorBackgroundRect.X + 5, accentColorBackgroundRect.Y + 5, accentColorBackgroundRect.Width - 10, accentColorBackgroundRect.Height - 10);
+            RectRenderer.DrawRect(accentColorBackgroundRect, Color.Black, sprBatch);
+            RectRenderer.DrawRect(accentColorRect, newAccentColor, sprBatch);
         }
     }
 
