@@ -56,9 +56,17 @@ public class NumberTextBox : TextBox
         if (Hovered)
         {
             if (mouse.ScrollWheelValue > mouseOld.ScrollWheelValue)
-                text = (GetNumberValue() + 1).ToString();
+            {
+                int newValue = GetNumberValue() + 1;
+                if (!_hasMax || newValue <= _max)
+                    text = newValue.ToString();
+            }
             else if (mouse.ScrollWheelValue < mouseOld.ScrollWheelValue)
-                text = (GetNumberValue() - 1).ToString(); // TODO SetNumberValue
+            {
+                int newValue = GetNumberValue() - 1; // TODO SetNumberValue
+                if (newValue >= 0)
+                    text = newValue.ToString();
+            }
         }
     }
 
