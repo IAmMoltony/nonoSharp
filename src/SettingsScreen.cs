@@ -15,6 +15,7 @@ public class SettingsScreen : IGameState
     public Button KeySettingsButton { get; private set; }
     public Button AccentColorButton { get; private set; } // why tf are buttons public???
     public Button AccentColorResetButton { get; private set; }
+    public Button AccentColorOKButton { get; private set; }
 
     private readonly CheckBox _enableHintsBox;
     private readonly CheckBox _showBgBox;
@@ -39,6 +40,7 @@ public class SettingsScreen : IGameState
         _enableSoundBox = new(40, 170, StringManager.GetString("enableSound"), Color.Gray, Color.DarkGray, Settings.GetBool("sound"));
         AccentColorButton = new(40, 215, 0, 40, StringManager.GetString("changeAccentColor"), Settings.GetDarkAccentColor(), Settings.GetAccentColor(), true);
         AccentColorResetButton = new(0, 0, 0, 40, StringManager.GetString("reset"), Settings.GetDarkAccentColor(), Settings.GetAccentColor(), true);
+        AccentColorOKButton = new(0, 0, 0, 40, StringManager.GetString("ok"), Settings.GetDarkAccentColor(), Settings.GetAccentColor(), true);
         _accentColorRedBox = new(0, 0, 200, Color.DarkGray, Color.Gray, Color.White, Color.White, 255);
         _accentColorGreenBox = new(0, 0, 200, Color.DarkGray, Color.Gray, Color.White, Color.White, 255);
         _accentColorBlueBox = new(0, 0, 200, Color.DarkGray, Color.Gray, Color.White, Color.White, 255);
@@ -72,7 +74,7 @@ public class SettingsScreen : IGameState
             Rectangle dialogTextRect = new();
             
             RectRenderer.DrawRect(new(0, 0, graphDev.Viewport.Bounds.Width, graphDev.Viewport.Bounds.Height), new(Color.Black, 0.5f), sprBatch);
-            dialogTextRect = _dialogRect;
+    dialogTextRect = _dialogRect;
             dialogTextRect.Y -= 100;
             RectRenderer.DrawRect(_dialogRect, Settings.GetDarkAccentColor(), sprBatch);
             RectRenderer.DrawRectOutline(_dialogRect, Settings.GetAccentColor(), 2, sprBatch);
@@ -83,8 +85,9 @@ public class SettingsScreen : IGameState
             _accentColorGreenBox.Draw(sprBatch);
             _accentColorBlueBox.Draw(sprBatch);
             AccentColorResetButton.Draw(sprBatch);
+            AccentColorOKButton.Draw(sprBatch);
 
-            Color newAccentColor = new(_accentColorRedBox.GetNumberValue(), _accentColorGreenBox.GetNumberValue(), _accentColorBlueBox.GetNumberValue());
+            Color newAccentColor = _getNewAccentColor();
             Rectangle accentColorBackgroundRect = new(_accentColorRedBox.x + _accentColorRedBox.width + 60, _accentColorRedBox.y, 100, 100);
             Rectangle accentColorRect = new(accentColorBackgroundRect.X + 5, accentColorBackgroundRect.Y + 5, accentColorBackgroundRect.Width - 10, accentColorBackgroundRect.Height - 10);
             RectRenderer.DrawRect(accentColorBackgroundRect, Color.Black, sprBatch);
@@ -119,12 +122,24 @@ public class SettingsScreen : IGameState
             AccentColorResetButton.y = _accentColorRedBox.y + 110;
             AccentColorResetButton.Update(mouse, mouseOld, kb, kbOld);
 
+            AccentColorOKButton.x = AccentColorResetButton.x + AccentColorResetButton.width + 15;
+            AccentColorOKButton.y = AccentColorResetButton.y;
+            AccentColorOKButton.Update(mouse, mouseOld, kb, kbOld);
+
             if (AccentColorResetButton.IsClicked)
             {
                 Color defaultAccentColor = Settings.ParseColorSettingString(Settings.DefaultSettings["accentColor"]);
                 _accentColorRedBox.text = defaultAccentColor.R.ToString();
                 _accentColorGreenBox.text = defaultAccentColor.G.ToString();
                 _accentColorBlueBox.text = defaultAccentColor.B.ToString();
+            }
+
+            if (AccentColorOKButton.IsClicked)
+            {
+                Color newAccentColor = _getNewAccentColor();
+                Settings.Set("accentColor", newAccentColor);
+                Settings.Save();
+                _setAccentColor = false;
             }
         }
         else
@@ -177,5 +192,10 @@ public class SettingsScreen : IGameState
         Settings.Set("showBgGrid", _showBgBox.isChecked);
         Settings.Set("sound", _enableSoundBox.isChecked);
         Settings.Save();
+    }
+
+    private Color _getNewAccentColor()
+    {
+        return new(_accentColorRedBox.GetNumberValue(), _accentColorGreenBox.GetNumberValue(), _accentColorBlueBox.GetNumberValue());
     }
 }
