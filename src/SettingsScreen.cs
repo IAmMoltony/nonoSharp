@@ -13,7 +13,8 @@ public class SettingsScreen : IGameState
     public Button BackButton { get; private set; }
     public Button CreditsButton { get; private set; }
     public Button KeySettingsButton { get; private set; }
-    public Button AccentColorButton { get; private set; }
+    public Button AccentColorButton { get; private set; } // why tf are buttons public???
+    public Button AccentColorResetButton { get; private set; }
 
     private readonly CheckBox _enableHintsBox;
     private readonly CheckBox _showBgBox;
@@ -37,6 +38,7 @@ public class SettingsScreen : IGameState
         _showBgBox = new(40, 140, StringManager.GetString("showBgGrid"), Color.Gray, Color.DarkGray, Settings.GetBool("showBgGrid"));
         _enableSoundBox = new(40, 170, StringManager.GetString("enableSound"), Color.Gray, Color.DarkGray, Settings.GetBool("sound"));
         AccentColorButton = new(40, 215, 0, 40, StringManager.GetString("changeAccentColor"), Settings.GetDarkAccentColor(), Settings.GetAccentColor(), true);
+        AccentColorResetButton = new(0, 0, 0, 40, StringManager.GetString("reset"), Settings.GetDarkAccentColor(), Settings.GetAccentColor(), true);
         _accentColorRedBox = new(0, 0, 200, Color.DarkGray, Color.Gray, Color.White, Color.White, 255);
         _accentColorGreenBox = new(0, 0, 200, Color.DarkGray, Color.Gray, Color.White, Color.White, 255);
         _accentColorBlueBox = new(0, 0, 200, Color.DarkGray, Color.Gray, Color.White, Color.White, 255);
@@ -80,6 +82,7 @@ public class SettingsScreen : IGameState
             _accentColorRedBox.Draw(sprBatch);
             _accentColorGreenBox.Draw(sprBatch);
             _accentColorBlueBox.Draw(sprBatch);
+            AccentColorResetButton.Draw(sprBatch);
 
             Color newAccentColor = new(_accentColorRedBox.GetNumberValue(), _accentColorGreenBox.GetNumberValue(), _accentColorBlueBox.GetNumberValue());
             Rectangle accentColorBackgroundRect = new(_accentColorRedBox.x + _accentColorRedBox.width + 60, _accentColorRedBox.y, 100, 100);
@@ -111,6 +114,18 @@ public class SettingsScreen : IGameState
             _accentColorBlueBox.x = colorBoxX;
             _accentColorBlueBox.y = _accentColorGreenBox.y + 50;
             _accentColorBlueBox.Update(mouse, mouseOld, kb, kbOld);
+
+            AccentColorResetButton.x = _accentColorRedBox.x + _accentColorRedBox.width + 60;
+            AccentColorResetButton.y = _accentColorRedBox.y + 110;
+            AccentColorResetButton.Update(mouse, mouseOld, kb, kbOld);
+
+            if (AccentColorResetButton.IsClicked)
+            {
+                Color defaultAccentColor = Settings.ParseColorSettingString(Settings.DefaultSettings["accentColor"]);
+                _accentColorRedBox.text = defaultAccentColor.R.ToString();
+                _accentColorGreenBox.text = defaultAccentColor.G.ToString();
+                _accentColorBlueBox.text = defaultAccentColor.B.ToString();
+            }
         }
         else
         {
