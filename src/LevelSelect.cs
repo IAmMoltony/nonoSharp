@@ -142,10 +142,10 @@ public class LevelSelect : IGameState
     {
         if (_deleteLevel || _renameLevel)
         {
-            _dialogRect.X = (graphDev.Viewport.Bounds.Width / 2) - (_dialogRect.Width / 2);
-            _dialogRect.Y = (graphDev.Viewport.Bounds.Height / 2) - (DialogHeight / 2);
             _dialogRect.Width = 0;
             _dialogRect.Height = DialogHeight;
+            _dialogRect.X = (graphDev.Viewport.Bounds.Width / 2) - (_dialogRect.Width / 2);
+            _dialogRect.Y = (graphDev.Viewport.Bounds.Height / 2) - (DialogHeight / 2);
         }
 
         if (_deleteLevel)

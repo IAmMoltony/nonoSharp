@@ -190,13 +190,14 @@ public class NonoSharpGame : Game
 
     private void doTextInput(TextInputEventArgs tiea)
     {
-        // update editor input when in editor
         if (_currentState is Editor.Editor editor)
             editor.UpdateInput(tiea);
 
-        // update level select input when in level select
         if (_currentState is LevelSelect levelSelect)
             levelSelect.UpdateInput(tiea);
+
+        if (_currentState is SettingsScreen settingsScreen)
+            settingsScreen.UpdateInput(tiea);
     }
 
     private void getInput()

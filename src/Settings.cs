@@ -12,7 +12,7 @@ public static class Settings
     private static Dictionary<string, string> _settings = null!;
     private static string _settingsFile = null!;
 
-    private static readonly Dictionary<string, string> _defaultSettings = new()
+    public static readonly Dictionary<string, string> DefaultSettings = new()
     {
         {"language", "System"},
         {"fullScreen", "no"},
@@ -36,13 +36,13 @@ public static class Settings
         _settingsFile = Path.Combine(settingsFolder, "settings.json");
         if (!File.Exists(_settingsFile))
         {
-            _settings = new(_defaultSettings);
+            _settings = new(DefaultSettings);
             Save();
         }
         else
             Load();
 
-        _settings ??= new(_defaultSettings);
+        _settings ??= new(DefaultSettings);
 
         Log.Logger.Information("Current settings:");
         foreach (KeyValuePair<string, string> pair in _settings)
@@ -63,7 +63,7 @@ public static class Settings
 
         try
         {
-            _settings = JsonSerializer.Deserialize<Dictionary<string, string>>(jsonString) ?? new(_defaultSettings);
+            _settings = JsonSerializer.Deserialize<Dictionary<string, string>>(jsonString) ?? new(DefaultSettings);
         }
         catch (JsonException exception)
         {
@@ -93,7 +93,7 @@ public static class Settings
             return _settings[key];
 
         // If it's not found, look it up in default settings
-        return _defaultSettings[key];
+        return DefaultSettings[key];
     }
 
     public static bool GetBool(string key)
@@ -101,9 +101,8 @@ public static class Settings
         return Get(key) == "yes";
     }
 
-    public static Color GetColor(string key)
+    public static Color ParseColorSettingString(string colorString)
     {
-        string colorString = Get(key);
         string[] parts = colorString.Split(';');
 
         // Return white if there's not 3 parts
@@ -130,12 +129,19 @@ public static class Settings
         return new(intParts[0], intParts[1], intParts[2]);
     }
 
+    public static Color GetColor(string key)
+    {
+        string colorString = Get(key);
+        return ParseColorSettingString(colorString);
+    }
+
     // this is for convenience so i don't have to type "Settings.GetColor("accentColor")" all the time
     public static Color GetAccentColor()
     {
         return GetColor("accentColor");
     }
 
+    // this is again for convenience so i don't have to type "Settings.GetAccentColor().Draker()" or ".Lighter()" all the time
     public static Color GetDarkAccentColor(float darkAmount = AccentColorDefaultDarkerAmount)
     {
         return GetAccentColor().Darker(darkAmount);
