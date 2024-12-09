@@ -8,9 +8,9 @@ Caption "nonoInstaller"
 Icon "InstallerIcon.ico"
 OutFile "nonoInstaller.exe"
 
-VIProductVersion "0.15.0.0"
-VIFileVersion "0.15.0.0"
-VIAddVersionKey "FileVersion" "0.14.0.0"
+VIProductVersion "0.16.0.0"
+VIFileVersion "0.16.0.0"
+VIAddVersionKey "FileVersion" "0.16.0.0"
 VIAddVersionKey "LegalCopyright" "(c) moltony"
 VIAddVersionKey "FileDescription" "nonoSharp"
 
