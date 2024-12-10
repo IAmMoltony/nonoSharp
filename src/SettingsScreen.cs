@@ -24,7 +24,6 @@ public class SettingsScreen : IGameState
     private readonly NumberTextBox _accentColorGreenBox;
     private readonly NumberTextBox _accentColorBlueBox;
 
-    // TODO reusable dialog code
     private Rectangle _dialogRect;
     private bool _setAccentColor;
 
@@ -74,7 +73,7 @@ public class SettingsScreen : IGameState
             Rectangle dialogTextRect = new();
             
             RectRenderer.DrawRect(new(0, 0, graphDev.Viewport.Bounds.Width, graphDev.Viewport.Bounds.Height), new(Color.Black, 0.5f), sprBatch);
-    dialogTextRect = _dialogRect;
+            dialogTextRect = _dialogRect;
             dialogTextRect.Y -= 100;
             RectRenderer.DrawRect(_dialogRect, Settings.GetDarkAccentColor(), sprBatch);
             RectRenderer.DrawRectOutline(_dialogRect, Settings.GetAccentColor(), 2, sprBatch);
