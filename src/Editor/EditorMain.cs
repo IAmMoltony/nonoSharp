@@ -20,7 +20,7 @@ public class EditorMain
     public NumberTextBox MaxHintsBox { get; private set; } = null!;
     public EditorBoard Board { get; private set; }
 
-    private Timer _autoSaveTimer;
+    private Timer _autoSaveTimer = null!;
 
     public EditorMain()
     {
