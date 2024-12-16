@@ -1,7 +1,11 @@
+using System;
+using System.IO;
+using System.Timers;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using NonoSharp.UI;
+using Serilog;
 
 namespace NonoSharp.Editor;
 
@@ -16,10 +20,13 @@ public class EditorMain
     public NumberTextBox MaxHintsBox { get; private set; } = null!;
     public EditorBoard Board { get; private set; }
 
+    private Timer _autoSaveTimer;
+
     public EditorMain()
     {
         Board = new();
         makeButtons();
+        initAutoSaveTimer();
     }
 
     public EditorMain(string levelName)
@@ -27,6 +34,7 @@ public class EditorMain
         Board = new();
         Board.Make(levelName);
         makeButtons();
+        initAutoSaveTimer();
     }
 
     public void Update(MouseState mouse, MouseState mouseOld, KeyboardState kb, KeyboardState kbOld, GraphicsDevice graphDev)
@@ -106,6 +114,17 @@ public class EditorMain
         }
     }
 
+    public void EnableAutoSaveTimer(bool enabled)
+    {
+        _autoSaveTimer.Enabled = enabled;
+    }
+
+    public void AutoSave()
+    {
+        Log.Logger.Information("Auto saving level");
+        BoardSaver.SaveBoard(Board, Path.Combine("..", "EditorAutosave"), Board.maxHints);
+    }
+
     private void makeButtons()
     {
         SaveButton = new(10, 10, 0, 45, StringManager.GetString("save"), Settings.GetDarkAccentColor(), Settings.GetAccentColor(), Keys.S, true);
@@ -115,5 +134,18 @@ public class EditorMain
         TestBackButton = new(10, 10, 0, 45, StringManager.GetString("back"), Settings.GetDarkAccentColor(), Settings.GetAccentColor(), Keys.Escape, true);
         TestResetButton = new(0, 0, 0, 45, StringManager.GetString("restart"), Settings.GetDarkAccentColor(), Settings.GetAccentColor(), Keys.R, true);
         MaxHintsBox = new(10, 0, 195, Color.Gray, Color.DarkGray, Color.White, Color.White, Color.DarkGray, Color.LightGray, StringManager.GetString("maxHintsPlaceholder"));
+    }
+
+    private void autoSave(object? source, ElapsedEventArgs eea)
+    {
+        AutoSave();
+    }
+
+    private void initAutoSaveTimer()
+    {
+        _autoSaveTimer = new(Settings.GetInt("editorAutoSaveInterval")); // TODO dispose of it properly
+        _autoSaveTimer.Elapsed += autoSave;
+        _autoSaveTimer.AutoReset = true;
+        _autoSaveTimer.Enabled = false;
     }
 }
