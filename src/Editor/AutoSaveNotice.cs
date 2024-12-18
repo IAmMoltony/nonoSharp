@@ -34,7 +34,7 @@ public class AutoSaveNotice
         _restartButton.Update(mouse, mouseOld, kb, kbOld);
         _cancelButton.Update(mouse, mouseOld, kb, kbOld);
 
-        int totalWidth = _continueButton.width + _restartButton.width + _cancelButton.width + ButtonSpacing * 20;
+        int totalWidth = _continueButton.width + _restartButton.width + _cancelButton.width + ButtonSpacing * 2;
 
         _continueButton.x = graphDev.Viewport.Bounds.Width / 2 - totalWidth / 2;
         _restartButton.x = _continueButton.x + _continueButton.width + ButtonSpacing;
