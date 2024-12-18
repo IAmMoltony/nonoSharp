@@ -125,6 +125,13 @@ public class EditorMain
         BoardSaver.SaveBoard(Board, Path.Combine("..", "EditorAutosave"), Board.maxHints);
     }
 
+    public void LoadAutoSave()
+    {
+        Log.Logger.Information("Loading auto save");
+        Board = new();
+        Board.Make(Path.Combine(BoardSaver.GetLevelSavePath(), "..", "EditorAutosave"));
+    }
+
     private void makeButtons()
     {
         SaveButton = new(10, 10, 0, 45, StringManager.GetString("save"), Settings.GetDarkAccentColor(), Settings.GetAccentColor(), Keys.S, true);

@@ -16,7 +16,7 @@ public enum EditorState
 public class Editor : IGameState
 {
     private EditorState _state;
-    // TODO do the same thing as done with regular game states but for editor
+    // TODO tda refactor for editor
     private SetSizeState _setSize;
     private readonly EditorMain _main;
     private SaveLevelState _saveLevel;
@@ -107,6 +107,15 @@ public class Editor : IGameState
                 break;
             case EditorState.AutoSaveNotice:
                 _autoSaveNotice.Update(graphDev, mouse, mouseOld, kb, kbOld);
+                if (_autoSaveNotice.CancelButton.IsClicked)
+                    return new MainMenu();
+                if (_autoSaveNotice.RestartButton.IsClicked)
+                    _state = EditorState.SetSize;
+                if (_autoSaveNotice.ContinueButton.IsClicked)
+                {
+                    _main.LoadAutoSave();
+                    _state = EditorState.Editor;
+                }
                 break;
         }
 
