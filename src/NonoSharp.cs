@@ -182,6 +182,9 @@ public class NonoSharpGame : Game
 
     protected override void OnExiting(object sender, ExitingEventArgs eea)
     {
+        if (_currentState is Editor.Editor editor)
+            editor.AutoSave();
+
         PlayState.StopSolveTimeThread();
         Settings.Save();
 
