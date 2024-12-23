@@ -45,9 +45,9 @@ public class SettingsScreen : IGameState
         _accentColorBlueBox = new(0, 0, 200, Color.DarkGray, Color.Gray, Color.White, Color.White, 255);
 
         Color accentColor = Settings.GetAccentColor();
-        _accentColorRedBox.text = accentColor.R.ToString();
-        _accentColorGreenBox.text = accentColor.G.ToString();
-        _accentColorBlueBox.text = accentColor.B.ToString();
+        _accentColorRedBox.SetNumberValue(accentColor.R);
+        _accentColorGreenBox.SetNumberValue(accentColor.G);
+        _accentColorBlueBox.SetNumberValue(accentColor.B);
 
         _setAccentColor = false;
         _accentColorDialog = new(DialogWidth, DialogHeight, StringManager.GetString("changeAccentColor"), Settings.GetDarkAccentColor(), Settings.GetAccentColor());
@@ -118,9 +118,9 @@ public class SettingsScreen : IGameState
             if (AccentColorResetButton.IsClicked)
             {
                 Color defaultAccentColor = Settings.ParseColorSettingString(Settings.DefaultSettings["accentColor"]);
-                _accentColorRedBox.text = defaultAccentColor.R.ToString();
-                _accentColorGreenBox.text = defaultAccentColor.G.ToString();
-                _accentColorBlueBox.text = defaultAccentColor.B.ToString();
+                _accentColorRedBox.SetNumberValue(defaultAccentColor.R);
+                _accentColorGreenBox.SetNumberValue(defaultAccentColor.G);
+                _accentColorBlueBox.SetNumberValue(defaultAccentColor.B);
             }
 
             if (AccentColorOKButton.IsClicked)

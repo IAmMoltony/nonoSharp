@@ -19,7 +19,8 @@ public static class Settings
         {"accentColor", "0;128;0"},
         {"enableHints", "yes"},
         {"showBgGrid", "yes"},
-        {"sound", "yes"}
+        {"sound", "yes"},
+        {"editorAutoSaveInterval", "180"}
     };
 
     public const float AccentColorDefaultDarkerAmount = 0.3f;
@@ -93,12 +94,21 @@ public static class Settings
             return _settings[key];
 
         // If it's not found, look it up in default settings
-        return DefaultSettings[key];
+        return DefaultSettings[key]; // TODO handle cases where setting is not found in default too
     }
 
     public static bool GetBool(string key)
     {
         return Get(key) == "yes";
+    }
+
+    public static int GetInt(string key)
+    {
+        string val = Get(key);
+        int valInt;
+        if (int.TryParse(val, out valInt))
+            return valInt;
+        return -1;
     }
 
     public static Color ParseColorSettingString(string colorString)

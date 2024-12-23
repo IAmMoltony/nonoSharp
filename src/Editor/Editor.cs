@@ -1,3 +1,4 @@
+using System.IO;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -9,15 +10,17 @@ public enum EditorState
     SetSize,
     Editor,
     SaveLevel,
+    AutoSaveNotice,
 }
 
 public class Editor : IGameState
 {
     private EditorState _state;
-    // TODO do the same thing as done with regular game states but for editor
+    // TODO tda refactor for editor
     private SetSizeState _setSize;
     private readonly EditorMain _main;
     private SaveLevelState _saveLevel;
+    private AutoSaveNotice _autoSaveNotice;
     private bool _editingExistingLevel;
     private string _levelName; // when editing existing level
 
@@ -29,6 +32,8 @@ public class Editor : IGameState
         _setSize = new();
         _main = new();
         _saveLevel = new();
+        _autoSaveNotice = new();
+        checkAutoSave();
     }
 
     public Editor(string levelName)
@@ -39,6 +44,8 @@ public class Editor : IGameState
         _setSize = new();
         _main = new(levelName);
         _saveLevel = new();
+        _autoSaveNotice = new();
+        checkAutoSave();
     }
 
     public IGameState? Update(MouseState mouse, MouseState mouseOld, KeyboardState kb, KeyboardState kbOld, GraphicsDevice graphDev, ref LevelMetadata levelMetadata, bool hasFocus)
@@ -51,6 +58,7 @@ public class Editor : IGameState
                 {
                     _state = EditorState.Editor;
                     _main.Board.Make(_setSize.GetSize());
+                    _main.EnableAutoSaveTimer(true);
                 }
                 if (_setSize.BackButton.IsClicked)
                 {
@@ -63,6 +71,7 @@ public class Editor : IGameState
                 _main.Update(mouse, mouseOld, kb, kbOld, graphDev);
                 if (_main.SaveButton.IsClicked)
                 {
+                    _main.EnableAutoSaveTimer(false);
                     if (_editingExistingLevel)
                     {
                         BoardSaver.SaveBoard(_main.Board, _levelName, _main.MaxHintsBox.GetNumberValue());
@@ -75,6 +84,7 @@ public class Editor : IGameState
                 }
                 if (_main.BackButton.IsClicked)
                 {
+                    _main.EnableAutoSaveTimer(false);
                     if (_editingExistingLevel)
                     {
                         LevelSelect levelSelect = new();
@@ -82,7 +92,10 @@ public class Editor : IGameState
                         return levelSelect;
                     }
                     else
+                    {
+                        _main.AutoSave();
                         return new MainMenu();
+                    }
                 }
                 break;
             case EditorState.SaveLevel:
@@ -91,6 +104,18 @@ public class Editor : IGameState
                     return new MainMenu();
                 if (_saveLevel.BackButton.IsClicked)
                     _state = EditorState.Editor;
+                break;
+            case EditorState.AutoSaveNotice:
+                _autoSaveNotice.Update(graphDev, mouse, mouseOld, kb, kbOld);
+                if (_autoSaveNotice.CancelButton.IsClicked)
+                    return new MainMenu();
+                if (_autoSaveNotice.RestartButton.IsClicked)
+                    _state = EditorState.SetSize;
+                if (_autoSaveNotice.ContinueButton.IsClicked)
+                {
+                    _main.LoadAutoSave();
+                    _state = EditorState.Editor;
+                }
                 break;
         }
 
@@ -110,6 +135,9 @@ public class Editor : IGameState
             case EditorState.SaveLevel:
                 _saveLevel.Draw(sprBatch);
                 break;
+            case EditorState.AutoSaveNotice:
+                _autoSaveNotice.Draw(sprBatch);
+                break;
         }
     }
 
@@ -126,6 +154,22 @@ public class Editor : IGameState
             case EditorState.Editor:
                 _main.UpdateInput(tiea);
                 break;
+        }
+    }
+
+    public void AutoSave()
+    {
+        if (_state == EditorState.Editor)
+        {
+            _main.AutoSave();
+        }
+    }
+
+    private void checkAutoSave()
+    {
+        if (File.Exists(Path.Combine(BoardSaver.GetLevelSavePath(), "..", "EditorAutosave.nono")))
+        {
+            _state = EditorState.AutoSaveNotice;
         }
     }
 }

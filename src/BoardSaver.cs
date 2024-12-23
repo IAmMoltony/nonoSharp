@@ -7,6 +7,9 @@ public static class BoardSaver
 {
     public static string GetLevelSavePath()
     {
+        // TODO add a function to get %localappdata%/nonoSharp
+        // this is because right now in auto save we save it in <level save path>/..
+        // which assumes that the data folder is one directory up the custom levels folder
         return Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "nonoSharp", "CustomLevels");
     }
 
