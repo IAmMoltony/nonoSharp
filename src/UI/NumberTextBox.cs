@@ -59,13 +59,13 @@ public class NumberTextBox : TextBox
             {
                 int newValue = GetNumberValue() + 1;
                 if (!_hasMax || newValue <= _max)
-                    text = newValue.ToString();
+                    SetNumberValue(newValue);
             }
             else if (mouse.ScrollWheelValue < mouseOld.ScrollWheelValue)
             {
-                int newValue = GetNumberValue() - 1; // TODO SetNumberValue
+                int newValue = GetNumberValue() - 1;
                 if (newValue >= 0)
-                    text = newValue.ToString();
+                    SetNumberValue(newValue);
             }
         }
     }
@@ -75,6 +75,11 @@ public class NumberTextBox : TextBox
         if (!int.TryParse(text, out int number))
             return -1;
         return number;
+    }
+
+    public int SetNumberValue(int value)
+    {
+        text = value.ToString();
     }
 
     public void SetMaxValue(int value)
