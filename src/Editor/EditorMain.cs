@@ -122,14 +122,14 @@ public class EditorMain
     public void AutoSave()
     {
         Log.Logger.Information("Auto saving level");
-        BoardSaver.SaveBoard(Board, Path.Combine("..", "EditorAutosave"), Board.maxHints);
+        BoardSaver.SaveBoard(Board, Path.Combine(Settings.GetDataFolderPath(), "EditorAutosave"), Board.maxHints, true);
     }
 
     public void LoadAutoSave()
     {
         Log.Logger.Information("Loading auto save");
         Board = new();
-        Board.Make(Path.Combine(BoardSaver.GetLevelSavePath(), "..", "EditorAutosave"));
+        Board.Make(Path.Combine(Settings.GetDataFolderPath(), "EditorAutosave"));
     }
 
     private void makeButtons()

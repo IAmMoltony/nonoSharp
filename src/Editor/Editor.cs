@@ -167,7 +167,7 @@ public class Editor : IGameState
 
     private void checkAutoSave()
     {
-        if (File.Exists(Path.Combine(BoardSaver.GetLevelSavePath(), "..", "EditorAutosave.nono")))
+        if (File.Exists(Path.Combine(Settings.GetDataFolderPath(), "EditorAutosave.nono")))
         {
             _state = EditorState.AutoSaveNotice;
         }

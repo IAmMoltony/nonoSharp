@@ -26,11 +26,16 @@ public static class Settings
     public const float AccentColorDefaultDarkerAmount = 0.3f;
     public const float AccentColorDefaultLighterAmount = 0.5f;
 
+    public static string GetDataFolderPath()
+    {
+        return Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "nonoSharp");
+    }
+
     public static void Initialize()
     {
         Log.Logger.Information("Initializing settings");
 
-        string settingsFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "nonoSharp");
+        string settingsFolder = GetDataFolderPath();
         Log.Logger.Information($"Settings folder: {settingsFolder}");
         Directory.CreateDirectory(settingsFolder);
 
