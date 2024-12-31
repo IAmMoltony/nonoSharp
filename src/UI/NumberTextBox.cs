@@ -77,7 +77,7 @@ public class NumberTextBox : TextBox
         return number;
     }
 
-    public int SetNumberValue(int value)
+    public void SetNumberValue(int value)
     {
         text = value.ToString();
     }
