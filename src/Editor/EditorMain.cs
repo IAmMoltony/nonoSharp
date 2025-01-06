@@ -29,6 +29,11 @@ public class EditorMain
         initAutoSaveTimer();
     }
 
+    ~EditorMain()
+    {
+        _autoSaveTimer?.Dispose();
+    }
+
     public EditorMain(string levelName)
     {
         Board = new();
@@ -150,7 +155,7 @@ public class EditorMain
 
     private void initAutoSaveTimer()
     {
-        _autoSaveTimer = new(Settings.GetInt("editorAutoSaveInterval")); // TODO dispose of it properly
+        _autoSaveTimer = new(Settings.GetInt("editorAutoSaveInterval"));
         _autoSaveTimer.Elapsed += autoSave;
         _autoSaveTimer.AutoReset = true;
         _autoSaveTimer.Enabled = false;
