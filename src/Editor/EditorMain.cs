@@ -155,7 +155,7 @@ public class EditorMain
 
     private void initAutoSaveTimer()
     {
-        _autoSaveTimer = new(Settings.GetInt("editorAutoSaveInterval"));
+        _autoSaveTimer = new(Settings.GetInt("editorAutoSaveInterval") * 1000);
         _autoSaveTimer.Elapsed += autoSave;
         _autoSaveTimer.AutoReset = true;
         _autoSaveTimer.Enabled = false;

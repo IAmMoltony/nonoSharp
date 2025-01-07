@@ -20,7 +20,7 @@ public static class Settings
         {"enableHints", "yes"},
         {"showBgGrid", "yes"},
         {"sound", "yes"},
-        {"editorAutoSaveInterval", "180000"} // like 3 mins
+        {"editorAutoSaveInterval", "180"} // like 3 mins
     };
 
     public const float AccentColorDefaultDarkerAmount = 0.3f;
