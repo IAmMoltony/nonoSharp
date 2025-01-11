@@ -92,6 +92,11 @@ public static class Settings
         Set(key, $"{val.R};{val.G};{val.B}");
     }
 
+    public static void Set(string key, int val)
+    {
+        Set(key, val.ToString());
+    }
+
     public static string Get(string key)
     {
         // If the setting is found in the settings dictionary, return it
