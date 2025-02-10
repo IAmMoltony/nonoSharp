@@ -103,8 +103,11 @@ public static class Settings
         if (_settings.ContainsKey(key))
             return _settings[key];
 
-        // If it's not found, look it up in default settings
-        return DefaultSettings[key]; // TODO handle cases where setting is not found in default too
+        // If it's not found, try to look it up in default settings
+        if (DefaultSettings.ContainsKey(key))
+            return DefaultSettings[key];
+
+        return ""; // Setting not found
     }
 
     public static bool GetBool(string key)
