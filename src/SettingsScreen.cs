@@ -26,9 +26,8 @@ public class SettingsScreen : IGameState
     private readonly NumberTextBox _accentColorGreenBox;
     private readonly NumberTextBox _accentColorBlueBox;
 
-    // TODO reusable dialog code
-    private Rectangle _dialogRect;
     private bool _setAccentColor;
+    private Dialog _accentColorDialog;
 
     public SettingsScreen()
     {
@@ -54,9 +53,8 @@ public class SettingsScreen : IGameState
         _accentColorBlueBox.SetNumberValue(accentColor.B);
 
         _autoSaveIntervalBox.SetNumberValue(Settings.GetInt("editorAutoSaveInterval"));
-
-        _dialogRect = new();
         _setAccentColor = false;
+        _accentColorDialog = new(DialogWidth, DialogHeight, StringManager.GetString("changeAccentColor"), Settings.GetDarkAccentColor(), Settings.GetAccentColor());
     }
 
     public void Draw(SpriteBatch sprBatch)
@@ -79,15 +77,7 @@ public class SettingsScreen : IGameState
         AccentColorButton.Draw(sprBatch);
         if (_setAccentColor)
         {
-            Rectangle dialogTextRect = new();
-            
-            RectRenderer.DrawRect(new(0, 0, graphDev.Viewport.Bounds.Width, graphDev.Viewport.Bounds.Height), new(Color.Black, 0.5f), sprBatch);
-    dialogTextRect = _dialogRect;
-            dialogTextRect.Y -= 100;
-            RectRenderer.DrawRect(_dialogRect, Settings.GetDarkAccentColor(), sprBatch);
-            RectRenderer.DrawRectOutline(_dialogRect, Settings.GetAccentColor(), 2, sprBatch);
-
-            TextRenderer.DrawTextCenter(sprBatch, "DefaultFont", 0.8f, StringManager.GetString("changeAccentColor"), Color.White, dialogTextRect);
+            _accentColorDialog.Draw(sprBatch);
 
             _accentColorRedBox.Draw(sprBatch);
             _accentColorGreenBox.Draw(sprBatch);
@@ -107,15 +97,12 @@ public class SettingsScreen : IGameState
     {
         if (_setAccentColor)
         {
-            _dialogRect.Width = DialogWidth;
-            _dialogRect.Height = DialogHeight;
-            _dialogRect.X = (graphDev.Viewport.Bounds.Width / 2) - (_dialogRect.Width / 2);
-            _dialogRect.Y = (graphDev.Viewport.Bounds.Height / 2) - (DialogHeight / 2);
+            _accentColorDialog.Update(graphDev);
 
-            int colorBoxX = _dialogRect.X + 15;
+            int colorBoxX = _accentColorDialog.rect.X + 15;
 
             _accentColorRedBox.x = colorBoxX;
-            _accentColorRedBox.y = _dialogRect.Y + 100;
+            _accentColorRedBox.y = _accentColorDialog.rect.Y + 100;
             _accentColorRedBox.Update(mouse, mouseOld, kb, kbOld);
 
             _accentColorGreenBox.x = colorBoxX;
