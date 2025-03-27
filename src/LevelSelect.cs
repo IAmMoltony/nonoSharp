@@ -30,7 +30,7 @@ public class LevelSelect : IGameState
     private readonly Button _renameCancelButton;
     private readonly Button _renameOKButton;
     private readonly TextBox _renameBox;
-    private Rectangle _dialogRect;
+    private Dialog _renameDeleteDialog;
 
     public LevelSelect()
     {
@@ -39,7 +39,6 @@ public class LevelSelect : IGameState
         _backButton = new(10, 10, 0, 40, StringManager.GetString("back"), Settings.GetDarkAccentColor(), Settings.GetAccentColor(), Keys.Escape, true);
         _modifyLevelName = "";
         _deleteLevel = false;
-        _dialogRect = new();
         _deleteNoButton = new(0, 0, 0, 40, StringManager.GetString("no"), Settings.GetDarkAccentColor(), Settings.GetAccentColor(), true, 16);
         _deleteYesButton = new(0, 0, 0, 40, StringManager.GetString("yes"), Settings.GetDarkAccentColor(), Settings.GetAccentColor(), true, 16);
         _renameCancelButton = new(0, 0, 0, 40, StringManager.GetString("cancel"), Settings.GetDarkAccentColor(), Settings.GetAccentColor(), true);
@@ -50,6 +49,8 @@ public class LevelSelect : IGameState
         char[] invalidPathChars = Path.GetInvalidPathChars();
         char[] invalidFileNameChars = Path.GetInvalidFileNameChars();
         _renameBox.illegalChars = invalidPathChars.Union(invalidFileNameChars).ToList();
+
+        _renameDeleteDialog = new(DialogWidth, DialogHeight, "", Settings.GetDarkAccentColor(), Settings.GetAccentColor());
 
         FindLevels();
     }
@@ -112,28 +113,19 @@ public class LevelSelect : IGameState
         drawHeading(graphDev, sprBatch);
         _backButton.Draw(sprBatch);
 
-        Rectangle dialogTextRect = new Rectangle(0, 0, 0, 0);
-
-        if (_deleteLevel || _renameLevel)
-        {
-            RectRenderer.DrawRect(new(0, 0, graphDev.Viewport.Bounds.Width, graphDev.Viewport.Bounds.Height), new(Color.Black, 0.5f), sprBatch);
-            dialogTextRect = _dialogRect;
-            dialogTextRect.Y -= 100;
-            RectRenderer.DrawRect(_dialogRect, Settings.GetDarkAccentColor(), sprBatch);
-            RectRenderer.DrawRectOutline(_dialogRect, Settings.GetAccentColor(), 2, sprBatch);
-        }
-
         if (_deleteLevel)
         {
-            TextRenderer.DrawTextCenter(sprBatch, "DefaultFont", 0.8f, StringManager.GetString("deleteSure"), Color.White, dialogTextRect);
-            TextRenderer.DrawTextWrapped(sprBatch, "DefaultFont", _dialogRect.X + 10, _dialogRect.Y + 60, 0.5f, string.Format(StringManager.GetString("deleteDialogText"), _modifyLevelName), _dialogRect.Width, Color.White);
+            _renameDeleteDialog.SetTitle(StringManager.GetString("deleteSure"));
+            _renameDeleteDialog.Draw(sprBatch);
+            TextRenderer.DrawTextWrapped(sprBatch, "DefaultFont", _renameDeleteDialog.rect.X + 10, _renameDeleteDialog.rect.Y + 60, 0.5f, string.Format(StringManager.GetString("deleteDialogText"), _modifyLevelName), _renameDeleteDialog.rect.Width, Color.White);
 
             _deleteNoButton.Draw(sprBatch);
             _deleteYesButton.Draw(sprBatch);
         }
         else if (_renameLevel)
         {
-            TextRenderer.DrawTextCenter(sprBatch, "DefaultFont", 0.8f, StringManager.GetString("renameLevel"), Color.White, dialogTextRect);
+            _renameDeleteDialog.SetTitle(StringManager.GetString("renameLevel"));
+            _renameDeleteDialog.Draw(sprBatch);
             _renameBox.Draw(sprBatch);
             _renameCancelButton.Draw(sprBatch);
             _renameOKButton.Draw(sprBatch);
@@ -144,19 +136,16 @@ public class LevelSelect : IGameState
     {
         if (_deleteLevel || _renameLevel)
         {
-            _dialogRect.Width = 0;
-            _dialogRect.Height = DialogHeight;
-            _dialogRect.X = (graphDev.Viewport.Bounds.Width / 2) - (_dialogRect.Width / 2);
-            _dialogRect.Y = (graphDev.Viewport.Bounds.Height / 2) - (DialogHeight / 2);
+            _renameDeleteDialog.Update(graphDev);
         }
 
         if (_deleteLevel)
         {
-            _dialogRect.Width = Math.Max(DialogWidth, (int)TextRenderer.MeasureString("DefaultFont", StringManager.GetString("deleteSure")).X + 12);
+            _renameDeleteDialog.rect.Width = Math.Max(DialogWidth, (int)TextRenderer.MeasureString("DefaultFont", StringManager.GetString("deleteSure")).X + 12);
 
-            _deleteNoButton.x = _dialogRect.X + 10;
-            _deleteNoButton.y = _dialogRect.Y + _dialogRect.Height - 10 - _deleteNoButton.height;
-            _deleteYesButton.x = _dialogRect.X + _dialogRect.Width - 10 - _deleteYesButton.width;
+            _deleteNoButton.x = _renameDeleteDialog.rect.X + 10;
+            _deleteNoButton.y = _renameDeleteDialog.rect.Y + _renameDeleteDialog.rect.Height - 10 - _deleteNoButton.height;
+            _deleteYesButton.x = _renameDeleteDialog.rect.X + _renameDeleteDialog.rect.Width - 10 - _deleteYesButton.width;
             _deleteYesButton.y = _deleteNoButton.y;
 
             _deleteNoButton.Update(mouse, mouseOld, kb, kbOld);
@@ -169,15 +158,15 @@ public class LevelSelect : IGameState
         }
         else if (_renameLevel)
         {
-            _dialogRect.Width = Math.Max(DialogWidth, (int)TextRenderer.MeasureString("DefaultFont", StringManager.GetString("renameLevel")).X + 12);
+            _renameDeleteDialog.rect.Width = Math.Max(DialogWidth, (int)TextRenderer.MeasureString("DefaultFont", StringManager.GetString("renameLevel")).X + 12);
 
-            _renameBox.x = _dialogRect.X + 10;
-            _renameBox.width = _dialogRect.Width - 30;
-            _renameBox.y = _dialogRect.Y + 32 + TextBox.Height;
+            _renameBox.x = _renameDeleteDialog.rect.X + 10;
+            _renameBox.width = _renameDeleteDialog.rect.Width - 30;
+            _renameBox.y = _renameDeleteDialog.rect.Y + 32 + TextBox.Height;
 
-            _renameCancelButton.x = _dialogRect.X + 10;
-            _renameCancelButton.y = _dialogRect.Y + _dialogRect.Height - 10 - _renameCancelButton.height;
-            _renameOKButton.x = _dialogRect.X + _dialogRect.Width - 10 - _renameOKButton.width;
+            _renameCancelButton.x = _renameDeleteDialog.rect.X + 10;
+            _renameCancelButton.y = _renameDeleteDialog.rect.Y + _renameDeleteDialog.rect.Height - 10 - _renameCancelButton.height;
+            _renameOKButton.x = _renameDeleteDialog.rect.X + _renameDeleteDialog.rect.Width - 10 - _renameOKButton.width;
             _renameOKButton.y = _renameCancelButton.y;
 
             _renameBox.Update(mouse, mouseOld, kb, kbOld);

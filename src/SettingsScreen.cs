@@ -77,7 +77,6 @@ public class SettingsScreen : IGameState
         AccentColorButton.Draw(sprBatch);
         if (_setAccentColor)
         {
-            RectRenderer.DrawRect(new(0, 0, graphDev.Viewport.Bounds.Width, graphDev.Viewport.Bounds.Height), new(Color.Black, 0.5f), sprBatch); // TODO should screen dimming be incorporated into dialog class?
             _accentColorDialog.Draw(sprBatch);
 
             _accentColorRedBox.Draw(sprBatch);
