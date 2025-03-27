@@ -20,17 +20,22 @@ public static class Settings
         {"enableHints", "yes"},
         {"showBgGrid", "yes"},
         {"sound", "yes"},
-        {"editorAutoSaveInterval", "180"}
+        {"editorAutoSaveInterval", "180"} // like 3 mins
     };
 
     public const float AccentColorDefaultDarkerAmount = 0.3f;
     public const float AccentColorDefaultLighterAmount = 0.5f;
 
+    public static string GetDataFolderPath()
+    {
+        return Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "nonoSharp");
+    }
+
     public static void Initialize()
     {
         Log.Logger.Information("Initializing settings");
 
-        string settingsFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "nonoSharp");
+        string settingsFolder = GetDataFolderPath();
         Log.Logger.Information($"Settings folder: {settingsFolder}");
         Directory.CreateDirectory(settingsFolder);
 
@@ -87,14 +92,22 @@ public static class Settings
         Set(key, $"{val.R};{val.G};{val.B}");
     }
 
+    public static void Set(string key, int val)
+    {
+        Set(key, val.ToString());
+    }
+
     public static string Get(string key)
     {
         // If the setting is found in the settings dictionary, return it
         if (_settings.ContainsKey(key))
             return _settings[key];
 
-        // If it's not found, look it up in default settings
-        return DefaultSettings[key]; // TODO handle cases where setting is not found in default too
+        // If it's not found, try to look it up in default settings
+        if (DefaultSettings.ContainsKey(key))
+            return DefaultSettings[key];
+
+        return ""; // Setting not found
     }
 
     public static bool GetBool(string key)

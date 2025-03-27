@@ -29,6 +29,11 @@ public class EditorMain
         initAutoSaveTimer();
     }
 
+    ~EditorMain()
+    {
+        _autoSaveTimer?.Dispose();
+    }
+
     public EditorMain(string levelName)
     {
         Board = new();
@@ -122,14 +127,14 @@ public class EditorMain
     public void AutoSave()
     {
         Log.Logger.Information("Auto saving level");
-        BoardSaver.SaveBoard(Board, Path.Combine("..", "EditorAutosave"), Board.maxHints);
+        BoardSaver.SaveBoard(Board, Path.Combine(Settings.GetDataFolderPath(), "EditorAutosave"), Board.maxHints, true);
     }
 
     public void LoadAutoSave()
     {
         Log.Logger.Information("Loading auto save");
         Board = new();
-        Board.Make(Path.Combine(BoardSaver.GetLevelSavePath(), "..", "EditorAutosave"));
+        Board.Make(Path.Combine(Settings.GetDataFolderPath(), "EditorAutosave"));
     }
 
     private void makeButtons()
@@ -150,7 +155,7 @@ public class EditorMain
 
     private void initAutoSaveTimer()
     {
-        _autoSaveTimer = new(Settings.GetInt("editorAutoSaveInterval")); // TODO dispose of it properly
+        _autoSaveTimer = new(Settings.GetInt("editorAutoSaveInterval") * 1000);
         _autoSaveTimer.Elapsed += autoSave;
         _autoSaveTimer.AutoReset = true;
         _autoSaveTimer.Enabled = false;

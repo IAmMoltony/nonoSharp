@@ -20,6 +20,8 @@ public class SettingsScreen : IGameState
     private readonly CheckBox _enableHintsBox;
     private readonly CheckBox _showBgBox;
     private readonly CheckBox _enableSoundBox;
+    private readonly NumberTextBox _autoSaveIntervalBox;
+
     private readonly NumberTextBox _accentColorRedBox;
     private readonly NumberTextBox _accentColorGreenBox;
     private readonly NumberTextBox _accentColorBlueBox;
@@ -37,7 +39,8 @@ public class SettingsScreen : IGameState
         _enableHintsBox = new(40, 110, StringManager.GetString("enableHints"), Color.Gray, Color.DarkGray, Settings.GetBool("enableHints"));
         _showBgBox = new(40, 140, StringManager.GetString("showBgGrid"), Color.Gray, Color.DarkGray, Settings.GetBool("showBgGrid"));
         _enableSoundBox = new(40, 170, StringManager.GetString("enableSound"), Color.Gray, Color.DarkGray, Settings.GetBool("sound"));
-        AccentColorButton = new(40, 215, 0, 40, StringManager.GetString("changeAccentColor"), Settings.GetDarkAccentColor(), Settings.GetAccentColor(), true);
+        _autoSaveIntervalBox = new(40, 285, 100, Color.DarkGray, Color.Gray, Color.White, Color.White, 10000); // just a random big number
+        AccentColorButton = new(40, 205, 0, 40, StringManager.GetString("changeAccentColor"), Settings.GetDarkAccentColor(), Settings.GetAccentColor(), true);
         AccentColorResetButton = new(0, 0, 0, 40, StringManager.GetString("reset"), Settings.GetDarkAccentColor(), Settings.GetAccentColor(), true);
         AccentColorOKButton = new(0, 0, 0, 40, StringManager.GetString("ok"), Settings.GetDarkAccentColor(), Settings.GetAccentColor(), true);
         _accentColorRedBox = new(0, 0, 200, Color.DarkGray, Color.Gray, Color.White, Color.White, 255);
@@ -49,6 +52,7 @@ public class SettingsScreen : IGameState
         _accentColorGreenBox.SetNumberValue(accentColor.G);
         _accentColorBlueBox.SetNumberValue(accentColor.B);
 
+        _autoSaveIntervalBox.SetNumberValue(Settings.GetInt("editorAutoSaveInterval"));
         _setAccentColor = false;
         _accentColorDialog = new(DialogWidth, DialogHeight, StringManager.GetString("changeAccentColor"), Settings.GetDarkAccentColor(), Settings.GetAccentColor());
     }
@@ -66,8 +70,11 @@ public class SettingsScreen : IGameState
         _enableHintsBox.Draw(sprBatch);
         _showBgBox.Draw(sprBatch);
         _enableSoundBox.Draw(sprBatch);
-        AccentColorButton.Draw(sprBatch);
 
+        TextRenderer.DrawText(sprBatch, "DefaultFont", 40, 255, 0.4f, StringManager.GetString("autoSaveInterval"), Color.White);
+        _autoSaveIntervalBox.Draw(sprBatch);
+
+        AccentColorButton.Draw(sprBatch);
         if (_setAccentColor)
         {
             RectRenderer.DrawRect(new(0, 0, graphDev.Viewport.Bounds.Width, graphDev.Viewport.Bounds.Height), new(Color.Black, 0.5f), sprBatch); // TODO should screen dimming be incorporated into dialog class?
@@ -137,6 +144,7 @@ public class SettingsScreen : IGameState
             _showBgBox.Update(mouse, mouseOld, kb, kbOld);
             _enableSoundBox.Update(mouse, mouseOld, kb, kbOld);
             AccentColorButton.Update(mouse, mouseOld, kb, kbOld);
+            _autoSaveIntervalBox.Update(mouse, mouseOld, kb, kbOld);
 
             if (AccentColorButton.IsClicked)
             {
@@ -173,6 +181,10 @@ public class SettingsScreen : IGameState
             _accentColorGreenBox.UpdateInput(tiea);
             _accentColorBlueBox.UpdateInput(tiea);
         }
+        else
+        {
+            _autoSaveIntervalBox.UpdateInput(tiea);
+        }
     }
 
     private void saveSettings()
@@ -180,6 +192,7 @@ public class SettingsScreen : IGameState
         Settings.Set("enableHints", _enableHintsBox.isChecked);
         Settings.Set("showBgGrid", _showBgBox.isChecked);
         Settings.Set("sound", _enableSoundBox.isChecked);
+        Settings.Set("editorAutoSaveInterval", _autoSaveIntervalBox.GetNumberValue());
         Settings.Save();
     }
 

@@ -66,7 +66,7 @@ public class SaveLevelState
             if (_saveButton.IsClicked)
             {
                 BoardSaver.SaveBoard(board, _levelNameBox.text, maxHints);
-                File.Delete(Path.Combine(BoardSaver.GetLevelSavePath(), "..", "EditorAutosave.nono"));
+                File.Delete(Path.Combine(Settings.GetDataFolderPath(), "EditorAutosave.nono"));
                 _saved = true;
             }
 

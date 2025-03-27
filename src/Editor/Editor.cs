@@ -75,9 +75,7 @@ public class Editor : IGameState
                     if (_editingExistingLevel)
                     {
                         BoardSaver.SaveBoard(_main.Board, _levelName, _main.MaxHintsBox.GetNumberValue());
-                        LevelSelect levelSelect = new();
-                        levelSelect.FindLevels();
-                        return levelSelect; // TODO just find the levels in the constructor???
+                        return new LevelSelect();
                     }
                     else
                         _state = EditorState.SaveLevel;
@@ -87,9 +85,7 @@ public class Editor : IGameState
                     _main.EnableAutoSaveTimer(false);
                     if (_editingExistingLevel)
                     {
-                        LevelSelect levelSelect = new();
-                        levelSelect.FindLevels();
-                        return levelSelect;
+                        return new LevelSelect();
                     }
                     else
                     {
@@ -167,7 +163,7 @@ public class Editor : IGameState
 
     private void checkAutoSave()
     {
-        if (File.Exists(Path.Combine(BoardSaver.GetLevelSavePath(), "..", "EditorAutosave.nono")))
+        if (File.Exists(Path.Combine(Settings.GetDataFolderPath(), "EditorAutosave.nono")))
         {
             _state = EditorState.AutoSaveNotice;
         }

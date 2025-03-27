@@ -50,6 +50,8 @@ public class LevelSelect : IGameState
         char[] invalidPathChars = Path.GetInvalidPathChars();
         char[] invalidFileNameChars = Path.GetInvalidFileNameChars();
         _renameBox.illegalChars = invalidPathChars.Union(invalidFileNameChars).ToList();
+
+        FindLevels();
     }
 
     public void FindLevels()

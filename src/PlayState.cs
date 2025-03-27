@@ -62,9 +62,7 @@ public class PlayState : IGameState
             if (_solvedContinueButton.IsClicked)
             {
                 leaveGame();
-                var levelSelect = new LevelSelect();
-                levelSelect.FindLevels();
-                return levelSelect;
+                return new LevelSelect();
             }
         }
 
@@ -109,9 +107,7 @@ public class PlayState : IGameState
             if (_pauseBackButton.IsClicked)
             {
                 leaveGame();
-                var levelSelect = new LevelSelect();
-                levelSelect.FindLevels();
-                return levelSelect;
+                return new LevelSelect();
             }
 
             _pauseRestartButton.Update(mouse, mouseOld, kb, kbOld);

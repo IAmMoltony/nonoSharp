@@ -42,15 +42,9 @@ public class MainMenu : IGameState
         QuitButton.Update(mouse, mouseOld, kb, kbOld);
 
         if (PlayButton.IsClicked)
-        {
-            LevelSelect levelSelect = new();
-            levelSelect.FindLevels();
-            return levelSelect;
-        }
+            return new LevelSelect();
         if (EditorButton.IsClicked)
-        {
             return new Editor.Editor();
-        }
         return SettingsButton.IsClicked ? new SettingsScreen() : null;
     }
 
