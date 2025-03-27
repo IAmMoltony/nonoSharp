@@ -10,6 +10,8 @@ public static class BoardChecker
         int rows = tiles.GetLength(0);
         int cols = tiles.GetLength(1);
 
+        Tile[,] tilesClone = (Tile[,])tiles.Clone();
+
         bool changed;
         do
         {
@@ -18,18 +20,18 @@ public static class BoardChecker
             // per row
             for (int r = 0; r < rows; r++)
             {
-                changed |= ApplyLogicalStep(tiles, clues.RowClues[r], r, true);
+                changed |= ApplyLogicalStep(tilesClone, clues.RowClues[r], r, true);
             }
 
             // per column
             for (int c = 0; c < cols; c++)
             {
-                changed |= ApplyLogicalStep(tiles, clues.ColumnClues[c], c, false);
+                changed |= ApplyLogicalStep(tilesClone, clues.ColumnClues[c], c, false);
             }
 
         } while (changed);
 
-        return IsBoardSolved(tiles, clues);
+        return IsBoardSolved(tilesClone, clues);
     }
 
     private static bool ApplyLogicalStep(Tile[,] tiles, List<int> clues, int index, bool isRow)
@@ -110,11 +112,13 @@ public static class BoardChecker
     {
         for (int r = 0; r < tiles.GetLength(0); r++)
         {
-            if (!IsRowValid(tiles, clues.RowClues[r], r)) return false;
+            if (!IsRowValid(tiles, clues.RowClues[r], r))
+                return false;
         }
         for (int c = 0; c < tiles.GetLength(1); c++)
         {
-            if (!IsColumnValid(tiles, clues.ColumnClues[c], c)) return false;
+            if (!IsColumnValid(tiles, clues.ColumnClues[c], c))
+                return false;
         }
         return true;
     }
