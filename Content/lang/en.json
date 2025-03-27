@@ -40,5 +40,6 @@
   "test": "Test",
   "editButton": "Edit",
   "changeAccentColor": "Change accent color",
-  "autoSaveNotice": "Auto save detected. You can continue where you left off or start over."
+  "autoSaveNotice": "Auto save detected. You can continue where you left off or start over.",
+  "autoSaveInterval": "Auto save interval"
 }
