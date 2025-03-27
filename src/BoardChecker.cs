@@ -1,5 +1,6 @@
 namespace NonoSharp;
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -10,7 +11,7 @@ public static class BoardChecker
         int rows = tiles.GetLength(0);
         int cols = tiles.GetLength(1);
 
-        Tile[,] tilesClone = (Tile[,])tiles.Clone();
+        Tile[,] boardCopy = flipBoard((Tile[,])tiles.Clone());
 
         bool changed;
         do
@@ -20,29 +21,35 @@ public static class BoardChecker
             // per row
             for (int r = 0; r < rows; r++)
             {
-                changed |= ApplyLogicalStep(tilesClone, clues.RowClues[r], r, true);
+                bool rowChanged = applyLogicalStep(boardCopy, clues.RowClues[r], r, true);
+                changed |= rowChanged;
             }
 
             // per column
             for (int c = 0; c < cols; c++)
             {
-                changed |= ApplyLogicalStep(tilesClone, clues.ColumnClues[c], c, false);
+                bool colChanged = applyLogicalStep(boardCopy, clues.ColumnClues[c], c, false);
+                changed |= colChanged;
             }
-
         } while (changed);
 
-        return IsBoardSolved(tilesClone, clues);
+        bool isValid = isBoardSolved(boardCopy, clues);
+        Console.WriteLine($"Validation result: {isValid}");
+        return isValid;
     }
 
-    private static bool ApplyLogicalStep(Tile[,] tiles, List<int> clues, int index, bool isRow)
+    private static bool applyLogicalStep(Tile[,] tiles, List<int> clues, int index, bool isRow)
     {
         int length = isRow ? tiles.GetLength(1) : tiles.GetLength(0);
         int totalFilled = clues.Sum() + clues.Count - 1;
         bool changed = false;
 
-        // if clues + spaces == length then it's guaranteed. fill em
+        Console.WriteLine($"Processing {(isRow ? "row" : "column")} {index} with clues {string.Join(",", clues)}");
+
+        // if sum of clues + spaces equals length, fill guaranteed tiles
         if (totalFilled == length)
         {
+            Console.WriteLine($"{(isRow ? "Row" : "Column")} {index} has guaranteed fills.");
             int pos = 0;
             foreach (int clue in clues)
             {
@@ -62,78 +69,44 @@ public static class BoardChecker
                 }
                 if (pos < length)
                 {
-                    if (isRow) tiles[index, pos].state = TileState.Cross;
-                    else tiles[pos, index].state = TileState.Cross;
+                    tiles[index, pos].state = TileState.Cross; // 1000% empty space
                     pos++;
                 }
             }
         }
-
-        // if we can only fit the tile in 1 location then do it
-        for (int i = 0; i < length; i++)
-        {
-            if (isRow && tiles[index, i].state == TileState.Empty)
-            {
-                if (CanOnlyBeFilled(tiles, clues, index, i, true))
-                {
-                    tiles[index, i].state = TileState.Filled;
-                    changed = true;
-                }
-            }
-            else if (!isRow && tiles[i, index].state == TileState.Empty)
-            {
-                if (CanOnlyBeFilled(tiles, clues, index, i, false))
-                {
-                    tiles[i, index].state = TileState.Filled;
-                    changed = true;
-                }
-            }
-        }
-
         return changed;
     }
 
-    private static bool CanOnlyBeFilled(Tile[,] tiles, List<int> clues, int index, int pos, bool isRow)
-    {
-        int length = isRow ? tiles.GetLength(1) : tiles.GetLength(0);
-        int totalFilled = clues.Sum();
-        int filledCount = 0;
-
-        for (int i = 0; i < length; i++)
-        {
-            TileState state = isRow ? tiles[index, i].state : tiles[i, index].state;
-            if (state == TileState.Filled) filledCount++;
-        }
-
-        return filledCount < totalFilled;
-    }
-
-    private static bool IsBoardSolved(Tile[,] tiles, Clues clues)
+    private static bool isBoardSolved(Tile[,] tiles, Clues clues)
     {
         for (int r = 0; r < tiles.GetLength(0); r++)
         {
-            if (!IsRowValid(tiles, clues.RowClues[r], r))
-                return false;
+            if (!isRowValid(tiles, clues.RowClues[r], r))
+            {
+                return false; // its invalid
+            }
         }
         for (int c = 0; c < tiles.GetLength(1); c++)
         {
-            if (!IsColumnValid(tiles, clues.ColumnClues[c], c))
-                return false;
+            if (!isColumnValid(tiles, clues.ColumnClues[c], c))
+            {
+                return false; // its invalid
+            }
         }
         return true;
     }
 
-    private static bool IsRowValid(Tile[,] tiles, List<int> clues, int row)
+    private static bool isRowValid(Tile[,] tiles, List<int> clues, int row)
     {
-        return CheckLineValidity(tiles, clues, row, true);
+        return checkLineValidity(tiles, clues, row, true);
     }
 
-    private static bool IsColumnValid(Tile[,] tiles, List<int> clues, int col)
+    private static bool isColumnValid(Tile[,] tiles, List<int> clues, int col)
     {
-        return CheckLineValidity(tiles, clues, col, false);
+        return checkLineValidity(tiles, clues, col, false);
     }
 
-    private static bool CheckLineValidity(Tile[,] tiles, List<int> clues, int index, bool isRow)
+    private static bool checkLineValidity(Tile[,] tiles, List<int> clues, int index, bool isRow)
     {
         List<int> foundGroups = new();
         int count = 0;
@@ -151,6 +124,26 @@ public static class BoardChecker
         }
         if (count > 0) foundGroups.Add(count);
 
+        if (clues.Count == 1 && clues[0] == 0)
+        {
+            bool isCompletelyEmpty = foundGroups.Count == 0;
+            // expected empty line
+            return isCompletelyEmpty;
+        }
         return foundGroups.SequenceEqual(clues);
     }
+
+    private static Tile[,] flipBoard(Tile[,] board)
+    {
+        int rows = board.GetLength(0);
+        int cols = board.GetLength(1);
+        Tile[,] flipped = new Tile[cols, rows];
+
+        for (int r = 0; r < rows; r++)
+            for (int c = 0; c < cols; c++)
+                flipped[c, r] = board[r, c];
+
+        return flipped;
+    }
 }
+
