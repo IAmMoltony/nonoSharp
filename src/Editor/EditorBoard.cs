@@ -1,6 +1,7 @@
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Graphics;
 using Serilog;
+using System;
 using System.IO;
 using System.Collections.Generic;
 
@@ -27,7 +28,7 @@ public class EditorBoard : Board
     public void Make(int size)
     {
         this.size = size;
-        clues = new(size);
+        Clues = new(size);
         MakeTiles();
         MakeSolution();
     }
@@ -88,6 +89,8 @@ public class EditorBoard : Board
         {
             tile.LeftClick();
             makeClues();
+            Console.WriteLine(BoardChecker.CheckBoard(tiles, Clues));
+            Tile.PrintTileArray(tiles, size);
         }
     }
 
@@ -97,6 +100,6 @@ public class EditorBoard : Board
 
     private void makeClues()
     {
-        clues = new(this, false);
+        Clues = new(this, false);
     }
 }

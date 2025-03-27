@@ -11,7 +11,6 @@ namespace NonoSharp;
 
 public class Board
 {
-    protected Clues? clues;
     protected Stack<Tile[,]> undoStack;
     protected Tile[,]? previousState;
     protected HashSet<(int, int)> hintedLines;
@@ -21,6 +20,7 @@ public class Board
     public int size;
     public int maxHints;
     public bool IsSolved { get; private set; }
+    public Clues? Clues { get; protected set; }
 
     private int _boardX;
     private int _boardY;
@@ -93,7 +93,7 @@ public class Board
 
     public void MakeClues()
     {
-        clues = new(this);
+        Clues = new(this);
     }
 
     public Tile[,] Load(string fileName)
@@ -320,21 +320,21 @@ public class Board
 
     protected virtual void DrawClues(int boardX, int boardY, SpriteBatch sprBatch)
     {
-        if (clues == null)
+        if (Clues == null)
             return;
 
         int rowCluesX = boardX - 24;
         int rowCluesY = boardY;
 
         for (int i = 0; i < size; i++)
-            for (int j = 0; j < clues.RowClues[i].Count; j++)
-                TextRenderer.DrawText(sprBatch, "DefaultFont", rowCluesX - (j * 24), rowCluesY + (i * 32), 0.5f, clues.RowClues[i][j].ToString(), Color.White);
+            for (int j = 0; j < Clues.RowClues[i].Count; j++)
+                TextRenderer.DrawText(sprBatch, "DefaultFont", rowCluesX - (j * 24), rowCluesY + (i * 32), 0.5f, Clues.RowClues[i][j].ToString(), Color.White);
 
         int colCluesX = boardX + 12;
         int colCluesY = boardY - 32;
         for (int i = 0; i < size; i++)
-            for (int j = 0; j < clues.ColumnClues[i].Count; j++)
-                TextRenderer.DrawText(sprBatch, "DefaultFont", colCluesX + (i * 32), colCluesY - (j * 32), 0.5f, clues.ColumnClues[i][j].ToString(), Color.White);
+            for (int j = 0; j < Clues.ColumnClues[i].Count; j++)
+                TextRenderer.DrawText(sprBatch, "DefaultFont", colCluesX + (i * 32), colCluesY - (j * 32), 0.5f, Clues.ColumnClues[i][j].ToString(), Color.White);
     }
 
     protected virtual void CheckSolution()

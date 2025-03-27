@@ -54,7 +54,7 @@ public struct Tile
                 switch (ta[i, j].state)
                 {
                     case TileState.Empty:
-                        Console.Write(" ");
+                        Console.Write(".");
                         break;
                     case TileState.Filled:
                         Console.Write("#");
